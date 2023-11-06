@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveDataTypeable #-}
 module Interpretation where
 
 import qualified Control.Monad as Monad
@@ -8,6 +9,8 @@ import qualified Data.Map as Map
 import qualified Data.Maybe as Maybe
 import qualified Data.Set as Set
 import qualified Data.Text as Text
+import qualified Data.Data as D
+import qualified Data.List.Split as Split
 import qualified System.Process as Process
 
 -------------------------------------- Flags ----------------------------------
@@ -42,17 +45,53 @@ flag_delete_temp = False
 const_time_limit :: Int
 const_time_limit = 14400
 
+-- frame_misc_1_1 :: Frame    
+-- frame_misc_1_1 = Frame {
+--     types = [T "object"],
+--     type_hierarchy = [],
+--     objects = [
+--         (O "sensor_a", T "object")
+--         ],
+--     exogeneous_objects = [],
+--     permanent_concepts = [],
+--     fluid_concepts = [
+--         (C "on", [T "object"]), 
+--         (C "off", [T "object"])
+--         ],
+--     input_concepts = [C "on", C "off"],
+--     static_concepts = [],
+--     vars = [
+--         (V "x", T "object")
+--         ],
+--     var_groups = [
+--         [V "x"]
+--         ],
+--     aux_files = []
+-- }
+
+-- template_misc_1_1 :: Template
+-- template_misc_1_1 = Template {
+--     dir = "misc",
+--     frame = frame_misc_1_1,
+--     min_body_atoms = 1,
+--     max_body_atoms = 1, 
+--     num_arrow_rules = 0,
+--     num_causes_rules = 2,
+--     num_visual_predicates = Nothing,
+--     use_noise = False
+--     }    
+
 -------------------------------------- Types ----------------------------------
 
-newtype Type = T String deriving (Eq, Ord)
+newtype Type = T String deriving (Eq, Ord, D.Data, D.Typeable)
 
-data Concept = C String | P String deriving (Eq, Ord)
+data Concept = C String | P String deriving (Eq, Ord, D.Data, D.Typeable)
 
-newtype Object = O String deriving (Eq, Ord)
+newtype Object = O String deriving (Eq, Ord, D.Data, D.Typeable)
 
-newtype Var = V String deriving (Eq, Ord)
+newtype Var = V String deriving (Eq, Ord, D.Data, D.Typeable)
 
-data ConceptLineage = Given | Constructed deriving (Eq, Ord, Show)
+data ConceptLineage = Given | Constructed deriving (Eq, Ord, Show, D.Data, D.Typeable)
 
 data Frame = Frame {
     types :: [Type],
@@ -66,7 +105,7 @@ data Frame = Frame {
     vars :: [(Var, Type)],
     var_groups :: [[Var]],
     aux_files :: [String]
-} deriving (Eq, Ord, Show)
+} deriving (Eq, Ord, Show, D.Data, D.Typeable)
 
 data Template = Template { 
     dir :: String,
@@ -77,21 +116,21 @@ data Template = Template {
     num_causes_rules :: Int,
     num_visual_predicates :: Maybe Int,
     use_noise :: Bool
-} deriving (Eq, Ord, Show)
+} deriving (Eq, Ord, Show, D.Data, D.Typeable)
 
 data GroundAtom =   GA Concept [Object] |
                     Perm Concept [Object]
-                    deriving (Eq, Ord)
+                    deriving (Eq, Ord, D.Data, D.Typeable)
 
 data VarAtom =      VA Concept [Var] |
                     Isa Concept Var |
                     Isa2 Concept Var Var 
-                    deriving (Eq, Ord)
+                    deriving (Eq, Ord, D.Data, D.Typeable)
 
 data Rule = Arrow RuleID [Atom] Atom | 
             Causes RuleID [Atom] Atom |
             Xor RuleID [Atom] [Atom]
-            deriving (Eq, Ord)
+            deriving (Eq, Ord, D.Data, D.Typeable)
 
 type Atom = String
 
@@ -105,7 +144,7 @@ data InterpretationStatistics = IS {
     bnn_entropy :: Maybe Float,
     ambiguity :: Maybe Int,
     possible_preds :: [String]
-}
+} deriving (Eq, Ord, Show)
 
 data Interpretation = I {
     times :: [Int],
@@ -121,19 +160,184 @@ data Interpretation = I {
     num_accurate :: Maybe Int,
     num_held_outs :: Maybe Int,
     statistics :: InterpretationStatistics
-}
+} deriving (Eq, Ord, Show)
 
-data ClingoOutput = Answer String | Optimization String
+data ClingoOutput = Answer String | Optimization String deriving (Eq, Ord, Show)
 
 data ClingoResult = CR {
     result_answer :: String,
     result_optimization :: String,
     result_template :: Template
-}
+} deriving (Eq, Ord, Show)
 
-data PredicateType = IsFluent | IsPermanent deriving (Eq, Ord)
+data PredicateType = IsFluent | IsPermanent deriving (Eq, Ord, D.Data, D.Typeable)
 
 type TypeConceptMap = Map.Map Type [Concept]
+
+
+-------------------------------------------------------------------------------
+-- 
+-- These functions save and read in templates from Memory
+-- 
+-------------------------------------------------------------------------------
+process_to_map :: String -> [(String, String)]
+process_to_map xs = [f x | t <- filtered, let x = Split.splitOn " = " t] where 
+    l = lines xs
+    filtered = filter (List.isInfixOf "=") l
+    f [x, y] = (x, y)
+
+template_from_file :: [(String, String)] -> Template
+template_from_file m = Template {
+    dir = from_just_t $ lookup "dir" m,
+    frame = frame_from_file m,
+    min_body_atoms = read . from_just_t $ lookup "min_body_atoms" m,
+    max_body_atoms = read . from_just_t $ lookup "max_body_atoms" m, 
+    num_arrow_rules = read . from_just_t $ lookup "num_arrow_rules" m,
+    num_causes_rules = read . from_just_t $ lookup "num_causes_rules" m,
+    num_visual_predicates = read . from_just_t $ lookup "num_visual_predicates" m, --TODO: Have to add Maybe to this type
+    use_noise = read . from_just_t $ lookup "use_noise" m
+}
+
+from_just_t :: Maybe a -> a
+from_just_t (Just a) = a
+from_just_t Nothing = error "Some key does not figure in the template map"
+
+frame_from_file :: [(String, String)] -> Frame
+frame_from_file m = Frame {
+    types = extract_types . from_just_t $ lookup "types" m,
+    type_hierarchy = extract_type_hierarchy . from_just_t $ lookup "type_hierarchy" m,
+    objects = extract_objects . from_just_t $ lookup "objects" m,
+    exogeneous_objects = extract_exo_objects . from_just_t $ lookup "exogeneous_objects" m,
+    permanent_concepts = extract_perm_concepts . from_just_t $ lookup "permanent_concepts" m,
+    fluid_concepts = extract_fl_concepts . from_just_t $ lookup "fluid_concepts" m,
+    input_concepts = extract_input_concepts . from_just_t $ lookup "input_concepts" m,
+    static_concepts = extract_input_concepts . from_just_t $ lookup "static_concepts" m,
+    vars = extract_vars . from_just_t $ lookup "vars" m,
+    var_groups = extract_var_groups . from_just_t $ lookup "var_groups" m,
+    aux_files = extract_aux_files . from_just_t $ lookup "aux_files" m
+}
+
+
+
+-- Extracts from string and converts to Type
+extract_types :: String -> [Type]
+extract_types "[]" = []
+extract_types s = tl where
+    ts = Split.splitOn "," $ drop_brackets s
+    tl = [x | y <- ts, let x = T (drop 2 y)]
+
+extract_type_hierarchy :: String -> [(Type, [Type])]
+extract_type_hierarchy "[]" = []
+extract_type_hierarchy s = th where
+    ts = Split.splitOn "),(" . drop_brackets $ remove_square_br s
+    th = [(y,ys) | z <- ts, let (y:ys) = map f (Split.splitOn "," z)]
+        where f x = T (drop 2 x) --converts t_ string to Type
+
+extract_objects :: String -> [(Object, Type)]
+extract_objects "[]" = []
+extract_objects s = oh where
+    os = Split.splitOn "),(" $ drop_brackets2 s
+    oh = [(fo x, f y) | st <- os, let [x,y] = Split.splitOn "," st]
+        where f t = T (drop 2 t)
+              fo o = O (drop 4 o) -- converts obj_ string to Object
+
+extract_exo_objects :: String -> [Object]
+extract_exo_objects "[]" = []
+extract_exo_objects s = map (\x -> O (drop 4 x)) . Split.splitOn "," $ drop_brackets s
+
+extract_perm_concepts :: String -> [(Concept, ConceptLineage, [Type])]
+extract_perm_concepts "[]" = []
+extract_perm_concepts s = pc where
+    ps = map (Split.splitOn ",") . Split.splitOn "),(" . drop_brackets $ remove_square_br s
+    pc = [(fp x, gs y,zs) | x:y:z <- ps, let zs = map ft z ]
+        where ft t = T (drop 2 t) 
+              fp p = P (drop 2 p) -- converts p_ string to Predicate
+              gs g = if g == "Given" then Given else Constructed -- Indicates ConceptLineage
+
+extract_fl_concepts :: String -> [(Concept, [Type])]
+extract_fl_concepts "[]" = []
+extract_fl_concepts s = pc where
+    ps = map (Split.splitOn ",") . Split.splitOn "),(" . drop_brackets $ remove_square_br s
+    pc = [(fc x, ys) | x:y <- ps, let ys = map ft y ]
+        where ft t = T (drop 2 t) 
+              fc c = C (drop 2 c) -- converts c_ string to Concept
+
+extract_input_concepts :: String -> [Concept]
+extract_input_concepts "[]" = []
+extract_input_concepts s = tl where
+    ts = Split.splitOn "," $ drop_brackets s
+    tl = [x | y <- ts, let x = C (drop 2 y)]
+
+extract_vars :: String ->  [(Var, Type)]
+extract_vars "[]" = []
+extract_vars s = oh where
+    os = Split.splitOn "),(" $ drop_brackets2 s
+    oh = [(fv x, f y) | st <- os, let [x,y] = Split.splitOn "," st]
+        where f t = T (drop 2 t)
+              fv v = V (drop 4 v) -- converts var_ string to Variable
+
+extract_var_groups :: String -> [[Var]]
+extract_var_groups "[]" = []
+extract_var_groups s = map (map (\x -> V (drop 4 x)) . Split.splitOn ",") . Split.splitOn "],[" $ drop_brackets2 s
+
+extract_aux_files :: String -> [String]
+extract_aux_files "[]" = []
+extract_aux_files s = Split.splitOn "," . filter (/='\"') $ drop_brackets s
+
+drop_brackets :: String -> String
+drop_brackets = tail . init
+
+drop_brackets2 :: String -> String
+drop_brackets2 = drop_brackets . drop_brackets 
+
+remove_square_br :: String -> String
+remove_square_br = filter (/='[') . filter (/=']') 
+
+
+-------------------------------------------------------------------------------
+-- Save template to file
+-------------------------------------------------------------------------------
+
+
+gen_template_file :: String -> Template -> IO ()
+gen_template_file name t = do
+    let f = "memory/" ++ name ++ "_template_out.txt"
+    -- let t_string = template_lines t
+    writeFile f (name ++ "\n\n")
+    Monad.forM_ (template_lines t) (append_new_line f)
+    putStrLn $ "Generated " ++ f
+    -- putStrLn t_string
+
+template_lines :: Template -> [String]
+template_lines t = ["Template"] ++ d ++ minba ++ maxba ++ nar ++ ncr ++ nvp ++ un ++ [""] ++ frm where
+    -- delete "frame" . constrFields . toConstr $ t
+    d = ["dir = " ++ (dir t)]
+    minba = ["min_body_atoms = " ++ show (min_body_atoms t)]
+    maxba = ["max_body_atoms = " ++ show (min_body_atoms t)]
+    nar = ["num_arrow_rules = " ++ show (num_arrow_rules t)]
+    ncr = ["num_causes_rules = " ++ show (num_causes_rules t)]
+    nvp = ["num_visual_predicates = " ++ show (num_visual_predicates t)]
+    un = ["use_noise = " ++ show (use_noise t)]
+    frm = frame_lines $ frame t
+
+frame_lines :: Frame -> [String]
+frame_lines f = ["Frame"] ++ t ++ th ++ o ++ eo ++ pc ++ fc ++ ic ++ sc ++ v ++ vg ++ ax where
+    t = ["types = " ++ show (types f)]
+    th = ["type_hierarchy = " ++ show (type_hierarchy f)]
+    o = ["objects = " ++ show (objects f)]
+    eo = ["exogeneous_objects = " ++ show (exogeneous_objects f)]
+    pc = ["permanent_concepts = " ++ show (permanent_concepts f)]
+    fc = ["fluid_concepts = " ++ show (fluid_concepts f)]
+    ic = ["input_concepts = " ++ show (input_concepts f)]
+    sc = ["static_concepts = " ++ show (static_concepts f)]
+    v = ["vars = " ++ show (vars f)]
+    vg = ["var_groups = " ++ show (var_groups f)]
+    ax = ["aux_files = " ++ show (aux_files f)]
+
+
+
+
+
 
 -------------------------------------------------------------------------------
 -- 
@@ -775,12 +979,13 @@ process_answer_with_template t (Answer l) = unlines (res1 ++ res2) where
     ws = words l
     xs = List.sort ws ++ [""]
     xs2 = filter (\x -> not ("wibble" `List.isInfixOf` x)) xs
-    res2 = if show_extraction then (show_interpretation t) (extract_interpretation xs2) else []
+    res2 = if show_extraction then show_interpretation t (extract_interpretation xs2) else []
 process_answer_with_template _ (Optimization l) = "Optimization: " ++ l
 
 show_interpretation :: Template -> Interpretation -> [String]
 show_interpretation t i | flag_output_latex == True = readable_interpretation t i ++ latex_output t i
 show_interpretation t i | flag_output_latex == False = readable_interpretation t i
+-- show_interpretation t i | flag_output_latex == False = [show i]
 
 readable_interpretation :: Template -> Interpretation -> [String]
 readable_interpretation t i = is ++ ps ++ rs ++ xs ++ fs ++ ss ++ cs ++ acs where
@@ -800,6 +1005,211 @@ readable_interpretation t i = is ++ ps ++ rs ++ xs ++ fs ++ ss ++ cs ++ acs wher
         (Just acc, Just tot) -> let p = fromIntegral acc / fromIntegral tot :: Float in ["", "Percentage accurate: " ++ show p ++ ""]
         _ -> []
     ss = readable_stats (statistics i)
+
+gen_inter_file :: String -> [ClingoOutput] -> IO ()
+gen_inter_file _ [] = do return ()
+gen_inter_file name [Answer l, Optimization o] = do
+    let f = "memory/" ++ name ++ "_interpret_mem.lp"
+    let ws = words l
+    let xs = List.sort ws ++ [""]
+    let xs2 = filter (\x -> not ("wibble" `List.isInfixOf` x)) xs
+    -- let t_string = template_lines t
+    writeFile f ("% " ++ name ++ "\n% Optimization:" ++ o ++ "\n")
+    Monad.forM_ (inter_lines xs2) (append_new_line f)
+    putStrLn $ "Generated " ++ f
+    -- putStrLn t_string
+-- gen_inter_file _ ([Optimization o]) = do return ()
+
+inter_lines :: [String] -> [String]
+inter_lines xs = typ ++ con ++ per ++ gip ++ rul ++ exc ++ [""] where
+    typ = extract_types_inter xs
+    con = extract_concepts_inter xs
+    per = extract_gen_permanents_inter xs
+    gip = (fs List.\\ typ) List.\\ per 
+        where fs = extract_given_permanents_inter xs
+    rul = extract_rules_inter xs
+    exc = extract_exclusions_inter xs
+
+extract_types_inter :: [String] -> [String]
+extract_types_inter xs = ["\n% Typing"] ++ Maybe.mapMaybe f xs ++ tp where
+    p = "is_type("
+    f x = case List.isPrefixOf p x of
+        False -> Nothing
+        True -> Just $ x ++ "."
+    tp = extract_perm_typing_inter xs
+
+extract_perm_typing_inter :: [String] -> [String]
+extract_perm_typing_inter xs = Maybe.mapMaybe f xs where
+    p = "permanent(isa(t"
+    f x = case List.isPrefixOf p x of
+        False -> Nothing
+        True -> Just $ x ++ "."
+
+extract_concepts_inter :: [String] -> [String]
+extract_concepts_inter xs = ["\n% Concepts"] ++ Maybe.mapMaybe f xs where
+    p = "is_concept("
+    f x = case List.isPrefixOf p x of
+        False -> Nothing
+        True -> Just $ x ++ "."
+
+extract_gen_permanents_inter :: [String] -> [String]
+extract_gen_permanents_inter xs = ["\n% New permanents"] ++ Maybe.mapMaybe f xs where
+    p = "gen_permanent("
+    f x = case List.isPrefixOf p x of
+        False -> Nothing
+        True -> Just $ List.drop (length "gen_") (x ++ ".")
+
+extract_given_permanents_inter :: [String] -> [String]
+extract_given_permanents_inter xs = ["\n% Given permanents"] ++ Maybe.mapMaybe f xs where
+    p = "permanent("
+    q = "cell"
+    f x = case List.isPrefixOf p x of
+        False -> Nothing
+        True -> Just $ x ++ "."
+
+-- Currently only works for binary exclusion constraints
+extract_exclusions_inter :: [String] -> [String]
+extract_exclusions_inter xs = Maybe.mapMaybe f xs where
+    p = "exclusion_output(\""
+    f x = case List.isPrefixOf p x of
+        False -> Nothing
+        True -> Just $ c 
+            where [e1, e2] = Split.splitOn "+" . init . init $ List.drop (length p) x
+                  c =   "\n% Input exclusions \n\
+                        \% Every object is either "++e1++" or "++e2++"\n\n\
+                        \% At most one \n\
+                        \:-\n\
+                        \    holds(s("++e1++", X), T),\n\
+                        \    holds(s("++e2++", X), T).\n\n\
+                        \% At least one\n\
+                        \:-\n\
+                        \    permanent(isa(t_object, X)),\n\
+                        \    is_time(T),\n\
+                        \    not holds(s("++e1++", X), T),\n\
+                        \    not holds(s("++e2++", X), T).\n\n\
+                        \% Incompossibility\n\
+                        \incompossible(s("++e1++", X), s("++e2++", X)) :-\n\
+                        \    permanent(isa(t_object, X)).\n\n\
+                        \exclusion_output(\""++e1++"+"++e2++"\")."
+
+
+extract_rules_inter :: [String] -> [String]
+extract_rules_inter xs = ["\n% Rules"] ++ xo ++ ar ++ ca where
+    xo = extract_xors_inter xs 
+    ar = extract_arrows_inter xs 
+    ca = extract_causes_inter xs
+
+
+extract_xors_inter :: [String] -> [String]
+extract_xors_inter xs = concat $ Maybe.mapMaybe f (extract_xor_heads_inter xs) where
+    f (r, hs) | List.isPrefixOf "r_input" r = Nothing
+    f (r, hs) | otherwise = Just $ (extract_body_inter xs r) ++ [hs]
+
+extract_arrows_inter :: [String] -> [String]
+extract_arrows_inter xs = concat $ map f (extract_arrow_heads_inter xs) where
+    f (r, c) = (extract_body_inter xs r) ++ [c]
+
+extract_causes_inter :: [String] -> [String]
+extract_causes_inter xs = concat $ map f (extract_cause_heads_inter xs) where
+    f (r, c) = (extract_body_inter xs r) ++ [c] -- c is een string maar haskell verwacht een [String] volgens mij
+-- Use a concatenate operation somewhere to flatten it into a [String]
+    
+
+-- extract_xor_heads_inter :: [String] -> [(RuleID, String)]
+-- extract_xor_heads_inter xs = collect_pairs_inter ps where
+--     ps = Maybe.mapMaybe f xs
+--     p = "rule_head_xor("
+--     f x = case List.isPrefixOf p x of
+--         False -> Nothing
+--         True -> Just $ (extract_rule_id (drop_last (List.drop (length p) x)), x ++ ".")
+
+extract_xor_heads_inter :: [String] -> [(RuleID, String)]
+extract_xor_heads_inter xs = Maybe.mapMaybe f xs where
+    p = "rule_head_xor("
+    f x = case List.isPrefixOf p x of
+        False -> Nothing
+        True -> Just $ (extract_rule_id (drop_last (List.drop (length p) x)), x ++ ".\n")
+
+collect_pairs_inter :: Eq a => [(a, b)] -> [(a, [b])]
+collect_pairs_inter xs = map f as where
+    as = List.nub (map fst xs)
+    f a = (a, g a)
+    g a = [b | (a', b) <- xs, a' == a]
+
+extract_arrow_heads_inter :: [String] -> [(RuleID, String)]
+extract_arrow_heads_inter xs = Maybe.mapMaybe f xs where
+    p = "rule_arrow_head("
+    f x = case List.isPrefixOf p x of
+        False -> Nothing
+        True -> Just $ (extract_rule_id (drop_last (List.drop (length p) x)), x ++ ".\n")
+
+-- bimble_split :: String -> Char -> [String]
+-- bimble_split s c = bimble_split2 s c ""
+
+-- bimble_split2 :: String -> Char -> String -> [String]
+-- bimble_split2 "" _  acc = [acc]
+-- bimble_split2 (x:xs) c acc | x == c = acc : bimble_split2 xs c ""
+-- bimble_split2 (x:xs) c acc | otherwise = bimble_split2 xs c (acc ++ [x])
+
+extract_rule_id :: String -> RuleID
+extract_rule_id x = r where
+    r:_ = bimble_split x ','
+
+extract_cause_heads_inter :: [String] -> [(RuleID, String)]
+extract_cause_heads_inter xs = Maybe.mapMaybe f xs where
+    p = "rule_head_causes("
+    f x = case List.isPrefixOf p x of
+        False -> Nothing
+        True -> Just $ (extract_rule_id (drop_last (List.drop (length p) x)), x ++ ".\n")
+
+extract_body_inter :: [String] -> RuleID -> [String]
+extract_body_inter xs r = Maybe.mapMaybe f xs where
+    f x = case List.isPrefixOf p x of
+        False -> Nothing
+        True -> Just $ x ++ "."
+    p = "rule_body(" ++ r ++ ","
+
+-- extract_causes :: [String] -> [Rule]
+-- extract_causes xs = map f (extract_cause_heads xs) where
+--     f (r, c) = Causes r (extract_body xs r) c
+
+-- extract_cause_heads :: [String] -> [(RuleID, Atom)]
+-- extract_cause_heads xs = Maybe.mapMaybe f xs where
+--     p = "rule_head_causes("
+--     f x = case List.isPrefixOf p x of
+--         False -> Nothing
+--         True -> Just $ 
+--             extract_cause_pair (drop_last (List.drop (length p) x))
+
+-- extract_body :: [String] -> RuleID -> [Atom]
+-- extract_body xs r = Maybe.mapMaybe f xs where
+--     f x = case List.isPrefixOf p x of
+--         False -> Nothing
+--         True -> Just $ drop_last (List.drop (length p) x)
+--     p = "rule_body(" ++ r ++ ","
+
+-- extract_cause_pair :: String -> (RuleID, Atom)
+-- extract_cause_pair x = (r, xs2) where
+--     r:xs = bimble_split x ','
+--     xs2 = concat (List.intersperse ", " xs)
+
+-- extract_cause_pair_inter :: String -> (RuleID, Atom)
+-- extract_cause_pair_inter x = (r, xs2) where
+--     r:xs = bimble_split x ','
+--     xs2 = concat (List.intersperse ", " xs)
+
+
+
+
+
+-- gen_template_file :: String -> Template -> IO ()
+-- gen_template_file name t = do
+--     let f = "memory/" ++ name ++ "_template.txt"
+--     -- let t_string = template_lines t
+--     writeFile f (name ++ "\n\n")
+--     Monad.forM_ (template_lines t) (append_new_line f)
+--     putStrLn $ "Generated " ++ f
+--     -- putStrLn t_string
 
 extract_interpretation :: [String] -> Interpretation
 extract_interpretation xs = I { 
@@ -1114,7 +1524,7 @@ last_answers ls = case last ls of
 -------------------------------------------------------------------------------
 
 write_latex :: Template -> ClingoOutput -> IO ()
-write_latex _ _ | flag_output_latex == False = return ()
+-- write_latex _ _ | flag_output_latex == False = return ()
 write_latex t (Optimization _) = return ()    
 write_latex t (Answer l) = do
     let ws = words l

@@ -1,17 +1,20 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# OPTIONS_GHC -fno-warn-missing-import-lists #-}
-{-# OPTIONS_GHC -Wno-missing-safe-haskell-mode #-}
+{-# OPTIONS_GHC -w #-}
 module Paths_solve (
     version,
     getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir,
     getDataFileName, getSysconfDir
   ) where
 
+
 import qualified Control.Exception as Exception
+import qualified Data.List as List
 import Data.Version (Version(..))
 import System.Environment (getEnv)
 import Prelude
+
 
 #if defined(VERSION_base)
 
@@ -28,8 +31,17 @@ catchIO = Exception.catch
 
 version :: Version
 version = Version [0,2,0,0] []
-bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
+getDataFileName :: FilePath -> IO FilePath
+getDataFileName name = do
+  dir <- getDataDir
+  return (dir `joinFileName` name)
+
+getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
+
+
+
+bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 bindir     = "/home/alex/.cabal/bin"
 libdir     = "/home/alex/.cabal/lib/x86_64-linux-ghc-9.0.2/solve-0.2.0.0-inplace-solve"
 dynlibdir  = "/home/alex/.cabal/lib/x86_64-linux-ghc-9.0.2"
@@ -37,15 +49,26 @@ datadir    = "/home/alex/.cabal/share/x86_64-linux-ghc-9.0.2/solve-0.2.0.0"
 libexecdir = "/home/alex/.cabal/libexec/x86_64-linux-ghc-9.0.2/solve-0.2.0.0"
 sysconfdir = "/home/alex/.cabal/etc"
 
-getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
-getBinDir = catchIO (getEnv "solve_bindir") (\_ -> return bindir)
-getLibDir = catchIO (getEnv "solve_libdir") (\_ -> return libdir)
-getDynLibDir = catchIO (getEnv "solve_dynlibdir") (\_ -> return dynlibdir)
-getDataDir = catchIO (getEnv "solve_datadir") (\_ -> return datadir)
+getBinDir     = catchIO (getEnv "solve_bindir")     (\_ -> return bindir)
+getLibDir     = catchIO (getEnv "solve_libdir")     (\_ -> return libdir)
+getDynLibDir  = catchIO (getEnv "solve_dynlibdir")  (\_ -> return dynlibdir)
+getDataDir    = catchIO (getEnv "solve_datadir")    (\_ -> return datadir)
 getLibexecDir = catchIO (getEnv "solve_libexecdir") (\_ -> return libexecdir)
 getSysconfDir = catchIO (getEnv "solve_sysconfdir") (\_ -> return sysconfdir)
 
-getDataFileName :: FilePath -> IO FilePath
-getDataFileName name = do
-  dir <- getDataDir
-  return (dir ++ "/" ++ name)
+
+
+
+joinFileName :: String -> String -> FilePath
+joinFileName ""  fname = fname
+joinFileName "." fname = fname
+joinFileName dir ""    = dir
+joinFileName dir fname
+  | isPathSeparator (List.last dir) = dir ++ fname
+  | otherwise                       = dir ++ pathSeparator : fname
+
+pathSeparator :: Char
+pathSeparator = '/'
+
+isPathSeparator :: Char -> Bool
+isPathSeparator c = c == '/'

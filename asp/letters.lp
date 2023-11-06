@@ -42,7 +42,19 @@ permanent(isa2(p_succ, obj_letter_e, obj_letter_f)).
 
 permanent(isa2(p_less, X, Y)) :- permanent(isa2(p_succ, X, Y)).
 
+
+%rule_body(r1,isa2(p_succ,X,Y)).
+%rule_arrow_head(r1,isa2(p_less,X,Y)).
+
 permanent(isa2(p_less, X, Y)) :- 
-    permanent(isa2(p_succ, X, Z)),
-    permanent(isa2(p_less, Z, Y)).
+  permanent(isa2(p_succ, X, Z)),
+  permanent(isa2(p_less, Z, Y)).
+
+%:- 
+%  permanent(isa(p_first_letter, Y)),
+%  permanent(isa2(p_succ, X, Y)).
+
+%rule_body(r2,isa2(p_succ,X,Z)).
+%rule_body(r2,isa2(p_less,Z,Y)).
+%rule_arrow_head(r2,isa2(p_less,X,Y)).
 

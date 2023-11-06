@@ -1,0 +1,23 @@
+misc_first_last_1
+
+Template
+dir = misc
+min_body_atoms = 1
+max_body_atoms = 1
+num_arrow_rules = 0
+num_causes_rules = 2
+num_visual_predicates = Nothing
+use_noise = False
+
+Frame
+types = [t_sensor]
+type_hierarchy = []
+objects = [(obj_cell_1,t_sensor),(obj_cell_2,t_sensor),(obj_cell_3,t_sensor)]
+exogeneous_objects = []
+permanent_concepts = [(p_right,Given,[t_sensor,t_sensor])]
+fluid_concepts = [(c_on,[t_sensor]),(c_off,[t_sensor])]
+input_concepts = [c_on,c_off]
+static_concepts = []
+vars = [(var_x,t_sensor),(var_y,t_sensor)]
+var_groups = [[var_x,var_y]]
+aux_files = ["misc_first_last.lp"]

@@ -1,0 +1,23 @@
+misc_exog_1
+
+Template
+dir = misc
+min_body_atoms = 1
+max_body_atoms = 1
+num_arrow_rules = 0
+num_causes_rules = 2
+num_visual_predicates = Nothing
+use_noise = False
+
+Frame
+types = [t_object]
+type_hierarchy = []
+objects = [(obj_a,t_object)]
+exogeneous_objects = []
+permanent_concepts = []
+fluid_concepts = [(c_on,[t_object]),(c_off,[t_object]),(c_bong,[t_object]),(c_noop,[t_object])]
+input_concepts = [c_on,c_off,c_bong,c_noop]
+static_concepts = []
+vars = [(var_x,t_object)]
+var_groups = [[var_x]]
+aux_files = []

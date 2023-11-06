@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveDataTypeable #-}
 module Main where
 
 import qualified Control.Exception as Exception
@@ -7,9 +8,13 @@ import qualified Data.List as List
 import qualified Data.Map as Map
 import qualified Data.Maybe as Maybe
 import qualified Data.Set as Set
+import qualified Data.List.Split as Split
+import qualified Data.Data as D
 import qualified Data.Universe.Helpers as Universe
 import qualified System.Environment as Env
 import qualified System.Process as Process
+import System.IO
+import System.Directory
 
 import Interpretation
 import ExampleTemplates
@@ -37,6 +42,7 @@ main = do
         ["music", f] -> solve_music_iteratively f 
         ["rhythm", f] -> solve_rhythm_iteratively f 
         ["misc", f] -> solve_misc f
+        ["misc-iter", f] -> solve_misc_iterative f
         ["occlusion", f] -> solve_occlusion f
         ["walker", t, f] -> solve_walker t f
         ["binding", f] -> solve_binding f
@@ -56,10 +62,41 @@ main = do
 -- Misc-specific solving
 -------------------------------------------------------------------------------
 
+-- solve_misc :: String -> IO ()
+-- solve_misc f = case lookup f misc_templates of
+--     Nothing -> error $ "No misc template with this id: " ++ f
+--     Just (dir, template, input) -> process_misc dir template input
+
+-- Sneaky workaround function to be able to write to the same file as is read from without 
+-- having to throw around the handle. Will remove once the IO is handled smoother.
+readFile_force :: String -> IO String
+readFile_force filename = withFile filename ReadMode $ \handle -> do
+  theContent <- hGetContents handle
+  mapM return theContent
+
+-- conv_input_name :: String -> String
+-- conv_input_name i = 
+--                 let input = head $ Split.splitOn "." input_f
+--             let d = drop (length "data/") dir
+--             let name = d ++ "_" ++ input
+
 solve_misc :: String -> IO ()
-solve_misc f = case lookup f misc_templates of
-    Nothing -> error $ "No misc template with this id: " ++ f
-    Just (dir, template, input) -> process_misc dir template input
+solve_misc f = do
+    let n = head $ Split.splitOn "." f
+    let c = "python mem_code/memory_in.py misc " ++ n
+    Process.callCommand c
+    let filepath = "memory/misc_" ++ n ++ "_template_in.txt"
+    file_exists <- doesFileExist filepath 
+    if file_exists
+        then do xs <- readFile_force filepath
+                let l = lines xs
+                let tfmap = process_to_map xs
+                let template = template_from_file tfmap
+                putStrLn $ "Reading template from " ++ filepath
+                process_misc "data/misc" template f
+        else case lookup f misc_templates of
+                Nothing -> error $ "No misc template with this id: " ++ f
+                Just (dir, template, input) -> process_misc dir template input
 
 process_misc :: String -> Template -> String -> IO ()
 process_misc dir t input_f = do
@@ -68,10 +105,89 @@ process_misc dir t input_f = do
         [] -> do
             putStrLn "No solution found."
         _ -> do
+            -- let ans = last_answers ls2
+            -- Monad.forM_ ans (write_latex t)
+            -- let ls3 = map (process_answer_with_template t) ans
+            -- Monad.forM_ ls3 putStrLn
             let ans = last_answers ls2
             Monad.forM_ ans (write_latex t)
-            let ls3 = map (process_answer_with_template t) ans
+            -- putStrLn $ show ls2
+            -- putStrLn $ "---------------------------------------------"
+            -- putStrLn $ show ans
+            -- putStrLn $ "---------------------------------------------"
+            let ls3 = map (process_answer_with_template t) ls2
+            putStrLn $ show ls3
             Monad.forM_ ls3 putStrLn
+            let input = head $ Split.splitOn "." input_f
+            let d = drop (length "data/") dir
+            let name = d ++ "_" ++ input
+            gen_template_file name t
+            gen_inter_file name ans
+
+-------------------------------------------------------------------------------
+-- ECA iteration using the general code for template iteration
+-------------------------------------------------------------------------------
+
+solve_misc_iterative :: String -> IO ()
+solve_misc_iterative f = do
+    let n = head $ Split.splitOn "." f
+    let c = "python mem_code/memory_in.py misc_" ++ n
+    Process.callCommand c
+    let filepath = "memory/misc_" ++ n ++ "_template_in.txt"
+    file_exists <- doesFileExist filepath 
+    if file_exists
+        then do xs <- readFile_force filepath
+                let l = lines xs
+                let tfmap = process_to_map xs
+                let template = template_from_file tfmap
+                putStrLn $ "Reading template from " ++ filepath
+                solve_misc_iterative2 f template
+        else case lookup f misc_templates of
+                Nothing -> error $ "No misc template with this id: " ++ f
+                Just (_, template, input) -> solve_misc_iterative2 input template
+
+solve_misc_iterative2 :: String -> Template -> IO ()
+solve_misc_iterative2 input_f template = do
+    solve_iteratively "data/misc" input_f (all_iterative_misc_templates input_f template) False False
+
+all_iterative_misc_templates :: String -> Template -> [(String, Template)]
+all_iterative_misc_templates input_f t' = map f (zip [1..] ts) where
+    f (i, t) = ("Template " ++ show i, t)
+    ps = parameter_lists [T "sensor"] 100
+    ts = map (augment_template t') ps
+
+output_iterative_misc_templates :: String -> Template -> Int -> IO ()    
+output_iterative_misc_templates input_f t n = Monad.forM_ xs f where
+    xs = map snd $ take n (all_iterative_misc_templates input_f t)
+    f t = Monad.forM_ (latex_frame t) putStrLn
+
+-- -------------------------------------------------------------------------------
+-- -- SW-specific iteration
+-- -------------------------------------------------------------------------------
+
+-- solve_sw_iteratively :: String -> Int -> IO ()
+-- solve_sw_iteratively input_f num_objects = do
+--     solve_iteratively "data/sw" input_f (all_sw_templates input_f num_objects) True False
+
+-- all_sw_templates :: String -> Int -> [(String, Template)]
+-- all_sw_templates input_f n = s ++ c where
+--     s = map (make_simple_sw_template input_f) [n..3]
+--     c = map (make_complex_sw_template input_f) [n..3]
+
+-- make_simple_sw_template :: String -> Int -> (String, Template)
+-- make_simple_sw_template input_f n = update_sw_template_objects t n "simple" where
+--     t = template_sw_simple n
+
+-- make_complex_sw_template :: String -> Int -> (String, Template)
+-- make_complex_sw_template input_f n = update_sw_template_objects t n "complex" where
+--     t = template_sw_complex n
+
+-- update_sw_template_objects :: Template -> Int -> String -> (String, Template)
+-- update_sw_template_objects t n c = (s, t') where
+--     f = (frame t) { objects = get_objects t ++ [(O ("gen_" ++ show i), T "cell") | i <- [1..n]]
+--         }
+--     t' = t { frame = f } 
+--     s = "Num objects: " ++ show n ++ " complexity: " ++ c
 
 -------------------------------------------------------------------------------
 -- Sokoban-specific solving
@@ -105,6 +221,12 @@ solve_sokoban f = do
             Monad.forM_ ans (write_latex t)
             let ls3 = map (process_answer_with_template t) ans
             Monad.forM_ ls3 putStrLn
+            -- let name = conv_input_name input_f
+            let input = head $ Split.splitOn "." input_f
+            -- let d = drop (length "data/") dir
+            let name = "sokoban" ++ "_" ++ input
+            gen_template_file name t
+            gen_inter_file name ans
 
 -------------------------------------------------------------------------------
 -- Sokoban from raw pixels
@@ -758,6 +880,7 @@ less_optim x y = xsi < ysi where
 
 do_solve :: String -> String -> Template -> IO (String, [ClingoOutput])
 do_solve dir input_f t = do
+
     -- Generate ASP files from template
     putStrLn "Generating temporary files..."
     (name, command, results) <- do_template False t dir input_f 

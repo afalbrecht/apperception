@@ -958,7 +958,7 @@ frame_sokoban max_x max_y num_blocks = Frame {
         [V "c1", V "c2", V "x"],
         [V "c1", V "c2", V "x", V "y"]
         ],
-    aux_files = []
+    aux_files = ["sokoban_predict_e_8_17_interpret_mem.lp"]
 }    
 
 template_sokoban :: Int -> Int -> Int -> Template

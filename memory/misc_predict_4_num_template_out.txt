@@ -1,0 +1,23 @@
+misc_predict_4_num
+
+Template
+dir = misc
+min_body_atoms = 2
+max_body_atoms = 2
+num_arrow_rules = 0
+num_causes_rules = 1
+num_visual_predicates = Nothing
+use_noise = False
+
+Frame
+types = [t_sensor,t_grid,t_number,t_object]
+type_hierarchy = []
+objects = [(obj_sensor,t_sensor),(obj_grid,t_grid),(obj_number_0,t_number),(obj_number_1,t_number),(obj_number_2,t_number),(obj_number_3,t_number),(obj_number_4,t_number),(obj_number_5,t_number),(obj_number_6,t_number),(obj_number_7,t_number),(obj_number_8,t_number),(obj_number_9,t_number)]
+exogeneous_objects = []
+permanent_concepts = [(p_succ,Constructed,[t_number,t_number]),(p_part,Constructed,[t_sensor,t_grid])]
+fluid_concepts = [(c_number,[t_sensor,t_number])]
+input_concepts = [c_number]
+static_concepts = []
+vars = [(var_l,t_number),(var_l2,t_number),(var_s,t_sensor)]
+var_groups = [[var_l,var_l2,var_s]]
+aux_files = ["misc_predict_4_num_interpret_mem.lp"]
