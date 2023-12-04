@@ -85,4 +85,5 @@ incompossible(s(c_b, X), s(c_c, X)) :-
     permanent(isa(t_sensor_2, X)).
 
 exclusion_output("c_on+c_off").
-exclusion_output("c_a+c_b").
+exclusion_output("c_a+c_b+c_c").
+% I added a c_c two the second exclusion_output here because it was missing

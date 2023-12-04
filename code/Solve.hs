@@ -41,7 +41,8 @@ main = do
         ["eca-general", f] -> solve_eca_general f
         ["music", f] -> solve_music_iteratively f 
         ["rhythm", f] -> solve_rhythm_iteratively f 
-        ["misc", f] -> solve_misc f
+        ["misc", f] -> solve_misc f "0"
+        ["misc", f, i] -> solve_misc f i
         ["misc-iter", f] -> solve_misc_iterative f
         ["occlusion", f] -> solve_occlusion f
         ["walker", t, f] -> solve_walker t f
@@ -80,10 +81,15 @@ readFile_force filename = withFile filename ReadMode $ \handle -> do
 --             let d = drop (length "data/") dir
 --             let name = d ++ "_" ++ input
 
-solve_misc :: String -> IO ()
-solve_misc f = do
+-- Add 0, 1, 2 to code to do the following:
+-- 0: Retrieve template from memory tree if possible
+-- 1: Run with an empty interpret_mem
+-- 2: Retrieve template from file
+-- 3: Retrieve template from preexisting haskell files and delete template_in file
+solve_misc :: String -> String -> IO ()
+solve_misc f i = do
     let n = head $ Split.splitOn "." f
-    let c = "python mem_code/memory_in.py misc " ++ n
+    let c = "python mem_code/memory_in.py misc " ++ n ++ " " ++ i
     Process.callCommand c
     let filepath = "memory/misc_" ++ n ++ "_template_in.txt"
     file_exists <- doesFileExist filepath 
@@ -116,7 +122,7 @@ process_misc dir t input_f = do
             -- putStrLn $ show ans
             -- putStrLn $ "---------------------------------------------"
             let ls3 = map (process_answer_with_template t) ls2
-            putStrLn $ show ls3
+            -- putStrLn $ show ls3
             Monad.forM_ ls3 putStrLn
             let input = head $ Split.splitOn "." input_f
             let d = drop (length "data/") dir
@@ -131,7 +137,7 @@ process_misc dir t input_f = do
 solve_misc_iterative :: String -> IO ()
 solve_misc_iterative f = do
     let n = head $ Split.splitOn "." f
-    let c = "python mem_code/memory_in.py misc_" ++ n
+    let c = "python mem_code/memory_in.py misc " ++ n
     Process.callCommand c
     let filepath = "memory/misc_" ++ n ++ "_template_in.txt"
     file_exists <- doesFileExist filepath 
@@ -141,53 +147,53 @@ solve_misc_iterative f = do
                 let tfmap = process_to_map xs
                 let template = template_from_file tfmap
                 putStrLn $ "Reading template from " ++ filepath
-                solve_misc_iterative2 f template
+                solve_misc_iterative2 f template 1
         else case lookup f misc_templates of
                 Nothing -> error $ "No misc template with this id: " ++ f
-                Just (_, template, input) -> solve_misc_iterative2 input template
+                Just (_, template, input) -> solve_misc_iterative2 input template 1
 
-solve_misc_iterative2 :: String -> Template -> IO ()
-solve_misc_iterative2 input_f template = do
-    solve_iteratively "data/misc" input_f (all_iterative_misc_templates input_f template) False False
+-- solve_misc_iterative2 :: String -> Template -> IO ()
+-- solve_misc_iterative2 input_f template = do
+--     solve_iteratively "data/misc" input_f (all_iterative_misc_templates input_f template) False False
 
-all_iterative_misc_templates :: String -> Template -> [(String, Template)]
-all_iterative_misc_templates input_f t' = map f (zip [1..] ts) where
-    f (i, t) = ("Template " ++ show i, t)
-    ps = parameter_lists [T "sensor"] 100
-    ts = map (augment_template t') ps
+-- all_iterative_misc_templates :: String -> Template -> [(String, Template)]
+-- all_iterative_misc_templates input_f t' = map f (zip [1..] ts) where
+--     f (i, t) = ("Template " ++ show i, t)
+--     ps = parameter_lists [T "sensor"] 100
+--     ts = map (augment_template t') ps
 
-output_iterative_misc_templates :: String -> Template -> Int -> IO ()    
-output_iterative_misc_templates input_f t n = Monad.forM_ xs f where
-    xs = map snd $ take n (all_iterative_misc_templates input_f t)
-    f t = Monad.forM_ (latex_frame t) putStrLn
+-- output_iterative_misc_templates :: String -> Template -> Int -> IO ()    
+-- output_iterative_misc_templates input_f t n = Monad.forM_ xs f where
+--     xs = map snd $ take n (all_iterative_misc_templates input_f t)
+--     f t = Monad.forM_ (latex_frame t) putStrLn
 
 -- -------------------------------------------------------------------------------
 -- -- SW-specific iteration
 -- -------------------------------------------------------------------------------
 
--- solve_sw_iteratively :: String -> Int -> IO ()
--- solve_sw_iteratively input_f num_objects = do
---     solve_iteratively "data/sw" input_f (all_sw_templates input_f num_objects) True False
+solve_misc_iterative2 :: String -> Template -> Int -> IO ()
+solve_misc_iterative2 input_f template num_objects = do
+    solve_iteratively "data/misc" input_f (all_misc_templates input_f num_objects) True False
 
--- all_sw_templates :: String -> Int -> [(String, Template)]
--- all_sw_templates input_f n = s ++ c where
---     s = map (make_simple_sw_template input_f) [n..3]
---     c = map (make_complex_sw_template input_f) [n..3]
+all_misc_templates :: String -> Int -> [(String, Template)]
+all_misc_templates input_f n = s ++ c where
+    s = map (make_simple_misc_template input_f) [n..3]
+    c = map (make_complex_misc_template input_f) [n..3]
 
--- make_simple_sw_template :: String -> Int -> (String, Template)
--- make_simple_sw_template input_f n = update_sw_template_objects t n "simple" where
---     t = template_sw_simple n
+make_simple_misc_template :: String -> Int -> (String, Template)
+make_simple_misc_template input_f n = update_misc_template_objects t n "simple" where
+    t = template_sw_simple n
 
--- make_complex_sw_template :: String -> Int -> (String, Template)
--- make_complex_sw_template input_f n = update_sw_template_objects t n "complex" where
---     t = template_sw_complex n
+make_complex_misc_template :: String -> Int -> (String, Template)
+make_complex_misc_template input_f n = update_misc_template_objects t n "complex" where
+    t = template_sw_complex n
 
--- update_sw_template_objects :: Template -> Int -> String -> (String, Template)
--- update_sw_template_objects t n c = (s, t') where
---     f = (frame t) { objects = get_objects t ++ [(O ("gen_" ++ show i), T "cell") | i <- [1..n]]
---         }
---     t' = t { frame = f } 
---     s = "Num objects: " ++ show n ++ " complexity: " ++ c
+update_misc_template_objects :: Template -> Int -> String -> (String, Template)
+update_misc_template_objects t n c = (s, t') where
+    f = (frame t) { objects = get_objects t ++ [(O ("gen_" ++ show i), T "cell") | i <- [1..n]]
+        }
+    t' = t { frame = f } 
+    s = "Num objects: " ++ show n ++ " complexity: " ++ c
 
 -------------------------------------------------------------------------------
 -- Sokoban-specific solving

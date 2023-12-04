@@ -15,7 +15,7 @@ senses(s2(c_letter, obj_sensor, obj_letter_c), 9).
 hidden(s2(c_letter, obj_sensor, obj_letter_d), 10).
 
 % Elements
-is_object(obj_sensor).
+% is_object(obj_sensor).
 is_time(1..10).
 
 % Every sensor has a unique letter attribute

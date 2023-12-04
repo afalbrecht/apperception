@@ -303,17 +303,17 @@ gen_template_file :: String -> Template -> IO ()
 gen_template_file name t = do
     let f = "memory/" ++ name ++ "_template_out.txt"
     -- let t_string = template_lines t
-    writeFile f (name ++ "\n\n")
+    writeFile f ("% " ++ name ++ "\n\n")
     Monad.forM_ (template_lines t) (append_new_line f)
     putStrLn $ "Generated " ++ f
     -- putStrLn t_string
 
 template_lines :: Template -> [String]
-template_lines t = ["Template"] ++ d ++ minba ++ maxba ++ nar ++ ncr ++ nvp ++ un ++ [""] ++ frm where
+template_lines t = ["% Template"] ++ d ++ minba ++ maxba ++ nar ++ ncr ++ nvp ++ un ++ [""] ++ frm where
     -- delete "frame" . constrFields . toConstr $ t
     d = ["dir = " ++ (dir t)]
     minba = ["min_body_atoms = " ++ show (min_body_atoms t)]
-    maxba = ["max_body_atoms = " ++ show (min_body_atoms t)]
+    maxba = ["max_body_atoms = " ++ show (max_body_atoms t)]
     nar = ["num_arrow_rules = " ++ show (num_arrow_rules t)]
     ncr = ["num_causes_rules = " ++ show (num_causes_rules t)]
     nvp = ["num_visual_predicates = " ++ show (num_visual_predicates t)]
@@ -321,7 +321,7 @@ template_lines t = ["Template"] ++ d ++ minba ++ maxba ++ nar ++ ncr ++ nvp ++ u
     frm = frame_lines $ frame t
 
 frame_lines :: Frame -> [String]
-frame_lines f = ["Frame"] ++ t ++ th ++ o ++ eo ++ pc ++ fc ++ ic ++ sc ++ v ++ vg ++ ax where
+frame_lines f = ["% Frame"] ++ t ++ th ++ o ++ eo ++ pc ++ fc ++ ic ++ sc ++ v ++ vg ++ ax where
     t = ["types = " ++ show (types f)]
     th = ["type_hierarchy = " ++ show (type_hierarchy f)]
     o = ["objects = " ++ show (objects f)]
@@ -1068,29 +1068,31 @@ extract_given_permanents_inter xs = ["\n% Given permanents"] ++ Maybe.mapMaybe f
         True -> Just $ x ++ "."
 
 -- Currently only works for binary exclusion constraints
+-- Does not actually work yet...
 extract_exclusions_inter :: [String] -> [String]
-extract_exclusions_inter xs = Maybe.mapMaybe f xs where
-    p = "exclusion_output(\""
-    f x = case List.isPrefixOf p x of
-        False -> Nothing
-        True -> Just $ c 
-            where [e1, e2] = Split.splitOn "+" . init . init $ List.drop (length p) x
-                  c =   "\n% Input exclusions \n\
-                        \% Every object is either "++e1++" or "++e2++"\n\n\
-                        \% At most one \n\
-                        \:-\n\
-                        \    holds(s("++e1++", X), T),\n\
-                        \    holds(s("++e2++", X), T).\n\n\
-                        \% At least one\n\
-                        \:-\n\
-                        \    permanent(isa(t_object, X)),\n\
-                        \    is_time(T),\n\
-                        \    not holds(s("++e1++", X), T),\n\
-                        \    not holds(s("++e2++", X), T).\n\n\
-                        \% Incompossibility\n\
-                        \incompossible(s("++e1++", X), s("++e2++", X)) :-\n\
-                        \    permanent(isa(t_object, X)).\n\n\
-                        \exclusion_output(\""++e1++"+"++e2++"\")."
+extract_exclusions_inter xs = [""]
+    -- Maybe.mapMaybe f xs where
+    -- p = "exclusion_output(\""
+    -- f x = case List.isPrefixOf p x of
+    --     False -> Nothing
+    --     True -> Just $ c 
+    --         where [e1, e2] = Split.splitOn "+" . init . init $ List.drop (length p) x
+    --               c =   "\n% Input exclusions \n\
+    --                     \% Every object is either "++e1++" or "++e2++"\n\n\
+    --                     \% At most one \n\
+    --                     \:-\n\
+    --                     \    holds(s("++e1++", X), T),\n\
+    --                     \    holds(s("++e2++", X), T).\n\n\
+    --                     \% At least one\n\
+    --                     \:-\n\
+    --                     \    permanent(isa(t_object, X)),\n\
+    --                     \    is_time(T),\n\
+    --                     \    not holds(s("++e1++", X), T),\n\
+    --                     \    not holds(s("++e2++", X), T).\n\n\
+    --                     \% Incompossibility\n\
+    --                     \incompossible(s("++e1++", X), s("++e2++", X)) :-\n\
+    --                     \    permanent(isa(t_object, X)).\n\n\
+    --                     \exclusion_output(\""++e1++"+"++e2++"\")."
 
 
 extract_rules_inter :: [String] -> [String]

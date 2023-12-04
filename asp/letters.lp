@@ -54,7 +54,15 @@ permanent(isa2(p_less, X, Y)) :-
 %  permanent(isa(p_first_letter, Y)),
 %  permanent(isa2(p_succ, X, Y)).
 
+%:- 
+%  permanent(isa2(p_less, Y, X)),
+%  permanent(isa2(p_succ, X, Y)).
+
 %rule_body(r2,isa2(p_succ,X,Z)).
 %rule_body(r2,isa2(p_less,Z,Y)).
 %rule_arrow_head(r2,isa2(p_less,X,Y)).
+
+%rule_body(r1,isa2(p_succ,var_l,var_l2)).
+%rule_body(r1,s2(c_letter,var_s,var_l2)).
+%rule_head_causes(r1,s2(c_letter,var_s,var_l)).
 
