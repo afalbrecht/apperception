@@ -48,7 +48,8 @@ main = do
         ["walker", t, f] -> solve_walker t f
         ["binding", f] -> solve_binding f
         ["book", f] -> solve_book f
-        ["sokoban", f] -> solve_sokoban f
+        ["sokoban", f] -> solve_sokoban f "0"
+        ["sokoban", f, i] -> solve_sokoban f i
         ["sok-pixels", f] -> solve_sok_pixels f
         ["noisy", i, j, k] -> solve_noisy i j k -- expects three integers
         ["mislabel", f] -> solve_mislabel f
@@ -111,24 +112,47 @@ process_misc dir t input_f = do
         [] -> do
             putStrLn "No solution found."
         _ -> do
-            -- let ans = last_answers ls2
-            -- Monad.forM_ ans (write_latex t)
-            -- let ls3 = map (process_answer_with_template t) ans
-            -- Monad.forM_ ls3 putStrLn
             let ans = last_answers ls2
             Monad.forM_ ans (write_latex t)
-            -- putStrLn $ show ls2
-            -- putStrLn $ "---------------------------------------------"
-            -- putStrLn $ show ans
-            -- putStrLn $ "---------------------------------------------"
             let ls3 = map (process_answer_with_template t) ls2
-            -- putStrLn $ show ls3
             Monad.forM_ ls3 putStrLn
             let input = head $ Split.splitOn "." input_f
             let d = drop (length "data/") dir
             let name = d ++ "_" ++ input
             gen_template_file name t
             gen_inter_file name ans
+            let c = "python mem_code/memory_out.py " ++ d ++ " " ++ input
+            Process.callCommand c
+
+-- process_misc :: String -> Template -> String -> IO ()
+-- process_misc dir t input_f = do
+--     (results_f, ls2) <- do_solve dir input_f t
+--     case ls2 of
+--         [] -> do
+--             putStrLn "No solution found."
+--         _ -> do
+--             -- let ans = last_answers ls2
+--             -- Monad.forM_ ans (write_latex t)
+--             -- let ls3 = map (process_answer_with_template t) ans
+--             -- Monad.forM_ ls3 putStrLn
+--             let ans = last_answers ls2
+--             Monad.forM_ ans (write_latex t)
+--             -- putStrLn $ show ls2
+--             -- putStrLn $ "---------------------------------------------"
+--             -- putStrLn $ show ans
+--             -- putStrLn $ "---------------------------------------------"
+--             let ls3 = map (process_answer_with_template t) ls2
+--             -- putStrLn $ show ls3
+--             Monad.forM_ ls3 putStrLn
+--             let input = head $ Split.splitOn "." input_f
+--             let d = drop (length "data/") dir
+--             let name = d ++ "_" ++ input
+--             gen_template_file name t
+--             gen_inter_file name ans
+--             let c = "python mem_code/memory_out.py misc " ++ input
+--             Process.callCommand c
+
+
 
 -------------------------------------------------------------------------------
 -- ECA iteration using the general code for template iteration
@@ -212,27 +236,36 @@ extract_sokoban_data e = (max_x, max_y, num_blocks) where
     num_blocks = sum (map f s)
     f x = length (filter (== 'b') x)
 
-solve_sokoban :: String -> IO ()
-solve_sokoban f = do
-    let (max_x, max_y, n_blocks) = get_sokoban_data f
-    let t = template_sokoban max_x max_y n_blocks
-    putStrLn $ "max_x: " ++ show max_x ++ " max_y: " ++ show max_y ++ " n_blocks: " ++ show n_blocks
+-- Add 0, 1, 2 to code to do the following:
+-- 0: Retrieve template from memory tree if possible
+-- 1: Run with an empty interpret_mem
+-- 2: Retrieve template from file
+-- 3: Retrieve template from preexisting haskell files and delete template_in file
+solve_sokoban :: String -> String -> IO ()
+solve_sokoban f i = do
     let input_f = "predict_" ++ f ++ ".lp"
-    (results_f, ls2) <- do_solve "data/sokoban" input_f t
-    case ls2 of
-        [] -> do
-            putStrLn "No solution found."
-        _ -> do
-            let ans = last_answers ls2
-            Monad.forM_ ans (write_latex t)
-            let ls3 = map (process_answer_with_template t) ans
-            Monad.forM_ ls3 putStrLn
-            -- let name = conv_input_name input_f
-            let input = head $ Split.splitOn "." input_f
-            -- let d = drop (length "data/") dir
-            let name = "sokoban" ++ "_" ++ input
-            gen_template_file name t
-            gen_inter_file name ans
+    let n = head $ Split.splitOn "." input_f
+    let c = "python mem_code/memory_in.py sokoban " ++ n ++ " " ++ i
+    Process.callCommand c
+    let filepath = "memory/sokoban_" ++ n ++ "_template_in.txt"
+    let t = Nothing
+    file_exists <- doesFileExist filepath 
+    if file_exists
+        then do xs <- readFile_force filepath
+                let l = lines xs
+                let tfmap = process_to_map xs
+                let t = template_from_file tfmap
+                putStrLn $ "Reading template from " ++ filepath
+                process_misc "data/sokoban" t input_f
+        else do let (max_x, max_y, n_blocks) = get_sokoban_data f
+                let t = template_sokoban max_x max_y n_blocks
+                putStrLn $ "Reading template from haskell files:" 
+                putStrLn $ "max_x: " ++ show max_x ++ " max_y: " ++ show max_y ++ " n_blocks: " ++ show n_blocks
+                process_misc "data/sokoban" t input_f
+
+
+
+
 
 -------------------------------------------------------------------------------
 -- Sokoban from raw pixels

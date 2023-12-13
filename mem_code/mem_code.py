@@ -1,4 +1,5 @@
 import json
+from itertools import combinations
 
 
 
@@ -104,14 +105,14 @@ class TreeNode():
         return node
 
     # Various complex functions
-    def get_node_names(self):
+    def get_child_names(self):
         return [n.get_name() for n in self.get_extension()]
 
-    def get_extension_names(self):
+    def get_full_extension_names(self):
         output = []
         for node in self.get_extension():
             output += [node.get_name()]
-            output += node.get_extension_names()
+            output += node.get_full_extension_names()
         return output
     
     def get_structure(self):
@@ -135,6 +136,15 @@ class TreeNode():
             result = node.get_node_by_name(name)
             if result is not None:
                 return result
+        return None
+
+    def get_path_to_node(self, name):
+        if self.get_name() == name:
+            return []
+        for node in self.get_extension():
+            result = node.get_path_to_node(name)
+            if result is not None:
+                return result + [node.get_name()]
         return None
     
     def get_node_by_object(self, object_name):
@@ -164,6 +174,10 @@ class TreeNode():
             if concept.get_name() == concept_name:
                 return concept
         return None
+
+    def set_objects_to_form_of_intuition(self):
+        for object in self.get_objects():
+            object.set_form_of_intuition(True)
 
     # Construct a dictionary containing the nodes by name
     def get_n_n_dict(self):
@@ -292,8 +306,14 @@ class Concept():
         self.rules = rules
     
     def add_rule(self, rule):
-        if rule.get_head() not in self.get_rule_heads():
+        add = True
+        head_body = [rule.get_head()] + rule.get_body()
+        for r in self.get_rules():
+            if head_body == [r.get_head()] + r.get_body():
+                add = False
+        if add:
             self.rules = self.rules + [rule]
+        return add
 
 
 
@@ -455,16 +475,19 @@ class Rule():
         """Splits and strips the rule line to add the concepts and 
         types contained in the line to the Rule attributes,
         concepts are saved as tuples or triples of the form
-        [concept, type] or [concept, type, type]"""
+        [concept, type] or [concept, type, type]"""\
+
         split_line = line.replace(")).","").split("(")[2].split(",")
         concept = split_line[0]
-        types = [f"t_{var.split('_')[1]}" for var in split_line[1:]]
+        types = [f"t_{'_'.join(var.split('_')[1:-1])}" for var in split_line[1:]]
         conc_types = [concept] + types
+
         if conc_types not in self.concepts:
             self.concepts = self.concepts + [conc_types]
             for type in types:
                 if type not in self.types:
                     self.types = self.types + [type]
+
         return self
 
 
@@ -603,7 +626,7 @@ def update_tree_template(tree, template):
 # Add types to the tree, according to the hierarchy given in the template
 def update_type_hierarchy(tree, template):
     for t in template['type_hierarchy']:
-        present_types = tree.get_extension_names()
+        present_types = tree.get_full_extension_names()
         if t not in present_types:
             node = tree.add_node(TreeNode(t))
         for e in template['type_hierarchy'][t]:
@@ -613,7 +636,7 @@ def update_type_hierarchy(tree, template):
 
 # Add types to tree, if there is no hierarchical ordering present
 def update_types(tree, template):
-    present_types = tree.get_extension_names()
+    present_types = tree.get_full_extension_names()
     for t in template['types']:
         if t not in present_types:
             tree.add_node(TreeNode(t))
@@ -664,7 +687,7 @@ def convert_interpret_mem(inter):
             t = strip_string(line.replace("permanent(isa(", "")).split(",")
             perms = perms + [t]
         if line.startswith("rule_"):
-            rule_index = f"r{line.split('(r')[1][0]}"
+            rule_index = f"r{line.split('(r')[1].split(',')[0]}"
             if rule_index not in rules.keys():
                 rules[rule_index] = []
             rules[rule_index] = rules[rule_index] + [line.replace("\n","")]
@@ -673,12 +696,12 @@ def convert_interpret_mem(inter):
 def strip_string(str):
     return str.replace(")", "").replace(".", "").replace("\n", "")
 
-def update_tree_interpret(tree, inter):
+def update_tree_interpret(tree, inter, temp_dict):
     """Adds permanents and rules from interpret_mem file to the 
     right location in the memory tree"""
     perms, rules = convert_interpret_mem(inter)
     tree = update_perms(tree, perms)
-    tree = update_rules(tree, rules)
+    tree = update_rules(tree, rules, temp_dict)
     return tree
 
 def update_perms(tree, perms):
@@ -691,24 +714,55 @@ def update_perms(tree, perms):
                     o.add_permanent(perm)
     return tree
 
-def update_rules(tree, rules):
+def update_rules(tree, rules, temp_dict):
     """Adds rules to the memory tree"""
+
+    seen_vars = {}
     for index in rules.keys():
         rule = Rule()
+
         for line in rules[index]:
-            if line.startswith("rule_head") or line.startswith("rule_arrow"):
-                rule = rule.set_head(line.replace(index, "ruleindex"))
+            var_line, seen_vars = replace_vars(line, temp_dict, seen_vars)
+            if var_line.startswith("rule_head") or var_line.startswith("rule_arrow"):
+                rule = rule.set_head(var_line.replace(index, "ruleindex"))
             else:
-                rule = rule.add_to_body(line.replace(index, "ruleindex"))
-            rule = rule.add_concept_types(line)
+                rule = rule.add_to_body(var_line.replace(index, "ruleindex"))
+            rule = rule.add_concept_types(var_line)
+
         for c in rule.get_concepts():
             if not c[0].startswith("p_"):
                 for node in tree.get_nodes_by_concept(c[0]):
                     concept = node.get_concept_by_name(c[0])
                     concept.add_rule(rule)
+
     return tree
 
+def replace_vars(line, temp_dict, seen_vars):
+    """ Replace the variables in the lines of the rules with conventional 
+    names that encode the types in the name, like var_object_1 instead of var_x.
+    Also replace the rule indices like r1, r2 with 'ruleindex' """
 
+    seen_types = []
+    index = "1"
+    for type in temp_dict["vars"].keys():
+        for var in temp_dict["vars"][type]:
+            if var in line:
+                if type in seen_types:
+                    index = "2"
+                if var in seen_vars.keys():
+                    encoded_var = seen_vars[var]
+                else:
+                    encoded_var = f"var_{type[2:]}_{index}"
+                    seen_vars[var] = encoded_var
+                line = line.replace(var, encoded_var)
+                seen_types = seen_types + [type]
+
+    # TODO: Dit gaat fout omdat ik ook moet tracken wat de index is over meerdere lines, ipv
+    # alleen de index over 1 line te tracken. Hierom wordt nu niet de goeie index gegeven
+    # bij var_letter_2 in de rule_body, aangezien hij daarvoor alleen een sensor ziet en er 
+    # dus var_letter_1 van maakt.
+
+    return line, seen_vars
 
 
 #---------------------------------------------------------------------
@@ -727,26 +781,53 @@ def build_template(tree, input, senses):
 
     output = {'types':[], 'objects':[], 'concepts':[], 'type_hierarchy':[],
              'constraints':[]}
-    output, _ = recursive_senses(tree, input, senses, output, tree)
+    output, _ = recursive_senses(tree, senses, output, tree)
+    output = add_hierarchy_types(tree, senses, output)
+    output = add_apriori_objects(tree, senses, output)
     output = construct_hierarchy(tree, output)
     return output
 
-def recursive_senses(node, input, senses, output, root, count=0):
+def add_hierarchy_types(root, senses, output):
+    """Adds the types to the output positioned above the types found in 
+    recursive senses, as well as the types and concepts associated with these
+    types."""
+
+    for type in output["types"]:
+        for t in root.get_path_to_node(type):
+            if t not in output["types"]:
+                output["types"] = output["types"] + [t]
+                output = fill_type(root, root.get_node_by_name(t), output)
+    return output
+
+def add_apriori_objects(root, senses, output):
+    """Adds each object with the form of intuition tag as True contained under
+    the present types to the output. These objects represent parts/structures 
+    of the a priori form of intuition in question."""
+
+    for type in output["types"]:
+        for obj in root.get_node_by_name(type).get_objects():
+            if obj not in output["objects"] and \
+                obj.get_form_of_intuition() == True:
+                output["objects"] = output["objects"] + [obj]
+    return output
+
+
+def recursive_senses(node, senses, output, root, count=0):
     """Recursively walks through the tree and appends the essential marks 
-    of each node found to the output"""
+    of each node that has sufficient marks present in the input to the output"""
 
     for child in node.get_extension():
         output, add = check_senses(child, senses, output, root)
-        output = fill_type(child, output)
+        output = fill_type(root, child, output)
         count = count + add
         # if count == len(senses):
         #     return output, count
         if child.get_extension() != []:
-            output, count = recursive_senses(child, input, senses, output, root, count)
+            output, count = recursive_senses(child, senses, output, root, count)
     return output, count
 
-# TODO: fix hoe het gedaan wordt met reflexieve concepten en hoe de hierarchy gedaan wordt!
-def fill_type(node, output):
+# TODO: fix hoe het gedaan wordt met reflexieve concepten 
+def fill_type(root, node, output):
     """Adds concepts from the type selected in the tree to the template file
     if not already present in the output, which also prompts it to add 
     the other types present in the concept"""
@@ -755,8 +836,33 @@ def fill_type(node, output):
         if not is_concept_in_list(concept, output['concepts']):
             if set(concept.get_types()).issubset(output['types']):
                 output['concepts'] = output['concepts'] + [concept]
+            else:
+                output = add_extra_types(root, concept, output)
+            # TODO: Add a way to add concepts here whose types are not yet present in the 
+            # input, but can still be added by virtue of them being possible solutions
+            # or just a priori anschauungsformen like space and time etc
 
     return output
+
+def add_extra_types(root, concept, output):
+    """Adds types and objects to the template that haven't been seen in the input,
+    these can be hypothetical types that are added in some templates and removed
+    in others, or apriori types that are involved in the forms of intuition like space
+    and time."""
+
+    for type in concept.get_types():
+        if type not in output["types"]:
+            node = root.get_node_by_name(type)
+            for obj in node.get_objects():
+                if obj.get_form_of_intuition() == True:
+                    if type not in output["types"]:
+                        output["types"] = output["types"] + [type]
+                    output["objects"] = output["objects"] + [obj]
+                    output = fill_type(root, node, output)
+
+    return output
+
+
 
 def is_concept_in_list(concept, conc_list):
     """Checker for fill_type to see if concept is in list"""
@@ -777,8 +883,6 @@ def check_senses(node, senses, output, root):
     for concept in node.get_concepts():
         for fact in senses:
             if concept.get_name() == fact[0]:
-                # print("-----------------")
-                # print(fact)
                 output = add_type_concept(concept, fact, output, root)
                 filled = filled + [fact]
                 add = add + 1
@@ -796,16 +900,18 @@ def add_type_concept(concept, fact, output, root):
     if len(fact) == 2:
         node = root.get_node_by_name(t[0])
         if fact[1] in node.get_object_names():
+
+            # Add type to output if the type is not already present
             if node.get_name() not in output['types']:
                 output['types'] = output['types'] + [node.get_name()]
-            # obj = f"({fact[1]},{node.get_name()})" # Written as template castable string
+
+            # Add object to output if the object is not already present
             obj = node.get_object_by_name(fact[1])
             if fact[1] not in [o.get_name() for o in output['objects']]:
                 output['objects'] = output['objects'] + [obj]
-            for n in output['concepts']:
-                if n.get_name() != concept.get_name():
-                    output['concepts'] = output['concepts'] + [concept]
-            if output['concepts'] == []:
+
+            # Add concept to output if the concept is not already present
+            if not is_concept_in_list(concept, output["concepts"]):
                 output['concepts'] = output['concepts'] + [concept]
 
     # If the senses fact holds a binary concept            
@@ -813,20 +919,23 @@ def add_type_concept(concept, fact, output, root):
         n0 = root.get_node_by_name(t[0])
         n1 = root.get_node_by_name(t[1])
         if fact[1] in n0.get_object_names() and fact[2] in n1.get_object_names():
+
+            # Add type to output if the type is not already present
             if n0.get_name() not in output['types']:
                 output['types'] = output['types'] + [n0.get_name()]
+            if n1.get_name() not in output['types']:
+                output['types'] = output['types'] + [n1.get_name()]
+
+            # Add object to output if the object is not already present    
             obj = n0.get_object_by_name(fact[1])
             if fact[1] not in [o.get_name() for o in output['objects']]:
                 output['objects'] = output['objects'] + [obj]
-            if n1.get_name() not in output['types']:
-                output['types'] = output['types'] + [n1.get_name()]
             obj = n1.get_object_by_name(fact[2])
             if fact[2] not in [o.get_name() for o in output['objects']]:
                 output['objects'] = output['objects'] + [obj]
-            for n in output['concepts']:
-                if n.get_name() != concept.get_name():
-                    output['concepts'] = output['concepts'] + [concept]
-            if output['concepts'] == []:
+
+            # Add concept to output if the concept is not already present    
+            if not is_concept_in_list(concept, output["concepts"]):
                 output['concepts'] = output['concepts'] + [concept]
 
     return output 
@@ -845,10 +954,12 @@ def parse_input(input):
     return output
 
 def construct_hierarchy(tree, temp_dict):
+    """Constructs the type_hierarchy entry in the template by checking which
+    added types are children of which other types"""    
     for type in temp_dict["types"]:
         node = tree.get_node_by_name(type)
         children = []
-        for t in node.get_extension_names():
+        for t in node.get_child_names():
             if t in temp_dict["types"]:
                 children = children + [t]
         if children != []:
@@ -895,12 +1006,18 @@ exogeneous_objects = []
 permanent_concepts = {to_string(perm_concepts)}
 fluid_concepts = {to_string(fluid_concepts)}
 input_concepts = {to_string(input_concepts)}
-static_concepts = []
+static_concepts = {gen_static_concepts(input_concepts, dir)}
 vars = {to_string(vars)}
 var_groups = {to_string(var_groups)}
 aux_files = ["{dir}_{name}_interpret_mem.lp"]"""
 
     return output
+
+def gen_static_concepts(input_concepts, dir):
+    if "sok" in dir:
+        return "[c_p1,c_p2,c_p3,c_p4]"
+    else:
+        return "[]"
 
 # TODO: improve the input_concepts part by adding a concept attribute to the Concept class
 def stringify_concepts(concepts):
@@ -929,6 +1046,10 @@ def stringify_objects(objects):
 def to_string(list):
     return str(list).replace(" ", "").replace("'","")
 
+def powerset_groups(groups):
+    """Returns the powerset of the list of variables without the empty set"""
+    return sum([list(map(list, combinations(groups, i))) for i in range(len(groups) + 1)], [])[1:]
+
 def construct_vars_and_groups(concepts):
     """Generates variables according to a defined convention consisting of 
     "var_{typename}_{index}, where even variables with a single occurence 
@@ -946,12 +1067,12 @@ def construct_vars_and_groups(concepts):
             if len(c.get_types()) == 2 and c.get_types()[0] == c.get_types()[1]:
                 count = 2
 
-    return output, [groups]
+    return output, powerset_groups(groups)
 
 # TODO: figure out how NOT to hardcode this
 def gen_temp_stats(temp_dict, dir, name):
     """Generate template part of template_in file"""
-    if "sok" in name:
+    if "sok" in dir:
         miba, maba, nar, ncr, nvp, noise = 1, 4, 4, 8, "Nothing", "False"
     elif "1" in name:
         miba, maba, nar, ncr, nvp, noise = 1, 1, 0, 2, "Nothing", "False"
@@ -1038,12 +1159,23 @@ def gen_rules(temp_dict):
 
     for concept in temp_dict["concepts"]:
         for rule in concept.get_rules():
-            head_body = [rule.get_head()] + rule.get_body()
-            if concept_check(rule.get_concepts(), present_concepts) \
-                and head_body not in seen:
-                output = output + rule_to_string(rule, index)
-                index = index + 1
-                seen = seen + [head_body]
+            if rule.get_head().startswith("rule_arrow"):
+                head_body = [rule.get_head()] + rule.get_body()
+                if concept_check(rule.get_concepts(), present_concepts) \
+                    and head_body not in seen:
+                    output = output + rule_to_string(rule, index)
+                    index = index + 1
+                    seen = seen + [head_body]
+
+    for concept in temp_dict["concepts"]:
+        for rule in concept.get_rules():
+            if not rule.get_head().startswith("rule_arrow"):
+                head_body = [rule.get_head()] + rule.get_body()
+                if concept_check(rule.get_concepts(), present_concepts) \
+                    and head_body not in seen:
+                    output = output + rule_to_string(rule, index)
+                    index = index + 1
+                    seen = seen + [head_body]
     
     return output
 
@@ -1119,7 +1251,7 @@ def concept_check(concepts, present_concepts):
 # # Add types to the tree, according to the hierarchy given in the template
 # def update_type_hierarchy(tree, template):
 #     for t in template['type_hierarchy']:
-#         present_types = tree.get_extension_names()
+#         present_types = tree.get_full_extension_names()
 #         if t not in present_types:
 #             node = tree.add_node(TreeNode(t))
 #         for e in template['type_hierarchy'][t]:

@@ -7,8 +7,8 @@ import copy
 from mem_code import *
 
 # take in filename
-dir = 'misc' # sys.argv[1] #
-input_name = 'predict_4_num' # sys.argv[2] #
+dir = sys.argv[1] # 'misc' # 
+input_name = sys.argv[2] # 'predict_4_num' # 
 filename = dir + '_' + input_name
 
 # # Load in tree from pickle file
@@ -37,13 +37,18 @@ temp_dict = template_to_dict(template)
 # print(temp_dict)
 # print(tree.get_extension_names())
 update_tree_template(tree, temp_dict)
-update_tree_interpret(tree, interpretation)
+update_tree_interpret(tree, interpretation, temp_dict)
+# tree.get_node_by_name("t_grid").set_objects_to_form_of_intuition()
+tree.get_node_by_name("t_cell").set_objects_to_form_of_intuition()
+
 # tree.get_node_by_name('t_sensor').set_objects([Object('obj_sensor')])
 # print(tree.get_extension_names())
 # tree.set_acc_marks([1,2,3])
-print(tree)
+# print(tree.get_node_by_name("t_2").get_concept_by_name("c_p4").get_rules())
 # print(json.dumps(tree.to_dict(), indent = 4))
 print(tree.get_pretty_structure())
+# print(tree.get_node_by_name("t_grid").get_object_by_name("obj_grid").get_form_of_intuition())
+# print(tree.get_path_to_node("t_test3"))
 with open('mem_extra/mem_tree_display.txt', 'w') as file:
     file.write(str(tree))
 # print(json.dumps(tree, indent = 4))

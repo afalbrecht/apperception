@@ -10,14 +10,14 @@ num_visual_predicates = Nothing
 use_noise = False
 
 % Frame
-types = [t_sensor_1,t_sensor_2,t_cell,t_grid,t_object]
-type_hierarchy = [(t_object,[t_cell,t_grid]),(t_cell,[t_sensor_1,t_sensor_2]),(t_sensor_1,[t_test]),(t_sensor_2,[t_test1,t_test2,t_test3])]
-objects = [(obj_sensor_a,t_sensor_1),(obj_sensor_b,t_sensor_2),(obj_grid,t_grid)]
+types = [t_object,t_grid,t_sensor_1,t_sensor_2,t_cell]
+type_hierarchy = [(t_object,[t_cell,t_grid]),(t_cell,[t_sensor_1,t_sensor_2])]
+objects = [(obj_sensor_a,t_sensor_1),(obj_grid,t_grid),(obj_sensor_b,t_sensor_2)]
 exogeneous_objects = []
 permanent_concepts = []
-fluid_concepts = [(c_on,[t_sensor_1]),(c_off,[t_sensor_1]),(c_a,[t_sensor_2]),(c_b,[t_sensor_2]),(c_c,[t_sensor_2]),(c_part,[t_cell,t_grid])]
-input_concepts = [c_on,c_off,c_a,c_b,c_c]
+fluid_concepts = [(c_on,[t_object]),(c_off,[t_object]),(c_a,[t_object]),(c_b,[t_object]),(c_c,[t_object]),(c_d,[t_object]),(c_on,[t_sensor_1]),(c_off,[t_sensor_1]),(c_a,[t_sensor_2]),(c_b,[t_sensor_2]),(c_c,[t_sensor_2]),(c_part,[t_cell,t_grid])]
+input_concepts = [c_on,c_off,c_a,c_b,c_c,c_d,c_on,c_off,c_a,c_b,c_c,c_part]
 static_concepts = []
-vars = [(var_s1,t_sensor_1),(var_s2,t_sensor_2),(var_c,t_cell),(var_g,t_grid),(var_x,t_object)]
-var_groups = [[var_x],[var_s1],[var_s2],[var_c],[var_c,var_g]]
+vars = [(var_object_1,t_object),(var_sensor_1_1,t_sensor_1),(var_sensor_2_1,t_sensor_2),(var_cell_1,t_cell),(var_grid_1,t_grid)]
+var_groups = [[var_object_1],[var_sensor_1_1],[var_sensor_2_1],[var_cell_1],[var_cell_1,var_grid_1]]
 aux_files = ["misc_predict_2_interpret_mem.lp"]

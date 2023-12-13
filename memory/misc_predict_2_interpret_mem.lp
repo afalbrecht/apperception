@@ -20,6 +20,7 @@ permanent(isa(t_sensor_2,obj_sensor_b)).
 is_concept(c_a).
 is_concept(c_b).
 is_concept(c_c).
+is_concept(c_d).
 is_concept(c_off).
 is_concept(c_on).
 is_concept(c_part).
@@ -34,11 +35,11 @@ is_concept(t_sensor_2).
 % Given permanents
 
 % Rules
-rule_body(r1,s(c_on,var_s1)).
-rule_head_causes(r1,s(c_off,var_s1)).
+rule_body(r1,s(c_off,var_sensor_1_1)).
+rule_head_causes(r1,s(c_on,var_sensor_1_1)).
 
-rule_body(r2,s(c_off,var_s1)).
-rule_head_causes(r2,s(c_on,var_s1)).
+rule_body(r2,s(c_on,var_object_1)).
+rule_head_causes(r2,s(c_off,var_object_1)).
 
 
 

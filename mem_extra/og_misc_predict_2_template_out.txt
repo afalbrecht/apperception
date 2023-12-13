@@ -1,6 +1,6 @@
-misc_predict_2
+% misc_predict_2
 
-Template
+% Template
 dir = misc
 min_body_atoms = 1
 max_body_atoms = 1
@@ -9,7 +9,7 @@ num_causes_rules = 2
 num_visual_predicates = Nothing
 use_noise = False
 
-Frame
+% Frame
 types = [t_sensor_1,t_sensor_2,t_cell,t_grid,t_object]
 type_hierarchy = [(t_object,[t_cell,t_grid]),(t_cell,[t_sensor_1,t_sensor_2])]
 objects = [(obj_sensor_a,t_sensor_1),(obj_sensor_b,t_sensor_2),(obj_grid,t_grid)]
@@ -20,4 +20,4 @@ input_concepts = [c_on,c_off,c_a,c_b,c_c]
 static_concepts = []
 vars = [(var_s1,t_sensor_1),(var_s2,t_sensor_2),(var_c,t_cell),(var_g,t_grid),(var_x,t_object)]
 var_groups = [[var_x],[var_s1],[var_s2],[var_c],[var_c,var_g]]
-aux_files = []
+aux_files = ["misc_predict_2_interpret_mem.lp"]
