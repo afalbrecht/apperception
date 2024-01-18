@@ -15,6 +15,8 @@ import qualified System.Environment as Env
 import qualified System.Process as Process
 import System.IO
 import System.Directory
+import Data.List
+
 
 import Interpretation
 import ExampleTemplates
@@ -36,6 +38,8 @@ main = do
     case args of
         ["sw", f] -> solve_sw_iteratively f 1
         ["sw", f, n] -> solve_sw_iteratively f (read n)
+        ["sw-tree", f] -> tree_solve_sw_iteratively f 1 "0"
+        ["sw-tree", f, n, i] -> tree_solve_sw_iteratively f (read n) i
         ["nonstationary", f] -> solve_nonstationary_iteratively f
         ["eca", f] -> solve_eca_iteratively f
         ["eca-general", f] -> solve_eca_general f
@@ -43,13 +47,16 @@ main = do
         ["rhythm", f] -> solve_rhythm_iteratively f 
         ["misc", f] -> solve_misc f "0"
         ["misc", f, i] -> solve_misc f i
-        ["misc-iter", f] -> solve_misc_iterative f
+        ["misc-iter", f] -> solve_misc_iterative f "0"
+        ["misc-iter", f, i] -> solve_misc_iterative f i
         ["occlusion", f] -> solve_occlusion f
         ["walker", t, f] -> solve_walker t f
         ["binding", f] -> solve_binding f
         ["book", f] -> solve_book f
         ["sokoban", f] -> solve_sokoban f "0"
         ["sokoban", f, i] -> solve_sokoban f i
+        ["sok-iter", f] -> solve_sok_iterative f "0"
+        ["sok-iter", f, i] -> solve_sok_iterative f i
         ["sok-pixels", f] -> solve_sok_pixels f
         ["noisy", i, j, k] -> solve_noisy i j k -- expects three integers
         ["mislabel", f] -> solve_mislabel f
@@ -92,7 +99,7 @@ solve_misc f i = do
     let n = head $ Split.splitOn "." f
     let c = "python mem_code/memory_in.py misc " ++ n ++ " " ++ i
     Process.callCommand c
-    let filepath = "memory/misc_" ++ n ++ "_template_in.txt"
+    let filepath = "memory/misc_"++ n ++ "/misc_" ++ n ++ "_template_in_0_0.txt"
     file_exists <- doesFileExist filepath 
     if file_exists
         then do xs <- readFile_force filepath
@@ -158,23 +165,141 @@ process_misc dir t input_f = do
 -- ECA iteration using the general code for template iteration
 -------------------------------------------------------------------------------
 
-solve_misc_iterative :: String -> IO ()
-solve_misc_iterative f = do
+-- -- Define a function to get all template files from a directory
+-- getTemplateFiles :: String -> IO [String]
+-- getTemplateFiles dir = do
+--   files <- listDirectory dir
+--   return $ filter (\f -> "template" `isInfixOf` f && ".txt" `isSuffixOf` f) files
+
+-- tree_solve__iteratively :: String -> String -> Bool -> Bool -> IO ()
+-- tree_solve_iteratively dir input_f continue output_intermediaries = do
+--   templateFiles <- getTemplateFiles dir
+--   templates <- mapM (\file -> do content <- readFile (dir ++ file); return (file, parseTemplate content)) templateFiles
+--   solve_iteratively2 dir input_f templates continue output_intermediaries Nothing
+
+
+-- -- Function to read a file, process it, and create a template
+-- readAndProcessTemplate :: String -> IO Template
+-- readAndProcessTemplate filepath = do
+--   xs <- readFile_force filepath
+--   let template = template_from_file (process_to_map xs)
+--   return template
+
+-- -- Updated getTemplateFiles function to include parsing
+-- getTemplateFiles :: String -> IO [Template]
+-- getTemplateFiles dir = do
+--   files <- listDirectory dir
+--   Monad.forM files $ \file -> do
+--     template <- readAndProcessTemplate (dir ++ file)
+--     return template
+
+-- tree_solve_iteratively :: String -> String -> [Template] -> Bool -> Bool -> IO ()
+-- tree_solve_iteratively dir input_f templates continue output_intermediaries = do
+--   solve_iteratively2 dir input_f templates continue output_intermediaries Nothing
+
+-- Function to read a file, process it, and create a template
+read_and_process_template :: String -> IO (String, Template)
+read_and_process_template filepath = do
+  xs <- readFile_force filepath
+  putStrLn $ filepath
+  let template = template_from_file (process_to_map xs)
+  return (filepath, template)
+
+-- Updated getTemplateFiles function to include parsing
+get_template_files :: String -> IO [(String, Template)]
+get_template_files dir = do
+  files <- listDirectory dir
+  Monad.forM files $ \file -> do
+    template <- read_and_process_template (dir ++ file)
+    return template
+
+tree_solve_iteratively :: String -> String -> String -> Bool -> Bool -> IO ()
+tree_solve_iteratively dir dir2 input_f continue output_intermediaries = do
+  templates <- get_template_files dir
+  tree_solve_iteratively2 dir2 input_f templates continue output_intermediaries Nothing
+
+
+tree_solve_iteratively2 :: String -> String -> [(String, Template)] -> Bool -> Bool -> Maybe ClingoResult -> IO ()
+tree_solve_iteratively2 dir input_f [] False _ _ = putStrLn $ "Unable to solve " ++ input_f
+tree_solve_iteratively2 dir input_f [] True _ Nothing = putStrLn $ "Unable to solve " ++ input_f
+tree_solve_iteratively2 dir input_f [] True _ (Just r) = do
+    putStrLn "Best answer:"
+    let t = result_template r
+    putStrLn $ process_answer_with_template t (Answer (result_answer r))
+    putStrLn $ process_answer_with_template t (Optimization (result_optimization r))
+    let input = head $ Split.splitOn "." input_f
+    let d = drop (length "data/") dir
+    let name = d ++ "_" ++ input
+    gen_template_file name t
+    gen_inter_file name [Answer (result_answer r), Optimization (result_optimization r)]
+    let c = "python mem_code/memory_out.py " ++ d ++ " " ++ input
+    Process.callCommand c    
+tree_solve_iteratively2 dir input_f ((s, t) : ts) continue output_intermediary_results r = do
+        putStrLn s
+        (results_f, ls2) <- do_solve dir input_f t
+        case ls2 of
+            [] -> do
+                putStrLn "No solution found for this configuration"
+                putStrLn ""
+                tree_solve_iteratively2 dir input_f ts continue output_intermediary_results r
+            _ -> do
+                let last_answer = last_answers ls2
+                case output_intermediary_results || (not continue) of
+                    True -> do
+                        let ls3 = map (process_answer_with_template t) last_answer
+                        Monad.forM_ ls3 putStrLn
+                    False -> return ()
+                case continue of
+                    False -> return ()
+                    True -> do
+                        let r' = update_best t r last_answer
+                        tree_solve_iteratively2 dir input_f ts continue output_intermediary_results r'
+
+
+solve_misc_iterative :: String -> String -> IO ()
+solve_misc_iterative f i = do
     let n = head $ Split.splitOn "." f
-    let c = "python mem_code/memory_in.py misc " ++ n
+    let input_f = f
+    putStrLn "-----------------------"
+    putStrLn input_f
+    let c = "python mem_code/memory_in.py misc " ++ n ++ " " ++ i
     Process.callCommand c
-    let filepath = "memory/misc_" ++ n ++ "_template_in.txt"
+    let filepath = "memory/misc_" ++ n ++ "_template_in_0_0.txt"
+    let dir = "memory/misc_" ++ n ++ "/"
+    putStrLn $ "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA "
     file_exists <- doesFileExist filepath 
-    if file_exists
-        then do xs <- readFile_force filepath
-                let l = lines xs
-                let tfmap = process_to_map xs
-                let template = template_from_file tfmap
-                putStrLn $ "Reading template from " ++ filepath
-                solve_misc_iterative2 f template 1
-        else case lookup f misc_templates of
-                Nothing -> error $ "No misc template with this id: " ++ f
-                Just (_, template, input) -> solve_misc_iterative2 input template 1
+    -- if file_exists
+    --     then do -- templates <- getTemplateFiles dir
+    --             -- let l = lines xs
+    --             -- let tfmap = process_to_map xs
+    --             -- let template = template_from_file tfmap
+    putStrLn $ "Reading templates from " ++ dir
+    tree_solve_iteratively dir "data/misc" input_f True True
+
+
+
+
+        -- else case lookup f misc_templates of
+        --         Nothing -> error $ "No misc template with this id: " ++ f
+        --         Just (_, template, input) -> solve_misc_iterative2 input template 1
+
+-- solve_misc_iterative :: String -> IO ()
+-- solve_misc_iterative f = do
+--     let n = head $ Split.splitOn "." f
+--     let c = "python mem_code/memory_in.py misc " ++ n
+--     Process.callCommand c
+--     let filepath = "memory/misc_" ++ n ++ "_template_in.txt"
+--     file_exists <- doesFileExist filepath 
+--     if file_exists
+--         then do xs <- readFile_force filepath
+--                 let l = lines xs
+--                 let tfmap = process_to_map xs
+--                 let template = template_from_file tfmap
+--                 putStrLn $ "Reading template from " ++ filepath
+--                 solve_misc_iterative2 f template 1
+--         else case lookup f misc_templates of
+--                 Nothing -> error $ "No misc template with this id: " ++ f
+--                 Just (_, template, input) -> solve_misc_iterative2 input template 1
 
 -- solve_misc_iterative2 :: String -> Template -> IO ()
 -- solve_misc_iterative2 input_f template = do
@@ -247,7 +372,7 @@ solve_sokoban f i = do
     let n = head $ Split.splitOn "." input_f
     let c = "python mem_code/memory_in.py sokoban " ++ n ++ " " ++ i
     Process.callCommand c
-    let filepath = "memory/sokoban_" ++ n ++ "_template_in.txt"
+    let filepath = "memory/sokoban_" ++ n ++ "/sokoban_" ++ n ++ "_template_in_0_0.txt"
     let t = Nothing
     file_exists <- doesFileExist filepath 
     if file_exists
@@ -263,6 +388,27 @@ solve_sokoban f i = do
                 putStrLn $ "max_x: " ++ show max_x ++ " max_y: " ++ show max_y ++ " n_blocks: " ++ show n_blocks
                 process_misc "data/sokoban" t input_f
 
+
+solve_sok_iterative :: String -> String -> IO ()
+solve_sok_iterative f i = do
+    let n = head $ Split.splitOn "." f
+    let input_f = "predict_" ++ f ++ ".lp"
+    let n = head $ Split.splitOn "." input_f
+    putStrLn "-----------------------"
+    putStrLn input_f
+    let c = "python mem_code/memory_in.py sokoban " ++ n ++ " " ++ i
+    Process.callCommand c
+    let filepath = "memory/sokoban_" ++ n ++ "_template_in_0_0.txt"
+    let dir = "memory/sokoban_" ++ n ++ "/"
+    putStrLn $ "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA "
+    file_exists <- doesFileExist filepath 
+    -- if file_exists
+    --     then do -- templates <- getTemplateFiles dir
+    --             -- let l = lines xs
+    --             -- let tfmap = process_to_map xs
+    --             -- let template = template_from_file tfmap
+    putStrLn $ "Reading templates from " ++ dir
+    tree_solve_iteratively dir "data/sokoban" input_f True True
 
 
 
@@ -400,6 +546,21 @@ all_book_templates = map f ps where
 -------------------------------------------------------------------------------
 -- SW-specific iteration
 -------------------------------------------------------------------------------
+
+tree_solve_sw_iteratively :: String -> Int -> String -> IO ()
+tree_solve_sw_iteratively f num i = do
+    let n = head $ Split.splitOn "." f
+    let input_f = f
+    putStrLn "-----------------------"
+    putStrLn input_f
+    let c = "python mem_code/memory_in.py sw " ++ n ++ " " ++ i
+    Process.callCommand c
+    let filepath = "memory/sw_" ++ n ++ "_template_in_0_0.txt"
+    let dir = "memory/sw_" ++ n ++ "/"
+    putStrLn $ "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA "
+    file_exists <- doesFileExist filepath 
+    putStrLn $ "Reading templates from " ++ dir
+    tree_solve_iteratively dir "data/sw" input_f True True
 
 solve_sw_iteratively :: String -> Int -> IO ()
 solve_sw_iteratively input_f num_objects = do
@@ -862,6 +1023,8 @@ all_var_specs_with_index ts i = [(V ("gen_" ++ show i), t) | t <- ts]
 -- Solving iteratively
 -------------------------------------------------------------------------------
 
+
+
 solve_iteratively :: String -> String -> [(String, Template)] -> Bool -> Bool -> IO ()
 solve_iteratively dir input_f ts continue output_intermediaries = solve_iteratively2 dir input_f ts continue output_intermediaries Nothing where
     max_int = maxBound :: Int
@@ -874,7 +1037,14 @@ solve_iteratively2 dir input_f [] True _ (Just r) = do
     putStrLn "Best answer:"
     let t = result_template r
     putStrLn $ process_answer_with_template t (Answer (result_answer r))
-    putStrLn $ process_answer_with_template t (Optimization (result_optimization r))    
+    putStrLn $ process_answer_with_template t (Optimization (result_optimization r))
+    let input = head $ Split.splitOn "." input_f
+    let d = drop (length "data/") dir
+    let name = d ++ "_" ++ input
+    gen_template_file name t
+    gen_inter_file name [Answer (result_answer r), Optimization (result_optimization r)]
+    let c = "python mem_code/memory_out.py " ++ d ++ " " ++ input
+    Process.callCommand c        
 solve_iteratively2 dir input_f ((s, t) : ts) continue output_intermediary_results r = do
         putStrLn s
         (results_f, ls2) <- do_solve dir input_f t

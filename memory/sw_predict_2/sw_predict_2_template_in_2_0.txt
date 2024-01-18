@@ -1,0 +1,23 @@
+% sw_predict_2
+
+% Template
+dir = sw
+min_body_atoms = 2
+max_body_atoms = 4
+num_arrow_rules = 4
+num_causes_rules = 8
+num_visual_predicates = Nothing
+use_noise = False
+
+% Frame
+types = [t_sensor,t_letter]
+type_hierarchy = []
+objects = [(obj_sensor,t_sensor),(obj_letter_a,t_letter),(obj_letter_b,t_letter),(obj_letter_c,t_letter),(obj_letter_d,t_letter)]
+exogeneous_objects = []
+permanent_concepts = [(p_succ,Constructed,[t_letter,t_letter])]
+fluid_concepts = [(c_letter,[t_sensor,t_letter]),(c_x,[t_sensor,t_letter])]
+input_concepts = [c_letter,c_x]
+static_concepts = []
+vars = [(var_sensor_1,t_sensor),(var_letter_1,t_letter),(var_letter_2,t_letter)]
+var_groups = [[var_sensor_1],[var_letter_1],[var_letter_2],[var_sensor_1,var_letter_1],[var_sensor_1,var_letter_2],[var_letter_1,var_letter_2],[var_sensor_1,var_letter_1,var_letter_2]]
+aux_files = ["sw_predict_2/sw_predict_2_interpret_mem_2_0.lp"]

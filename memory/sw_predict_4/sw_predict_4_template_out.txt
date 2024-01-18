@@ -1,0 +1,23 @@
+% sw_predict_4
+
+% Template
+dir = sw
+min_body_atoms = 1
+max_body_atoms = 4
+num_arrow_rules = 1
+num_causes_rules = 2
+num_visual_predicates = Nothing
+use_noise = False
+
+% Frame
+types = [t_cell,t_sensor,t_grid,t_letter,t_object]
+type_hierarchy = [(t_object,[t_cell,t_sensor,t_grid])]
+objects = [(obj_sensor,t_sensor),(obj_grid,t_grid),(obj_letter_a,t_letter),(obj_letter_b,t_letter),(obj_letter_c,t_letter),(obj_letter_d,t_letter),(obj_letter_e,t_letter),(obj_letter_f,t_letter),(obj_gen_1,t_cell),(obj_gen_2,t_cell)]
+exogeneous_objects = [obj_letter_a,obj_letter_b,obj_letter_c,obj_letter_d,obj_letter_e,obj_letter_f]
+permanent_concepts = [(p_first_letter,Given,[t_letter]),(p_succ,Given,[t_letter,t_letter]),(p_less,Given,[t_letter,t_letter]),(p_part_c,Constructed,[t_cell,t_grid]),(p_r,Constructed,[t_cell,t_cell]),(p_p1,Constructed,[t_cell]),(p_p2,Constructed,[t_cell])]
+fluid_concepts = [(c_letter,[t_sensor,t_letter]),(c_part_s,[t_sensor,t_cell]),(c_x,[t_sensor,t_letter]),(c_y,[t_cell,t_letter])]
+input_concepts = [c_letter]
+static_concepts = []
+vars = [(var_c,t_cell),(var_c2,t_cell),(var_l,t_letter),(var_l2,t_letter),(var_s,t_sensor)]
+var_groups = [[var_c,var_l,var_s],[var_c,var_c2,var_s],[var_l,var_l2,var_s],[var_c,var_l,var_l2,var_s]]
+aux_files = ["letters.lp","aux_1_1.lp"]

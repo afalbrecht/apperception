@@ -301,7 +301,7 @@ remove_square_br = filter (/='[') . filter (/=']')
 
 gen_template_file :: String -> Template -> IO ()
 gen_template_file name t = do
-    let f = "memory/" ++ name ++ "_template_out.txt"
+    let f = "memory/" ++ name ++ "/" ++ name ++ "_template_out.txt"
     -- let t_string = template_lines t
     writeFile f ("% " ++ name ++ "\n\n")
     Monad.forM_ (template_lines t) (append_new_line f)
@@ -1009,7 +1009,7 @@ readable_interpretation t i = is ++ ps ++ rs ++ xs ++ fs ++ ss ++ cs ++ acs wher
 gen_inter_file :: String -> [ClingoOutput] -> IO ()
 gen_inter_file _ [] = do return ()
 gen_inter_file name [Answer l, Optimization o] = do
-    let f = "memory/" ++ name ++ "_interpret_mem.lp"
+    let f = "memory/" ++ name ++ "/" ++ name ++ "_interpret_mem.lp"
     let ws = words l
     let xs = List.sort ws ++ [""]
     let xs2 = filter (\x -> not ("wibble" `List.isInfixOf` x)) xs

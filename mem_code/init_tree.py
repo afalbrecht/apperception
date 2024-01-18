@@ -31,7 +31,7 @@ if __name__ == '__main__':
     #     interpretation = f.read()
     #     number.set_ess_marks(number.get_ess_marks() + [interpretation])
 
-    marks = recursive_traverse(tree, 'c_leteraospdifja')
+    # marks = recursive_traverse(tree, 'c_leteraospdifja')
 
     # take in filename
     dir = 'misc' #sys.argv[1]

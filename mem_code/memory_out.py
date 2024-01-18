@@ -25,21 +25,24 @@ with open('mem_code/mem_tree.pickle', 'rb') as f:
 
 
 # Read in sensory sequence input from input file
-with open(f'memory/{dir}_{input_name}_template_out.txt', 'r') as f:
+with open(f'memory/{dir}_{input_name}/{dir}_{input_name}_template_out.txt', 'r') as f:
     template = f.readlines()
     # letter.set_ess_marks([template])
 
-with open(f'memory/{dir}_{input_name}_interpret_mem.lp', 'r') as f:
+with open(f'memory/{dir}_{input_name}/{dir}_{input_name}_interpret_mem.lp', 'r') as f:
     interpretation = f.readlines()
     # letter.set_ess_marks(letter.get_ess_marks() + [interpretation])
 
 temp_dict = template_to_dict(template)
-# print(temp_dict)
+print("".join(template))
+print("".join(interpretation))
 # print(tree.get_extension_names())
 update_tree_template(tree, temp_dict)
 update_tree_interpret(tree, interpretation, temp_dict)
-# tree.get_node_by_name("t_grid").set_objects_to_form_of_intuition()
-tree.get_node_by_name("t_cell").set_objects_to_form_of_intuition()
+if tree.get_node_by_name("t_grid") != None:
+    tree.get_node_by_name("t_grid").set_objects_to_form_of_intuition()
+if tree.get_node_by_name("t_cell") != None:
+    tree.get_node_by_name("t_cell").set_objects_to_form_of_intuition()
 
 # tree.get_node_by_name('t_sensor').set_objects([Object('obj_sensor')])
 # print(tree.get_extension_names())
@@ -49,7 +52,7 @@ tree.get_node_by_name("t_cell").set_objects_to_form_of_intuition()
 print(tree.get_pretty_structure())
 # print(tree.get_node_by_name("t_grid").get_object_by_name("obj_grid").get_form_of_intuition())
 # print(tree.get_path_to_node("t_test3"))
-with open('mem_extra/mem_tree_display.txt', 'w') as file:
+with open('mem_extra/mem_tree_display.json', 'w') as file:
     file.write(str(tree))
 # print(json.dumps(tree, indent = 4))
 # print('-----------------------------------------------------------')

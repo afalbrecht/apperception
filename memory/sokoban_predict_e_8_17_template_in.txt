@@ -10,14 +10,14 @@ num_visual_predicates = Nothing
 use_noise = False
 
 % Frame
-types = [t_1,t_cell,t_2,t_object]
-type_hierarchy = [(t_object,[t_cell])]
-objects = [(obj_x1,t_1),(obj_cell_3_4,t_cell),(obj_cell_3_3,t_cell),(obj_cell_4_3,t_cell),(obj_cell_4_2,t_cell),(obj_cell_3_2,t_cell),(obj_cell_3_1,t_cell),(obj_cell_2_1,t_cell),(obj_cell_2_2,t_cell),(obj_cell_1_2,t_cell),(obj_cell_1_3,t_cell),(obj_cell_2_3,t_cell),(obj_cell_2_4,t_cell),(obj_x2,t_2),(obj_cell_4_1,t_cell),(obj_x3,t_2),(obj_cell_1_1,t_cell),(obj_cell_1_4,t_cell),(obj_cell_4_4,t_cell)]
+types = [t_1,t_cell,t_2]
+type_hierarchy = []
+objects = [(obj_x1,t_1),(obj_x2,t_2),(obj_x3,t_2),(obj_cell_1_1,t_cell),(obj_cell_1_2,t_cell),(obj_cell_1_3,t_cell),(obj_cell_1_4,t_cell),(obj_cell_2_1,t_cell),(obj_cell_2_2,t_cell),(obj_cell_2_3,t_cell),(obj_cell_2_4,t_cell),(obj_cell_3_1,t_cell),(obj_cell_3_2,t_cell),(obj_cell_3_3,t_cell),(obj_cell_3_4,t_cell),(obj_cell_4_1,t_cell),(obj_cell_4_2,t_cell),(obj_cell_4_3,t_cell),(obj_cell_4_4,t_cell)]
 exogeneous_objects = []
 permanent_concepts = [(p_right,Given,[t_cell,t_cell]),(p_below,Given,[t_cell,t_cell]),(p_is_not_wall,Given,[t_cell]),(p_is_wall,Given,[t_cell])]
-fluid_concepts = [(c_in_1,[t_1,t_cell]),(c_in_2,[t_2,t_cell]),(c_noop,[t_1]),(c_north,[t_1]),(c_south,[t_1]),(c_east,[t_1]),(c_west,[t_1]),(c_p1,[t_2]),(c_p2,[t_2]),(c_p3,[t_2]),(c_p4,[t_2]),(c_on,[t_object]),(c_off,[t_object]),(c_d,[t_object]),(c_a,[t_object]),(c_b,[t_object]),(c_c,[t_object])]
-input_concepts = [c_in_1,c_in_2,c_noop,c_north,c_south,c_east,c_west,c_p1,c_p2,c_p3,c_p4,c_on,c_off,c_d,c_a,c_b,c_c]
+fluid_concepts = [(c_in_1,[t_1,t_cell]),(c_noop,[t_1]),(c_north,[t_1]),(c_south,[t_1]),(c_east,[t_1]),(c_west,[t_1]),(c_in_2,[t_2,t_cell]),(c_p1,[t_2]),(c_p2,[t_2]),(c_p3,[t_2]),(c_p4,[t_2])]
+input_concepts = [c_in_1,c_noop,c_north,c_south,c_east,c_west,c_in_2,c_p1,c_p2,c_p3,c_p4]
 static_concepts = [c_p1,c_p2,c_p3,c_p4]
-vars = [(var_1_1,t_1),(var_cell_1,t_cell),(var_2_1,t_2),(var_cell_2,t_cell),(var_object_1,t_object)]
-var_groups = [[var_1_1],[var_cell_1],[var_2_1],[var_cell_2],[var_object_1],[var_1_1,var_cell_1],[var_1_1,var_2_1],[var_1_1,var_cell_2],[var_1_1,var_object_1],[var_cell_1,var_2_1],[var_cell_1,var_cell_2],[var_cell_1,var_object_1],[var_2_1,var_cell_2],[var_2_1,var_object_1],[var_cell_2,var_object_1],[var_1_1,var_cell_1,var_2_1],[var_1_1,var_cell_1,var_cell_2],[var_1_1,var_cell_1,var_object_1],[var_1_1,var_2_1,var_cell_2],[var_1_1,var_2_1,var_object_1],[var_1_1,var_cell_2,var_object_1],[var_cell_1,var_2_1,var_cell_2],[var_cell_1,var_2_1,var_object_1],[var_cell_1,var_cell_2,var_object_1],[var_2_1,var_cell_2,var_object_1],[var_1_1,var_cell_1,var_2_1,var_cell_2],[var_1_1,var_cell_1,var_2_1,var_object_1],[var_1_1,var_cell_1,var_cell_2,var_object_1],[var_1_1,var_2_1,var_cell_2,var_object_1],[var_cell_1,var_2_1,var_cell_2,var_object_1],[var_1_1,var_cell_1,var_2_1,var_cell_2,var_object_1]]
+vars = [(var_1_1,t_1),(var_cell_1,t_cell),(var_2_1,t_2),(var_cell_2,t_cell)]
+var_groups = [[var_1_1],[var_cell_1],[var_2_1],[var_cell_2],[var_1_1,var_cell_1],[var_1_1,var_2_1],[var_1_1,var_cell_2],[var_cell_1,var_2_1],[var_cell_1,var_cell_2],[var_2_1,var_cell_2],[var_1_1,var_cell_1,var_2_1],[var_1_1,var_cell_1,var_cell_2],[var_1_1,var_2_1,var_cell_2],[var_cell_1,var_2_1,var_cell_2],[var_1_1,var_cell_1,var_2_1,var_cell_2]]
 aux_files = ["sokoban_predict_e_8_17_interpret_mem.lp"]

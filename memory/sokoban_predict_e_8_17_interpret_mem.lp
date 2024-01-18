@@ -9,10 +9,8 @@ is_type(t_object).
 permanent(isa(t_1,obj_x1)).
 permanent(isa(t_2,obj_x2)).
 permanent(isa(t_2,obj_x3)).
-permanent(isa(t_cell,obj_cell_1_1)).
 permanent(isa(t_cell,obj_cell_1_2)).
 permanent(isa(t_cell,obj_cell_1_3)).
-permanent(isa(t_cell,obj_cell_1_4)).
 permanent(isa(t_cell,obj_cell_2_1)).
 permanent(isa(t_cell,obj_cell_2_2)).
 permanent(isa(t_cell,obj_cell_2_3)).
@@ -24,7 +22,6 @@ permanent(isa(t_cell,obj_cell_3_4)).
 permanent(isa(t_cell,obj_cell_4_1)).
 permanent(isa(t_cell,obj_cell_4_2)).
 permanent(isa(t_cell,obj_cell_4_3)).
-permanent(isa(t_cell,obj_cell_4_4)).
 permanent(isa(t_object,obj_cell_1_1)).
 permanent(isa(t_object,obj_cell_1_2)).
 permanent(isa(t_object,obj_cell_1_3)).
@@ -140,10 +137,10 @@ rule_body(r4,s2(c_in_2,var_2_1,var_cell_2)).
 rule_arrow_head(r4,s(c_p4,var_2_1)).
 
 rule_body(r10,isa2(p_below,var_cell_1,var_cell_2)).
-rule_body(r10,s(c_north,var_1_1)).
 rule_body(r10,s(c_p1,var_2_1)).
-rule_body(r10,s2(c_in_2,var_2_1,var_cell_2)).
-rule_head_causes(r10,s2(c_in_2,var_2_1,var_cell_1)).
+rule_body(r10,s(c_south,var_1_1)).
+rule_body(r10,s2(c_in_2,var_2_1,var_cell_1)).
+rule_head_causes(r10,s2(c_in_2,var_2_1,var_cell_2)).
 
 rule_body(r11,isa2(p_right,var_cell_1,var_cell_2)).
 rule_body(r11,s(c_east,var_1_1)).
@@ -179,10 +176,10 @@ rule_body(r8,s2(c_in_1,var_1_1,var_cell_2)).
 rule_head_causes(r8,s2(c_in_1,var_1_1,var_cell_1)).
 
 rule_body(r9,isa2(p_below,var_cell_1,var_cell_2)).
+rule_body(r9,s(c_north,var_1_1)).
 rule_body(r9,s(c_p1,var_2_1)).
-rule_body(r9,s(c_south,var_1_1)).
-rule_body(r9,s2(c_in_2,var_2_1,var_cell_1)).
-rule_head_causes(r9,s2(c_in_2,var_2_1,var_cell_2)).
+rule_body(r9,s2(c_in_2,var_2_1,var_cell_2)).
+rule_head_causes(r9,s2(c_in_2,var_2_1,var_cell_1)).
 
 
 
