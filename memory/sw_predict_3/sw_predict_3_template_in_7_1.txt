@@ -1,0 +1,23 @@
+% sw_predict_3
+
+% Template
+dir = sw
+min_body_atoms = 2
+max_body_atoms = 4
+num_arrow_rules = 4
+num_causes_rules = 8
+num_visual_predicates = Nothing
+use_noise = False
+
+% Frame
+types = [t_sensor,t_letter,t_cell,t_object]
+type_hierarchy = [(t_object,[t_cell,t_sensor])]
+objects = [(obj_sensor,t_sensor),(obj_letter_b,t_letter),(obj_letter_a,t_letter),(obj_letter_c,t_letter),(obj_letter_d,t_letter),(obj_letter_e,t_letter),(obj_gen_1,t_cell),(obj_gen_2,t_cell),(obj_gen_3,t_cell)]
+exogeneous_objects = []
+permanent_concepts = [(p_succ,Constructed,[t_letter,t_letter]),(p_r,Constructed,[t_cell,t_cell]),(p_p1,Constructed,[t_cell]),(p_p2,Constructed,[t_cell])]
+fluid_concepts = [(c_letter,[t_sensor,t_letter]),(c_x,[t_sensor,t_letter]),(c_part_s,[t_sensor,t_cell])]
+input_concepts = [c_letter,c_x,c_part_s]
+static_concepts = []
+vars = [(var_sensor_1,t_sensor),(var_letter_1,t_letter),(var_letter_2,t_letter),(var_cell_1,t_cell),(var_cell_2,t_cell)]
+var_groups = [[var_sensor_1],[var_letter_1],[var_letter_2],[var_cell_1],[var_cell_2],[var_sensor_1,var_letter_1],[var_sensor_1,var_letter_2],[var_sensor_1,var_cell_1],[var_sensor_1,var_cell_2],[var_letter_1,var_letter_2],[var_letter_1,var_cell_1],[var_letter_1,var_cell_2],[var_letter_2,var_cell_1],[var_letter_2,var_cell_2],[var_cell_1,var_cell_2],[var_sensor_1,var_letter_1,var_letter_2],[var_sensor_1,var_letter_1,var_cell_1],[var_sensor_1,var_letter_1,var_cell_2],[var_sensor_1,var_letter_2,var_cell_1],[var_sensor_1,var_letter_2,var_cell_2],[var_sensor_1,var_cell_1,var_cell_2],[var_letter_1,var_letter_2,var_cell_1],[var_letter_1,var_letter_2,var_cell_2],[var_letter_1,var_cell_1,var_cell_2],[var_letter_2,var_cell_1,var_cell_2],[var_sensor_1,var_letter_1,var_letter_2,var_cell_1],[var_sensor_1,var_letter_1,var_letter_2,var_cell_2],[var_sensor_1,var_letter_1,var_cell_1,var_cell_2],[var_sensor_1,var_letter_2,var_cell_1,var_cell_2],[var_letter_1,var_letter_2,var_cell_1,var_cell_2],[var_sensor_1,var_letter_1,var_letter_2,var_cell_1,var_cell_2]]
+aux_files = ["aux_1_1.lp","sw_predict_3/sw_predict_3_interpret_mem_7_0.lp"]

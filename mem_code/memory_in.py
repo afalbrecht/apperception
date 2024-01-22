@@ -9,6 +9,10 @@ from mem_code import *
 dir = sys.argv[1]
 input_name = sys.argv[2]
 flag = sys.argv[3]
+if "4" in flag:
+    aux_files = sys.argv[4]
+else:
+    aux_files = ""
 filename = dir + '_' + input_name
 
 
@@ -70,18 +74,22 @@ if "0" in flag and "3" not in flag:
             print("Using memory tree")
             template = mem_to_template(t, dir, input_name)
             filedata = template.splitlines(True)
-            print(template)
+            # print(template)
             interpretations = build_interpretation(tree, t, senses_list, dir, input_name)
             for j, interpretation in enumerate(interpretations):
                 count = count + 1
-                stats = stats + f"{i},{j}\n"
+                # stats = stats + f"{i},{j}\n"
 
                 # Replace the target string
                 for k, line in enumerate(filedata):
                     if 'aux' in line:
-                        filedata[k] = line.replace('[]', f'["{filename}/{filename}_interpret_mem_{i}_{j}.lp"]')
-                        if not 'interpret' in filedata[k]:
-                            filedata[k] = line.replace(']', f',"{filename}/{filename}_interpret_mem_{i}_{j}.lp"]')
+                        line = "aux_files = []"
+                        print("inter")
+                        print(i,j-1)
+                        # filedata[k] = line.replace(f'"{filename}/{filename}_interpret_mem_{i}_{j-1}.lp"', f'"{filename}/{filename}_interpret_mem_{i}_{j}.lp"')
+                        filedata[k] = line.replace('[]', f'[{aux_files}"{filename}/{filename}_interpret_mem_{i}_{j}.lp"]')
+                        # if 'interpret' in filedata[k]:
+                        #     filedata[k] = line.replace(']', f',"{filename}/{filename}_interpret_mem_{i}_{j}.lp"]')
                 
                 # Write the file out again
                 with open(f'memory/{filename}/{filename}_template_in_{i}_{j}.txt', 'w') as file:
@@ -92,8 +100,10 @@ if "0" in flag and "3" not in flag:
                     print("Using empty interpretation file")
                     interpretation = ""
                 
+                print("ekster")
+                print(i,j)
                 with open(f'asp/{filename}/{filename}_interpret_mem_{i}_{j}.lp', 'w') as file:
-                        file.write(interpretation)
+                    file.write(interpretation)
         
         # stats = stats + f"count = {count}"
         # with open(f'memory/{filename}/{filename}_stats.txt', 'w') as file:

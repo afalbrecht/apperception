@@ -764,10 +764,10 @@ def build_template(tree, input, senses):
     output = []
     for t in temp_list:
         t_list = add_speculative_concepts(tree, senses, t)        
-        # for t0 in t_list:
-        #     t0_list = add_apriori_objects(tree, senses, t0)
-        for t1 in t_list:
-            output = output + add_hierarchy_types(tree, senses, t1)
+        for t0 in t_list:
+            t0_list = add_hierarchy_types(tree, senses, t0)
+            for t1 in t0_list:
+                output = output + add_apriori_objects(tree, senses, t1)
     # for i, o in enumerate(output):
 
     # output = output + [add_apriori_objects(tree, senses, o) for o in output]
@@ -1405,9 +1405,9 @@ def gen_temp_stats(temp_dict, dir, name):
     elif "1" in name:
         miba, maba, nar, ncr, nvp, noise = 1, 1, 0, 2, "Nothing", "False"
     elif "2" in name:
-        miba, maba, nar, ncr, nvp, noise = 2, 4, 4, 8, "Nothing", "False"
+        miba, maba, nar, ncr, nvp, noise = 1, 1, 0, 2, "Nothing", "False"
     elif "3" in name:
-        miba, maba, nar, ncr, nvp, noise = 2, 4, 4, 8, "Nothing", "False"
+        miba, maba, nar, ncr, nvp, noise = 1, 1, 0, 4, "Nothing", "False" #2, 4, 4, 8,
     elif "4" in name:
         miba, maba, nar, ncr, nvp, noise = 2, 2, 0, 1, "Nothing", "False"
     output = f"""% Template
@@ -1452,7 +1452,9 @@ def build_interpretation(tree, temp_dict, senses, dir, name):
     start = f"% {dir}_{name}\n\n"
     permanents = gen_permanents(temp_dict)
     rules = gen_rules(temp_dict)
-    return [start + permanents + rules]
+    output = [start + permanents]
+    output = output + [start + permanents + rules]  
+    return output
 
 def gen_permanents(temp_dict):
     """Generates strings of permanents using the template_dict for the 
@@ -1522,6 +1524,53 @@ def concept_check(concepts, present_concepts):
         if concept not in present_concepts:
             return False
     return True
+
+
+#---------------------------------------------------------------------
+# Functions to convert JSON tree to readable latex code
+#---------------------------------------------------------------------
+
+
+def json_to_latex(json_data):
+    latex_code = r'''
+\begin{figure}
+\begin{center}
+    \begin{forest}
+        for tree={draw}
+'''
+    latex_code += process_node(json_data, indent=8)
+    latex_code += r'''
+    \end{forest}
+    \caption{Visual representation of a non-naive concept tree $\tau$ containing some \textit{a priori} elements.}
+    \label{fig:predict_1}
+\end{center}
+\end{figure}
+'''
+    return latex_code
+
+def process_node(node, indent):
+    latex_code = ''
+    # print(node)
+    if node['name'] == 'Root':
+        latex_code = ' ' * indent
+        latex_code += f"[{node['name']} ,align=center,tier=above\n"
+
+    if 'extension' in node and node['extension']:
+        for subnode in node['extension']:
+            latex_code += ' ' * (indent + 4)
+            latex_code += f"[{subnode['name']} \\\\\\hline\n".replace('_', '\_')
+            latex_code += ' ' * (indent + 8)
+            latex_code += "\\textit{Objects: " + ', '.join([obj['name'].replace('_', '\_') for obj in subnode['objects']]) + "}\\\\\n"
+            latex_code += ' ' * (indent + 8)
+            latex_code += "\\textit{Concepts: " + ', '.join([concept['name'].replace('_', '\_') for concept in subnode['concepts']]) + "}\n"
+            latex_code += process_node(subnode, indent + 4)
+            latex_code += ' ' * (indent + 4)
+            latex_code += "]\n"
+    
+    if node['name'] == 'Root':
+        latex_code += ' ' * indent
+        latex_code += "]"
+    return latex_code
 
 # # TODO: Fix exogeneous objects and static_concepts + vars when working on interpretation
 # def gen_frame(temp_dict, dir, name):

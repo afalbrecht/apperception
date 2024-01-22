@@ -1,0 +1,59 @@
+
+Given the following input:
+\begin{table}[ht!]
+\begin{center}
+\begin{tabular}{|l|r|}
+\hline
+time & $\mathit{sensor}_a$\\
+\hline
+1 & $\mathit{a}$ \\
+2 & $\mathit{b}$ \\
+3 & $\mathit{c}$ \\
+4 & $\mathit{d}$ \\
+5 & $\mathit{a}$ \\
+6 & $\mathit{b}$ \\
+7 & $\mathit{c}$ \\
+8 & $\mathit{d}$ \\
+9 & $\mathit{a}$ \\
+10 & $\mathit{b}$ \\
+11 & $\mathit{c}$ \\
+12 & ? \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+Our system produces the frame $\phi = (T, O, P, V)$, where:
+\begin{equation*}
+\phi = \left \{
+\begin{aligned}
+& T = \{ 
+object
+\}\\
+& O = \{
+\mathit{sensor}_a: object
+\}\\
+& P = \{
+\mathit{a}(object),\mathit{b}(object),\mathit{c}(object),\mathit{d}(object)
+\}\\
+& V = \{
+OBJECT_1: object
+\}\\
+\end{aligned}\right\}
+\end{equation*}
+Our system finds the theory $\theta = (\phi, I, R, C)$, where:
+\begin{eqnarray*}
+I & = & \left\{ \begin{array}{l}
+\mathit{a}(\mathit{sensor}_a)\\
+\end{array}\right\}\\
+R & = &  \left\{ \begin{array}{l}
+\mathit{a}(\mathit{OBJECT}_1) \ni \mathit{b}(\mathit{OBJECT}_1)\\
+\mathit{d}(\mathit{OBJECT}_1) \ni \mathit{a}(\mathit{OBJECT}_1)\\
+\mathit{b}(\mathit{OBJECT}_1) \ni \mathit{c}(\mathit{OBJECT}_1)\\
+\mathit{c}(\mathit{OBJECT}_1) \ni \mathit{d}(\mathit{OBJECT}_1)\\
+\end{array}\right\}\\
+C & = & \left\{ \begin{array}{l}
+\forall X : object,\;\mathit{a}(X) \oplus \mathit{b}(X) \oplus \mathit{c}(X) \oplus \mathit{d}(X)\\
+\end{array}\right\}\\
+\end{eqnarray*}
+

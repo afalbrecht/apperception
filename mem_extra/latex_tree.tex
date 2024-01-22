@@ -1,0 +1,44 @@
+
+\begin{figure}
+\begin{center}
+    \begin{forest}
+        for tree={draw}
+        [Root ,align=center,tier=above
+            [t\_object \\\hline
+                \textit{Objects: obj\_sensor\_a}\\
+                \textit{Concepts: c\_on, c\_off, c\_a, c\_b, c\_c, c\_d}
+                [t\_cell \\\hline
+                    \textit{Objects: }\\
+                    \textit{Concepts: c\_part}
+                    [t\_sensor\_1 \\\hline
+                        \textit{Objects: obj\_sensor\_a}\\
+                        \textit{Concepts: c\_on, c\_off}
+                    ]
+                    [t\_sensor\_2 \\\hline
+                        \textit{Objects: obj\_sensor\_b}\\
+                        \textit{Concepts: c\_a, c\_b, c\_c}
+                    ]
+                ]
+                [t\_grid \\\hline
+                    \textit{Objects: obj\_grid}\\
+                    \textit{Concepts: c\_part, p\_part}
+                ]
+                [t\_sensor \\\hline
+                    \textit{Objects: obj\_sensor}\\
+                    \textit{Concepts: c\_letter, p\_part, c\_number}
+                ]
+            ]
+            [t\_letter \\\hline
+                \textit{Objects: obj\_letter\_a, obj\_letter\_b, obj\_letter\_c, obj\_letter\_d, obj\_letter\_e, obj\_letter\_f}\\
+                \textit{Concepts: c\_letter, p\_succ}
+            ]
+            [t\_number \\\hline
+                \textit{Objects: obj\_number\_0, obj\_number\_1, obj\_number\_2, obj\_number\_3, obj\_number\_4, obj\_number\_5, obj\_number\_6, obj\_number\_7, obj\_number\_8}\\
+                \textit{Concepts: c\_number, p\_succ}
+            ]
+        ]
+    \end{forest}
+    \caption{Visual representation of a non-naive concept tree $\tau$ containing some \textit{a priori} elements.}
+    \label{fig:predict_1}
+\end{center}
+\end{figure}

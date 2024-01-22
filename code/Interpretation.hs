@@ -31,7 +31,7 @@ flag_ablation_remove_kant_condition_conceptual_unity :: Bool
 flag_ablation_remove_kant_condition_conceptual_unity = False
 
 flag_output_latex :: Bool
-flag_output_latex = False
+flag_output_latex = True
 
 flag_condor :: Bool
 flag_condor = False
@@ -1525,16 +1525,17 @@ last_answers ls = case last ls of
 -- 
 -------------------------------------------------------------------------------
 
-write_latex :: Template -> ClingoOutput -> IO ()
+write_latex :: String -> Template -> ClingoOutput -> IO ()
 -- write_latex _ _ | flag_output_latex == False = return ()
-write_latex t (Optimization _) = return ()    
-write_latex t (Answer l) = do
+write_latex name t (Optimization _) = return ()    
+write_latex name t (Answer l) = do
     let ws = words l
     let xs = List.sort ws ++ [""]
     let xs2 = filter (\x -> not ("wibble" `List.isInfixOf` x)) xs
     let i = extract_interpretation xs2
     let x = latex_output t i
-    let file = "temp/results.tex"
+    -- let file = "temp/results.tex"
+    let file = "memory/" ++ name ++ "/results.tex"
     putStrLn $ "Creating latex file " ++ file
     writeFile file (unlines x)
 
@@ -1542,10 +1543,10 @@ latex_output :: Template -> Interpretation -> [String]
 latex_output t i = latex_header ++ latex_given i ++ latex_frame t ++ latex_interpretation t i ++ latex_footer
 
 latex_header :: [String]
-latex_header = ["", "\\begin{example}"]
+latex_header = []
 
 latex_footer :: [String]
-latex_footer = ["\\end{example}", ""]
+latex_footer = []
 
 data InputTableElem = ITE {
     time :: Int,
@@ -1569,7 +1570,7 @@ input_table ts elems = IT { max_time = maximum ts, all_objects = xs, attributes 
     
 show_input_table :: InputTable -> [String]
 show_input_table table = header ++ map f times ++ footer where
-    header = ["\\begin{table}[H]", "\\begin{center}", "\\begin{tabular}{|l|" ++ fsx ++ "}", "\\hline", "time & " ++ objs_text ++ "\\\\", "\\hline"]
+    header = ["\\begin{table}[ht!]", "\\begin{center}", "\\begin{tabular}{|l|" ++ fsx ++ "}", "\\hline", "time & " ++ objs_text ++ "\\\\", "\\hline"]
     objs_text = concat (List.intersperse "& " (all_objects_text table))
     objs = all_objects table
     num_objects = length objs
@@ -1640,11 +1641,11 @@ latex_interpretation t i = ht ++ it ++ urt ++ cs ++ et where
 
 latex_objects :: Template -> [String]
 latex_objects tmp = h : os ++ [t] where
-    h = "O & = & \\left\\{ \\begin{array}{l}"
+    h = "& O = \\{"
     objs = [(x, y) | (x, y) <- get_objects tmp, not (x `elem` get_exogeneous_objects tmp)]
-    os = map f objs
-    f (O o, T t) = convert_to_mathit o ++ ": " ++ convert_to_mathit t ++ "\\\\"
-    t = "\\end{array}\\right\\}\\\\"
+    os = [init (concat (map f objs))]
+    f (O o, T t) = convert_to_mathit o ++ ": " ++ t ++ ","
+    t = "\\}\\\\"
 
 latex_initial_conditions :: Interpretation -> [String]
 latex_initial_conditions i = h : os ++ [t] where
@@ -1680,7 +1681,7 @@ latex_rule (Arrow r bs h) = t where
     bs2 = map convert_atom bs
     ht = convert_atom h
 latex_rule (Causes r bs h2) = t where
-    t = bst ++ " \\fork " ++ ht2 ++ "\\\\"
+    t = bst ++ " \\ni " ++ ht2 ++ "\\\\"
     bst = concat (List.intersperse " \\wedge " bs2)
     bs2 = map convert_atom bs
     ht2 = convert_atom h2
@@ -1746,19 +1747,19 @@ convert_var s | otherwise = s
 latex_frame :: Template -> [String]
 latex_frame t = ht ++ tst ++ ot ++ cst ++ vs ++ et where
     f = frame t
-    ht = ["\\noindent", "Our system produces the frame $\\phi = (T, O, P, V)$, where:", "\\begin{eqnarray*}"]
+    ht = ["", "Our system produces the frame $\\phi = (T, O, P, V)$, where:", "\\begin{equation*}","\\phi = \\left \\{", "\\begin{aligned}"]
     tst = latex_types f
     ot = latex_objects t
     cst = latex_concepts f
     vs = latex_vars f
-    et = ["\\end{eqnarray*}"]
+    et = ["\\end{aligned}\\right\\}","\\end{equation*}"]
 
 latex_types :: Frame -> [String]
 latex_types frm = h : os ++ [t] where
-    h = "T & = & \\left\\{ \\begin{array}{l}"
-    os = map f (List.sort (types frm))
-    f (T t) = convert_to_mathit t ++ "\\\\"
-    t = "\\end{array}\\right\\}\\\\"
+    h = "& T = \\{ "
+    os = [init (concat (map f (List.sort (types frm))))]
+    f (T t) = t ++ ","
+    t = "\\}\\\\"
 
 latex_sub_types :: Frame -> [String]
 --latex_sub_types frm | null (sub_types frm) = ["\\sqsubseteq & = & \\{\\}\\\\"]
@@ -1770,12 +1771,12 @@ latex_sub_types frm = h : os ++ [t] where
 
 latex_concepts :: Frame -> [String]
 latex_concepts frm = h : os ++ [t] where
-    h = "P & = & \\left\\{ \\begin{array}{l}"
-    os = map f (get_all_concepts frm)
-    f (C c, ts) = convert_to_mathit c ++ "(" ++ concat (List.intersperse ", " (map g ts)) ++ ")\\\\"
-    f (P c, ts) = convert_to_mathit c ++ "(" ++ concat (List.intersperse ", " (map g ts)) ++ ")\\\\"
-    g (T t) = convert_to_mathit t
-    t = "\\end{array}\\right\\}\\\\"
+    h = "& P = \\{"
+    os = [init (concat (map f (get_all_concepts frm)))]
+    f (C c, ts) = convert_to_mathit c ++ "(" ++ concat (List.intersperse ", " (map g ts)) ++ "),"
+    f (P c, ts) = convert_to_mathit c ++ "(" ++ concat (List.intersperse ", " (map g ts)) ++ "),"
+    g (T t) = t
+    t = "\\}\\\\"
 
 get_all_concepts :: Frame -> [(Concept, [Type])]
 get_all_concepts frm = List.sort (fs ++ ps) where
@@ -1786,10 +1787,10 @@ get_all_concepts frm = List.sort (fs ++ ps) where
 
 latex_vars :: Frame -> [String]
 latex_vars frm = h : os ++ [t] where
-    h = "V & = & \\left\\{ \\begin{array}{l}"
-    os = map f (vars frm)
-    f (v, T t) = convert_var (show v) ++ ": " ++ convert_to_mathit t ++ "\\\\"
-    t = "\\end{array}\\right\\}\\\\"
+    h = "& V = \\{"
+    os = [init (concat (map f (vars frm)))]
+    f (v, T t) = convert_var (show v) ++ ": " ++ t ++ ","
+    t = "\\}\\\\"
 
 latex_var_types :: Frame -> [String]
 latex_var_types frm = h : os ++ [t] where

@@ -54,6 +54,9 @@ print(tree.get_pretty_structure())
 # print(tree.get_path_to_node("t_test3"))
 with open('mem_extra/mem_tree_display.json', 'w') as file:
     file.write(str(tree))
+
+with open(f'mem_extra/latex_tree.tex', 'w') as file:
+    file.write(json_to_latex(json.loads(str(tree))))
 # print(json.dumps(tree, indent = 4))
 # print('-----------------------------------------------------------')
 # print(tree.get_n_n_dict().keys())

@@ -1,0 +1,51 @@
+
+Given the following input:
+\begin{table}[ht!]
+\begin{center}
+\begin{tabular}{|l|r|}
+\hline
+time & $\mathit{sensor}_a$\\
+\hline
+1 & $\mathit{on}$ \\
+2 & $\mathit{off}$ \\
+3 & $\mathit{on}$ \\
+4 & $\mathit{off}$ \\
+5 & $\mathit{on}$ \\
+6 & ? \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+Our system produces the frame $\phi = (T, O, P, V)$, where:
+\begin{equation*}
+\phi = \left \{
+\begin{aligned}
+& T = \{ 
+object
+\}\\
+& O = \{
+\mathit{sensor}_a: object
+\}\\
+& P = \{
+\mathit{off}(object),\mathit{on}(object)
+\}\\
+& V = \{
+OBJECT_1: object
+\}\\
+\end{aligned}\right\}
+\end{equation*}
+Our system finds the theory $\theta = (\phi, I, R, C)$, where:
+\begin{eqnarray*}
+I & = & \left\{ \begin{array}{l}
+\mathit{on}(\mathit{sensor}_a)\\
+\end{array}\right\}\\
+R & = &  \left\{ \begin{array}{l}
+\mathit{on}(\mathit{OBJECT}_1) \ni \mathit{off}(\mathit{OBJECT}_1)\\
+\mathit{off}(\mathit{OBJECT}_1) \ni \mathit{on}(\mathit{OBJECT}_1)\\
+\end{array}\right\}\\
+C & = & \left\{ \begin{array}{l}
+\forall X : object,\;\mathit{on}(X) \oplus \mathit{off}(X)\\
+\end{array}\right\}\\
+\end{eqnarray*}
+

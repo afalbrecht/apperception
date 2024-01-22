@@ -10,8 +10,8 @@ num_visual_predicates = Nothing
 use_noise = False
 
 % Frame
-types = [t_sensor_1]
-type_hierarchy = []
+types = [t_sensor_1,t_cell,t_object]
+type_hierarchy = [(t_cell,[t_sensor_1]),(t_object,[t_cell])]
 objects = [(obj_sensor_a,t_sensor_1)]
 exogeneous_objects = []
 permanent_concepts = []
@@ -20,4 +20,4 @@ input_concepts = [c_on,c_off]
 static_concepts = []
 vars = [(var_sensor_1_1,t_sensor_1)]
 var_groups = [[var_sensor_1_1]]
-aux_files = ["misc_predict_1/misc_predict_1_interpret_mem_4_0.lp"]
+aux_files = ["misc_predict_1/misc_predict_1_interpret_mem_10_0.lp"]

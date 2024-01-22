@@ -38,8 +38,8 @@ main = do
     case args of
         ["sw", f] -> solve_sw_iteratively f 1
         ["sw", f, n] -> solve_sw_iteratively f (read n)
-        ["sw-tree", f] -> tree_solve_sw_iteratively f 1 "0"
-        ["sw-tree", f, n, i] -> tree_solve_sw_iteratively f (read n) i
+        ["sw-tree", f] -> tree_solve_sw_iteratively f 1 "0" ""
+        ["sw-tree", f, n, i, s] -> tree_solve_sw_iteratively f (read n) i s
         ["nonstationary", f] -> solve_nonstationary_iteratively f
         ["eca", f] -> solve_eca_iteratively f
         ["eca-general", f] -> solve_eca_general f
@@ -94,6 +94,7 @@ readFile_force filename = withFile filename ReadMode $ \handle -> do
 -- 1: Run with an empty interpret_mem
 -- 2: Retrieve template from file
 -- 3: Retrieve template from preexisting haskell files and delete template_in file
+-- 4: Add auxiliary files as an extra flag to the input in the format: "aux.lp", or "aux.lp","aux1.lp",
 solve_misc :: String -> String -> IO ()
 solve_misc f i = do
     let n = head $ Split.splitOn "." f
@@ -119,13 +120,13 @@ process_misc dir t input_f = do
         [] -> do
             putStrLn "No solution found."
         _ -> do
-            let ans = last_answers ls2
-            Monad.forM_ ans (write_latex t)
-            let ls3 = map (process_answer_with_template t) ls2
-            Monad.forM_ ls3 putStrLn
             let input = head $ Split.splitOn "." input_f
             let d = drop (length "data/") dir
             let name = d ++ "_" ++ input
+            let ans = last_answers ls2
+            Monad.forM_ ans (write_latex name t)
+            let ls3 = map (process_answer_with_template t) ls2
+            Monad.forM_ ls3 putStrLn
             gen_template_file name t
             gen_inter_file name ans
             let c = "python mem_code/memory_out.py " ++ d ++ " " ++ input
@@ -246,6 +247,10 @@ tree_solve_iteratively2 dir input_f ((s, t) : ts) continue output_intermediary_r
                 let last_answer = last_answers ls2
                 case output_intermediary_results || (not continue) of
                     True -> do
+                        let input = head $ Split.splitOn "." input_f
+                        let d = drop (length "data/") dir
+                        let name = d ++ "_" ++ input
+                        Monad.forM_ last_answer (write_latex name t)
                         let ls3 = map (process_answer_with_template t) last_answer
                         Monad.forM_ ls3 putStrLn
                     False -> return ()
@@ -547,13 +552,13 @@ all_book_templates = map f ps where
 -- SW-specific iteration
 -------------------------------------------------------------------------------
 
-tree_solve_sw_iteratively :: String -> Int -> String -> IO ()
-tree_solve_sw_iteratively f num i = do
+tree_solve_sw_iteratively :: String -> Int -> String -> String -> IO ()
+tree_solve_sw_iteratively f num i aux = do
     let n = head $ Split.splitOn "." f
     let input_f = f
     putStrLn "-----------------------"
     putStrLn input_f
-    let c = "python mem_code/memory_in.py sw " ++ n ++ " " ++ i
+    let c = "python mem_code/memory_in.py sw " ++ n ++ " " ++ i ++ " " ++ aux
     Process.callCommand c
     let filepath = "memory/sw_" ++ n ++ "_template_in_0_0.txt"
     let dir = "memory/sw_" ++ n ++ "/"
@@ -1188,7 +1193,7 @@ solve_house f = do
             putStrLn "No solution found."
         _ -> do
             let ans = last_answers ls2
-            Monad.forM_ ans (write_latex t)
+            Monad.forM_ ans (write_latex "house" t)
             let ls3 = map (process_answer_with_template t) ans
             Monad.forM_ ls3 putStrLn
 

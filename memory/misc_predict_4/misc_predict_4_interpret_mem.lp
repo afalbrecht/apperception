@@ -11,11 +11,11 @@ permanent(isa(t_letter,obj_letter_c)).
 permanent(isa(t_letter,obj_letter_d)).
 permanent(isa(t_letter,obj_letter_e)).
 permanent(isa(t_letter,obj_letter_f)).
+permanent(isa(t_object,obj_sensor)).
 permanent(isa(t_sensor,obj_sensor)).
 
 % Concepts
 is_concept(c_letter).
-is_concept(c_x).
 is_concept(p_succ).
 is_concept(t_letter).
 is_concept(t_object).
