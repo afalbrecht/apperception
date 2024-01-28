@@ -366,12 +366,54 @@ extract_sokoban_data e = (max_x, max_y, num_blocks) where
     num_blocks = sum (map f s)
     f x = length (filter (== 'b') x)
 
+-- og_solve_sokoban :: String -> IO ()
+-- og_solve_sokoban f i = do
+--     let (max_x, max_y, n_blocks) = get_sokoban_data f
+--     let t = template_sokoban max_x max_y n_blocks
+--     putStrLn $ "max_x: " ++ show max_x ++ " max_y: " ++ show max_y ++ " n_blocks: " ++ show n_blocks
+--     let input_f = "predict_" ++ f ++ ".lp"
+--     let n = head $ Split.splitOn "." input_f
+--     let c = "python mem_extra/time_in.py sokoban " ++ n ++ " " ++ "3"
+--     Process.callCommand c
+--     (results_f, ls2) <- do_solve "data/sokoban" input_f t
+--     case ls2 of
+--         [] -> do
+--             putStrLn "No solution found."
+--         _ -> do
+--             let ans = last_answers ls2
+--             Monad.forM_ ans (write_latex t)
+--             let ls3 = map (process_answer_with_template t) ans
+--             Monad.forM_ ls3 putStrLn
+--             let n = head $ Split.splitOn "." input_f
+--             let c = "python mem_extra/time_out.py"
+--             Process.callCommand c
+
 -- Add 0, 1, 2 to code to do the following:
 -- 0: Retrieve template from memory tree if possible
 -- 1: Run with an empty interpret_mem
 -- 2: Retrieve template from file
 -- 3: Retrieve template from preexisting haskell files and delete template_in file
 solve_sokoban :: String -> String -> IO ()
+solve_sokoban f "3" = do
+    putStrLn $ "SUCCESS"
+    let (max_x, max_y, n_blocks) = get_sokoban_data f
+    let t = template_sokoban max_x max_y n_blocks
+    putStrLn $ "max_x: " ++ show max_x ++ " max_y: " ++ show max_y ++ " n_blocks: " ++ show n_blocks
+    let input_f = "predict_" ++ f ++ ".lp"
+    let n = head $ Split.splitOn "." input_f
+    let c = "python mem_extra/time_in.py sokoban " ++ n ++ " " ++ "3"
+    Process.callCommand c
+    (results_f, ls2) <- do_solve "data/sokoban" input_f t
+    case ls2 of
+        [] -> do
+            putStrLn "No solution found."
+        _ -> do
+            let c = "python mem_extra/time_out.py"
+            Process.callCommand c
+            let ans = last_answers ls2
+            Monad.forM_ ans (write_latex "mem_extra" t)
+            let ls3 = map (process_answer_with_template t) ans
+            Monad.forM_ ls3 putStrLn
 solve_sokoban f i = do
     let input_f = "predict_" ++ f ++ ".lp"
     let n = head $ Split.splitOn "." input_f
@@ -427,7 +469,7 @@ solve_sok_pixels f = do
     let (max_x, max_y, n_blocks) = get_sokoban_data f
     putStrLn $ "max_x: " ++ show max_x ++ " max_y: " ++ show max_y
     let input_f = "predict_" ++ f ++ ".lp"
-    solve_iteratively "data/sok-pixels" input_f (all_sok_pixels_templates max_x max_y n_blocks) False False
+    solve_iteratively "data/sok-pixels" input_f (all_sok_pixels_templates max_x max_y n_blocks) True True
 
 k_max_num_sok_pixels_templates :: Int
 k_max_num_sok_pixels_templates = 10

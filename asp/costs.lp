@@ -4,6 +4,9 @@
 % The cost of an interpretation depends on the complexity of the rules.
 %
 % We count the number of atoms appearing
+%
+% For the Architectonic Apperception Engine the calculation of the cost 
+% also includes types and concepts, thus also optimizing over templates
 %------------------------------------------------------------------------------
 
 :~ rule_body(R, A). [1 @ 1, R, A]
@@ -15,6 +18,10 @@
 :~ init(A). [1 @ 1, A]
 
 :~ gen_permanent(A). [1 @ 1, A]
+
+% :~ is_type(A). [1 @ 1, A]
+
+% :~ is_concept(A). [1 @ 1, A]
 
 %------------------------------------------------------------------------------
 % Forcing atoms to be true is the same cost as initial atoms.

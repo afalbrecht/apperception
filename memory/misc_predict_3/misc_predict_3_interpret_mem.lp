@@ -1,5 +1,5 @@
 % misc_predict_3
-% Optimization:9
+% Optimization:14
 
 % Typing
 is_type(t_object).

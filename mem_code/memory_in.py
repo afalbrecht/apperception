@@ -2,6 +2,7 @@ import shutil
 import sys
 import os
 import pickle
+import time
 from mem_code import *
 
 
@@ -34,6 +35,10 @@ if "3" in flag:
     shutil.rmtree(f"memory/{filename}")
     os.mkdir(f"memory/{filename}")
 
+
+with open('mem_extra/timing.txt', 'a') as f:
+    f.write(' '.join(sys.argv[1:]).replace("_", "\\_") + "\n")
+    f.write(str(time.time()) + "\\\\\n")
 
 
 if "0" in flag and "3" not in flag:

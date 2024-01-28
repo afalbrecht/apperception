@@ -1,2 +1,0 @@
-% sokoban_predict_e3
-count = 1

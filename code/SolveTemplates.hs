@@ -958,7 +958,7 @@ frame_sokoban max_x max_y num_blocks = Frame {
         [V "c1", V "c2", V "x"],
         [V "c1", V "c2", V "x", V "y"]
         ],
-    aux_files = ["sokoban_predict_e_8_17_interpret_mem.lp"]
+    aux_files = []
 }    
 
 template_sokoban :: Int -> Int -> Int -> Template
@@ -971,7 +971,59 @@ template_sokoban max_x max_y num_blocks = Template {
     num_causes_rules = 8,
     num_visual_predicates = Nothing,
     use_noise = False
-    }    
+    }
+
+-- frame_sokoban :: Int -> Int -> Int -> Frame
+-- frame_sokoban max_x max_y num_blocks = Frame {
+--     types = [T "cell", T "1", T "2"],
+--     type_hierarchy = [],
+--     objects = (O "x1", T "1") : [(O ("cell_" ++ show i ++ "_" ++ show j), T "cell") | i <- [1..max_x], j <- [1..max_y]] ++ [(O ("x" ++ show (i+1)), T "2") | i <- [1..num_blocks]],
+--     exogeneous_objects = [],
+--     permanent_concepts = [
+--         (P "right", Given, [T "cell", T "cell"]),
+--         (P "below", Given, [T "cell", T "cell"]),
+--         (P "is_not_wall", Given, [T "cell"]),
+--         (P "is_wall", Given, [T "cell"])
+--     ],
+--     fluid_concepts = [
+--         (C "in_1", [T "1", T "cell"]), 
+--         (C "in_2", [T "2", T "cell"]), 
+--         (C "noop", [T "1"]), 
+--         (C "north", [T "1"]), 
+--         (C "south", [T "1"]),
+--         (C "east", [T "1"]), 
+--         (C "west", [T "1"]), 
+--         (C "p1", [T "2"]),
+--         (C "p2", [T "2"]),
+--         (C "p3", [T "2"]),
+--         (C "p4", [T "2"])
+--         ],
+--     input_concepts = [C "in_1", C "in_2", C "noop", C "north", C "south", C "east", C "west", C "p1", C "p2", C "p3", C "p4"],
+--     static_concepts = [C "p1", C "p2", C "p3", C "p4"],
+--     vars = [
+--         (V "c1", T "cell"),
+--         (V "c2", T "cell"),
+--         (V "x", T "1"),
+--         (V "y", T "2")
+--         ],
+--     var_groups = [
+--         [V "c1", V "c2", V "x"],
+--         [V "c1", V "c2", V "x", V "y"]
+--         ],
+--     aux_files = []
+-- }    
+
+-- template_sokoban :: Int -> Int -> Int -> Template
+-- template_sokoban max_x max_y num_blocks = Template {
+--     dir = "sokoban",
+--     frame = frame_sokoban max_x max_y num_blocks,
+--     min_body_atoms = 1,
+--     max_body_atoms = 4, 
+--     num_arrow_rules = 4,
+--     num_causes_rules = 8,
+--     num_visual_predicates = Nothing,
+--     use_noise = False
+--     }    
 
 -------------------------------------------------------------------------------
 -- Sokoban from pixels template
@@ -1014,7 +1066,7 @@ frame_sok_pixels max_x max_y num_t1s num_t2s = Frame {
         [V "c1", V "c2", V "x"],
         [V "c1", V "c2", V "x", V "y"]
         ],
-    aux_files = ["bnn.lp", "visual_sokoban.lp"]
+    aux_files = ["sok-pixels_predict_e_1_3_interpret_mem.lp","bnn.lp", "visual_sokoban.lp"]
 } where
     t1s = map f [1 .. num_t1s]
     t2s = map g [1 .. num_t2s]

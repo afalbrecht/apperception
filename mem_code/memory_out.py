@@ -4,12 +4,21 @@ import os
 import pickle
 import json
 import copy
+import time
 from mem_code import *
 
 # take in filename
 dir = sys.argv[1] # 'misc' # 
 input_name = sys.argv[2] # 'predict_4_num' # 
 filename = dir + '_' + input_name
+
+with open('mem_extra/timing.txt', 'r') as f:
+    t0 = f.readlines()[-1].replace("\\\\\n", "")
+
+with open('mem_extra/timing.txt', 'a') as f:
+    t1 = time.time()
+    f.write(str(t1) + "\\\\\n")
+    f.write(str(t1-float(t0)) + "\n\n")
 
 # # Load in tree from pickle file
 with open('mem_code/mem_tree.pickle', 'rb') as f:

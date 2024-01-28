@@ -10,8 +10,8 @@ num_visual_predicates = Nothing
 use_noise = False
 
 % Frame
-types = [t_sensor,t_number]
-type_hierarchy = []
+types = [t_sensor,t_number,t_object]
+type_hierarchy = [(t_object,[t_sensor])]
 objects = [(obj_sensor,t_sensor),(obj_number_0,t_number),(obj_number_1,t_number),(obj_number_2,t_number),(obj_number_3,t_number),(obj_number_4,t_number),(obj_number_5,t_number),(obj_number_6,t_number),(obj_number_7,t_number),(obj_number_8,t_number)]
 exogeneous_objects = []
 permanent_concepts = [(p_succ,Constructed,[t_number,t_number])]

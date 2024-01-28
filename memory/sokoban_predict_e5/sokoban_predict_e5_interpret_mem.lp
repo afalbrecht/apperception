@@ -1,5 +1,5 @@
 % sokoban_predict_e5
-% Optimization:56
+% Optimization:82
 
 % Typing
 is_type(t_1).

@@ -43,7 +43,7 @@ flag_delete_temp :: Bool
 flag_delete_temp = False
 
 const_time_limit :: Int
-const_time_limit = 14400
+const_time_limit = 36000 --14400
 
 -- frame_misc_1_1 :: Frame    
 -- frame_misc_1_1 = Frame {
@@ -1536,8 +1536,10 @@ write_latex name t (Answer l) = do
     let x = latex_output t i
     -- let file = "temp/results.tex"
     let file = "memory/" ++ name ++ "/results.tex"
+    let file2 = "mem_extra/results.tex"
     putStrLn $ "Creating latex file " ++ file
     writeFile file (unlines x)
+    writeFile file2 (unlines x)
 
 latex_output :: Template -> Interpretation -> [String]
 latex_output t i = latex_header ++ latex_given i ++ latex_frame t ++ latex_interpretation t i ++ latex_footer

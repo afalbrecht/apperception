@@ -10,3 +10,9 @@ permanent(isa2(p_succ,obj_number_5,obj_number_4)).
 permanent(isa2(p_succ,obj_number_6,obj_number_5)).
 permanent(isa2(p_succ,obj_number_7,obj_number_6)).
 permanent(isa2(p_succ,obj_number_8,obj_number_7)).
+
+% Rules
+rule_body(r1,isa2(p_succ,var_number_1,var_number_2)).
+rule_body(r1,s2(c_number,var_sensor_1,var_number_2)).
+rule_head_causes(r1,s2(c_number,var_sensor_1,var_number_1)).
+

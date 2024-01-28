@@ -1,5 +1,5 @@
 % misc_predict_4_num
-% Optimization:4
+% Optimization:9
 
 % Typing
 is_type(t_number).

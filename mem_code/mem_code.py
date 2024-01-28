@@ -762,12 +762,18 @@ def build_template(tree, input, senses):
     temp_list = [temp_dict]
     temp_list = iterative_senses(senses, temp_list, tree)
     output = []
+    # for t in temp_list:
+    #     t_list = add_speculative_concepts(tree, senses, t)        
+    #     for t0 in t_list:
+    #         t0_list = add_hierarchy_types(tree, senses, t0)
+    #         for t1 in t0_list:
+    #             output = output + add_apriori_objects(tree, senses, t1)
     for t in temp_list:
-        t_list = add_speculative_concepts(tree, senses, t)        
+        t_list = add_speculative_concepts(tree, senses, t)#[1:]        
         for t0 in t_list:
-            t0_list = add_hierarchy_types(tree, senses, t0)
+            t0_list = add_hierarchy_types(tree, senses, t0)[1:]
             for t1 in t0_list:
-                output = output + add_apriori_objects(tree, senses, t1)
+                output = output + add_apriori_objects(tree, senses, t1)[:-1]
     # for i, o in enumerate(output):
 
     # output = output + [add_apriori_objects(tree, senses, o) for o in output]
@@ -880,8 +886,11 @@ def iterative_senses(senses, output, root, index=0, concept_dict={}):
     if index == len(senses):
         return output
     fact = senses[index]
+    print(fact)
     node_pairs = root.get_node_pairs_by_concept(fact[0])
+    print(node_pairs)
     node_pairs = strip_pairs(node_pairs, fact, root)
+    print(node_pairs)
     all_nodes = root.get_nodes_by_concept(fact[0])
     nodes = select_lowest_nodes(root, all_nodes)
 
@@ -914,7 +923,7 @@ def iterative_senses(senses, output, root, index=0, concept_dict={}):
         # print(nodes)
         for type in fact_check(root, fact, output[0]):
             print(fact[0])
-            print(type)
+            # print(type)
             node = root.get_node_by_name(type)
             concept = node.get_concept_by_name(fact[0])
             output = [iter_add_type_concept(concept, fact, output[0], root)]
@@ -973,7 +982,11 @@ def strip_pairs(pairs, fact, root):
         else:
             n0 = root.get_node_by_name(pair[0])
             n1 = root.get_node_by_name(pair[1])
-            if fact[1] in n0.get_object_names() and fact[2] in n1.get_object_names():
+            # This is a hacky way to get a priori objects into the template, which can
+            # in principle be made nicer but for it to actually be cleaner requires 
+            # a larger overhaul. This is not future proof for that overhaul though. 
+            if (fact[1] in n0.get_object_names() or "cell" in fact[1]) and \
+                (fact[2] in n1.get_object_names() or "cell" in fact[2]):
                 output = output + [pair]
     
     return output
@@ -1041,7 +1054,7 @@ def iter_add_type_concept(concept, fact, output, root):
     """Adds concepts, objects and types to template file, if it can find the the objects
     it encounters in the senses facts in the memory tree"""
     t = concept.get_types()
-    print(output)
+    # print(output)
     # If the senses fact holds a singleton concept
     if len(fact) == 2:
         # print("JA")
@@ -1402,6 +1415,8 @@ def gen_temp_stats(temp_dict, dir, name):
     """Generate template part of template_in file"""
     if "sok" in dir:
         miba, maba, nar, ncr, nvp, noise = 1, 4, 4, 8, "Nothing", "False"
+    elif "sw" in dir:
+        miba, maba, nar, ncr, nvp, noise = 2, 4, 4, 8, "Nothing", "False"
     elif "1" in name:
         miba, maba, nar, ncr, nvp, noise = 1, 1, 0, 2, "Nothing", "False"
     elif "2" in name:
@@ -1452,8 +1467,8 @@ def build_interpretation(tree, temp_dict, senses, dir, name):
     start = f"% {dir}_{name}\n\n"
     permanents = gen_permanents(temp_dict)
     rules = gen_rules(temp_dict)
-    output = [start + permanents]
-    output = output + [start + permanents + rules]  
+    output = [start + permanents + rules]
+    # output = output + [start + permanents]  
     return output
 
 def gen_permanents(temp_dict):
@@ -1533,7 +1548,7 @@ def concept_check(concepts, present_concepts):
 
 def json_to_latex(json_data):
     latex_code = r'''
-\begin{figure}
+\begin{figure}[ht!]
 \begin{center}
     \begin{forest}
         for tree={draw}

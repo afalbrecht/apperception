@@ -20,4 +20,4 @@ input_concepts = [c_in_1,c_noop,c_north,c_south,c_east,c_west,c_in_2,c_p1,c_p2,c
 static_concepts = [c_p1,c_p2,c_p3,c_p4]
 vars = [(var_1_1,t_1),(var_cell_1,t_cell),(var_2_1,t_2),(var_cell_2,t_cell)]
 var_groups = [[var_1_1],[var_cell_1],[var_2_1],[var_cell_2],[var_1_1,var_cell_1],[var_1_1,var_2_1],[var_1_1,var_cell_2],[var_cell_1,var_2_1],[var_cell_1,var_cell_2],[var_2_1,var_cell_2],[var_1_1,var_cell_1,var_2_1],[var_1_1,var_cell_1,var_cell_2],[var_1_1,var_2_1,var_cell_2],[var_cell_1,var_2_1,var_cell_2],[var_1_1,var_cell_1,var_2_1,var_cell_2]]
-aux_files = ["sokoban_predict_e_8_17_interpret_mem.lp"]
+aux_files = []
