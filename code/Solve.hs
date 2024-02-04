@@ -69,13 +69,8 @@ main = do
 
 
 -------------------------------------------------------------------------------
--- Misc-specific solving
+-- ADDED FOR AAE: Misc using memory
 -------------------------------------------------------------------------------
-
--- solve_misc :: String -> IO ()
--- solve_misc f = case lookup f misc_templates of
---     Nothing -> error $ "No misc template with this id: " ++ f
---     Just (dir, template, input) -> process_misc dir template input
 
 -- Sneaky workaround function to be able to write to the same file as is read from without 
 -- having to throw around the handle. Will remove once the IO is handled smoother.
@@ -83,12 +78,6 @@ readFile_force :: String -> IO String
 readFile_force filename = withFile filename ReadMode $ \handle -> do
   theContent <- hGetContents handle
   mapM return theContent
-
--- conv_input_name :: String -> String
--- conv_input_name i = 
---                 let input = head $ Split.splitOn "." input_f
---             let d = drop (length "data/") dir
---             let name = d ++ "_" ++ input
 
 -- Add 0, 1, 2 to code to do the following:
 -- 0: Retrieve template from memory tree if possible
@@ -133,71 +122,11 @@ process_misc dir t input_f = do
             let c = "python mem_code/memory_out.py " ++ d ++ " " ++ input
             Process.callCommand c
 
--- process_misc :: String -> Template -> String -> IO ()
--- process_misc dir t input_f = do
---     (results_f, ls2) <- do_solve dir input_f t
---     case ls2 of
---         [] -> do
---             putStrLn "No solution found."
---         _ -> do
---             -- let ans = last_answers ls2
---             -- Monad.forM_ ans (write_latex t)
---             -- let ls3 = map (process_answer_with_template t) ans
---             -- Monad.forM_ ls3 putStrLn
---             let ans = last_answers ls2
---             Monad.forM_ ans (write_latex t)
---             -- putStrLn $ show ls2
---             -- putStrLn $ "---------------------------------------------"
---             -- putStrLn $ show ans
---             -- putStrLn $ "---------------------------------------------"
---             let ls3 = map (process_answer_with_template t) ls2
---             -- putStrLn $ show ls3
---             Monad.forM_ ls3 putStrLn
---             let input = head $ Split.splitOn "." input_f
---             let d = drop (length "data/") dir
---             let name = d ++ "_" ++ input
---             gen_template_file name t
---             gen_inter_file name ans
---             let c = "python mem_code/memory_out.py misc " ++ input
---             Process.callCommand c
-
 
 
 -------------------------------------------------------------------------------
--- ECA iteration using the general code for template iteration
+-- ADDED FOR AAE: Modified iteration code using Memory
 -------------------------------------------------------------------------------
-
--- -- Define a function to get all template files from a directory
--- getTemplateFiles :: String -> IO [String]
--- getTemplateFiles dir = do
---   files <- listDirectory dir
---   return $ filter (\f -> "template" `isInfixOf` f && ".txt" `isSuffixOf` f) files
-
--- tree_solve__iteratively :: String -> String -> Bool -> Bool -> IO ()
--- tree_solve_iteratively dir input_f continue output_intermediaries = do
---   templateFiles <- getTemplateFiles dir
---   templates <- mapM (\file -> do content <- readFile (dir ++ file); return (file, parseTemplate content)) templateFiles
---   solve_iteratively2 dir input_f templates continue output_intermediaries Nothing
-
-
--- -- Function to read a file, process it, and create a template
--- readAndProcessTemplate :: String -> IO Template
--- readAndProcessTemplate filepath = do
---   xs <- readFile_force filepath
---   let template = template_from_file (process_to_map xs)
---   return template
-
--- -- Updated getTemplateFiles function to include parsing
--- getTemplateFiles :: String -> IO [Template]
--- getTemplateFiles dir = do
---   files <- listDirectory dir
---   Monad.forM files $ \file -> do
---     template <- readAndProcessTemplate (dir ++ file)
---     return template
-
--- tree_solve_iteratively :: String -> String -> [Template] -> Bool -> Bool -> IO ()
--- tree_solve_iteratively dir input_f templates continue output_intermediaries = do
---   solve_iteratively2 dir input_f templates continue output_intermediaries Nothing
 
 -- Function to read a file, process it, and create a template
 read_and_process_template :: String -> IO (String, Template)
@@ -274,84 +203,12 @@ solve_misc_iterative f i = do
     let dir = "memory/misc_" ++ n ++ "/"
     putStrLn $ "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA "
     file_exists <- doesFileExist filepath 
-    -- if file_exists
-    --     then do -- templates <- getTemplateFiles dir
-    --             -- let l = lines xs
-    --             -- let tfmap = process_to_map xs
-    --             -- let template = template_from_file tfmap
     putStrLn $ "Reading templates from " ++ dir
     tree_solve_iteratively dir "data/misc" input_f True True
 
 
-
-
-        -- else case lookup f misc_templates of
-        --         Nothing -> error $ "No misc template with this id: " ++ f
-        --         Just (_, template, input) -> solve_misc_iterative2 input template 1
-
--- solve_misc_iterative :: String -> IO ()
--- solve_misc_iterative f = do
---     let n = head $ Split.splitOn "." f
---     let c = "python mem_code/memory_in.py misc " ++ n
---     Process.callCommand c
---     let filepath = "memory/misc_" ++ n ++ "_template_in.txt"
---     file_exists <- doesFileExist filepath 
---     if file_exists
---         then do xs <- readFile_force filepath
---                 let l = lines xs
---                 let tfmap = process_to_map xs
---                 let template = template_from_file tfmap
---                 putStrLn $ "Reading template from " ++ filepath
---                 solve_misc_iterative2 f template 1
---         else case lookup f misc_templates of
---                 Nothing -> error $ "No misc template with this id: " ++ f
---                 Just (_, template, input) -> solve_misc_iterative2 input template 1
-
--- solve_misc_iterative2 :: String -> Template -> IO ()
--- solve_misc_iterative2 input_f template = do
---     solve_iteratively "data/misc" input_f (all_iterative_misc_templates input_f template) False False
-
--- all_iterative_misc_templates :: String -> Template -> [(String, Template)]
--- all_iterative_misc_templates input_f t' = map f (zip [1..] ts) where
---     f (i, t) = ("Template " ++ show i, t)
---     ps = parameter_lists [T "sensor"] 100
---     ts = map (augment_template t') ps
-
--- output_iterative_misc_templates :: String -> Template -> Int -> IO ()    
--- output_iterative_misc_templates input_f t n = Monad.forM_ xs f where
---     xs = map snd $ take n (all_iterative_misc_templates input_f t)
---     f t = Monad.forM_ (latex_frame t) putStrLn
-
--- -------------------------------------------------------------------------------
--- -- SW-specific iteration
--- -------------------------------------------------------------------------------
-
-solve_misc_iterative2 :: String -> Template -> Int -> IO ()
-solve_misc_iterative2 input_f template num_objects = do
-    solve_iteratively "data/misc" input_f (all_misc_templates input_f num_objects) True False
-
-all_misc_templates :: String -> Int -> [(String, Template)]
-all_misc_templates input_f n = s ++ c where
-    s = map (make_simple_misc_template input_f) [n..3]
-    c = map (make_complex_misc_template input_f) [n..3]
-
-make_simple_misc_template :: String -> Int -> (String, Template)
-make_simple_misc_template input_f n = update_misc_template_objects t n "simple" where
-    t = template_sw_simple n
-
-make_complex_misc_template :: String -> Int -> (String, Template)
-make_complex_misc_template input_f n = update_misc_template_objects t n "complex" where
-    t = template_sw_complex n
-
-update_misc_template_objects :: Template -> Int -> String -> (String, Template)
-update_misc_template_objects t n c = (s, t') where
-    f = (frame t) { objects = get_objects t ++ [(O ("gen_" ++ show i), T "cell") | i <- [1..n]]
-        }
-    t' = t { frame = f } 
-    s = "Num objects: " ++ show n ++ " complexity: " ++ c
-
 -------------------------------------------------------------------------------
--- Sokoban-specific solving
+-- Added for AAE: Sokoban functions updated to work with the AAE
 -------------------------------------------------------------------------------
 
 get_sokoban_data :: String -> (Int, Int, Int)
@@ -367,33 +224,13 @@ extract_sokoban_data e = (max_x, max_y, num_blocks) where
     num_blocks = sum (map f s)
     f x = length (filter (== 'b') x)
 
--- og_solve_sokoban :: String -> IO ()
--- og_solve_sokoban f i = do
---     let (max_x, max_y, n_blocks) = get_sokoban_data f
---     let t = template_sokoban max_x max_y n_blocks
---     putStrLn $ "max_x: " ++ show max_x ++ " max_y: " ++ show max_y ++ " n_blocks: " ++ show n_blocks
---     let input_f = "predict_" ++ f ++ ".lp"
---     let n = head $ Split.splitOn "." input_f
---     let c = "python mem_extra/time_in.py sokoban " ++ n ++ " " ++ "3"
---     Process.callCommand c
---     (results_f, ls2) <- do_solve "data/sokoban" input_f t
---     case ls2 of
---         [] -> do
---             putStrLn "No solution found."
---         _ -> do
---             let ans = last_answers ls2
---             Monad.forM_ ans (write_latex t)
---             let ls3 = map (process_answer_with_template t) ans
---             Monad.forM_ ls3 putStrLn
---             let n = head $ Split.splitOn "." input_f
---             let c = "python mem_extra/time_out.py"
---             Process.callCommand c
-
 -- Add 0, 1, 2 to code to do the following:
 -- 0: Retrieve template from memory tree if possible
 -- 1: Run with an empty interpret_mem
 -- 2: Retrieve template from file
 -- 3: Retrieve template from preexisting haskell files and delete template_in file
+-- 4: Add auxiliary files as an extra flag to the input, in this case when "sok" is added the correct auxiliary files
+--    for the raw sokoban problem are added in memory_in.py
 solve_sokoban :: String -> String -> IO ()
 solve_sokoban f "3" = do
     putStrLn $ "SUCCESS"
@@ -450,11 +287,6 @@ solve_sok_iterative f i = do
     let dir = "memory/sokoban_" ++ n ++ "/"
     putStrLn $ "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA "
     file_exists <- doesFileExist filepath 
-    -- if file_exists
-    --     then do -- templates <- getTemplateFiles dir
-    --             -- let l = lines xs
-    --             -- let tfmap = process_to_map xs
-    --             -- let template = template_from_file tfmap
     putStrLn $ "Reading templates from " ++ dir
     tree_solve_iteratively dir "data/sokoban" input_f True True
 
@@ -478,7 +310,9 @@ solve_sok_pixels_iterative f i = do
 
 
 -------------------------------------------------------------------------------
--- Sokoban from raw pixels
+-- Added for AAE: Sokoban from raw pixels is slightly changed for the AAE, mainly to attempt to
+-- make it work for the AAE, but right now it can only just output its solution to a file
+-- and then read that in again, which does of course bring down the computation time.
 -------------------------------------------------------------------------------
 
 solve_sok_pixels :: String -> IO ()
@@ -497,6 +331,36 @@ all_sok_pixels_templates max_x max_y n_blocks = [("Using " ++ show 1 ++ " persis
 --all_sok_pixels_templates max_x max_y n_blocks = map f ps where
 --    ps = take k_max_num_sok_pixels_templates ([1 ..] Universe.+*+ [1 ..])
 --    f (num_t1s, num_t2s) = ("Using " ++ show num_t1s ++ " persistent objects of type t1 and " ++ show num_t2s ++ " of type t2", template_sok_pixels max_x max_y num_t1s num_t2s)
+
+
+
+-- -------------------------------------------------------------------------------
+-- -- SW-specific iteration
+-- -------------------------------------------------------------------------------
+
+solve_misc_iterative2 :: String -> Template -> Int -> IO ()
+solve_misc_iterative2 input_f template num_objects = do
+    solve_iteratively "data/misc" input_f (all_misc_templates input_f num_objects) True False
+
+all_misc_templates :: String -> Int -> [(String, Template)]
+all_misc_templates input_f n = s ++ c where
+    s = map (make_simple_misc_template input_f) [n..3]
+    c = map (make_complex_misc_template input_f) [n..3]
+
+make_simple_misc_template :: String -> Int -> (String, Template)
+make_simple_misc_template input_f n = update_misc_template_objects t n "simple" where
+    t = template_sw_simple n
+
+make_complex_misc_template :: String -> Int -> (String, Template)
+make_complex_misc_template input_f n = update_misc_template_objects t n "complex" where
+    t = template_sw_complex n
+
+update_misc_template_objects :: Template -> Int -> String -> (String, Template)
+update_misc_template_objects t n c = (s, t') where
+    f = (frame t) { objects = get_objects t ++ [(O ("gen_" ++ show i), T "cell") | i <- [1..n]]
+        }
+    t' = t { frame = f } 
+    s = "Num objects: " ++ show n ++ " complexity: " ++ c
 
 
 -------------------------------------------------------------------------------

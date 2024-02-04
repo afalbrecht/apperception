@@ -26,16 +26,16 @@ Our system produces the frame $\phi = (T, O, P, V)$, where:
 \phi = \left \{
 \begin{aligned}
 & T = \{ 
-grid,letter,object,sensor
+letter,sensor
 \}\\
 & O = \{
-\mathit{sensor}: sensor,\mathit{grid}: grid,\mathit{letter}_a: letter,\mathit{letter}_b: letter,\mathit{letter}_c: letter,\mathit{letter}_d: letter,\mathit{letter}_e: letter,\mathit{letter}_f: letter
+\mathit{sensor}: sensor,\mathit{letter}_a: letter,\mathit{letter}_b: letter,\mathit{letter}_c: letter,\mathit{letter}_d: letter,\mathit{letter}_e: letter,\mathit{letter}_f: letter
 \}\\
 & P = \{
-\mathit{letter}(sensor, letter),\mathit{part}(sensor, grid),\mathit{succ}(letter, letter)
+\mathit{letter}(sensor, letter),\mathit{succ}(letter, letter)
 \}\\
 & V = \{
-L: letter,L2: letter,S: sensor
+SENSOR_1: sensor,LETTER_1: letter,LETTER_2: letter
 \}\\
 \end{aligned}\right\}
 \end{equation*}
@@ -43,16 +43,9 @@ Our system finds the theory $\theta = (\phi, I, R, C)$, where:
 \begin{eqnarray*}
 I & = & \left\{ \begin{array}{l}
 \mathit{letter}(\mathit{sensor},\mathit{letter}_a)\\
-\mathit{part}(\mathit{sensor},\mathit{grid})\\
-\mathit{succ}(\mathit{letter}_a,\mathit{letter}_f)\\
-\mathit{succ}(\mathit{letter}_b,\mathit{letter}_a)\\
-\mathit{succ}(\mathit{letter}_c,\mathit{letter}_b)\\
-\mathit{succ}(\mathit{letter}_d,\mathit{letter}_c)\\
-\mathit{succ}(\mathit{letter}_e,\mathit{letter}_d)\\
-\mathit{succ}(\mathit{letter}_f,\mathit{letter}_e)\\
 \end{array}\right\}\\
 R & = &  \left\{ \begin{array}{l}
-\mathit{succ}(\mathit{L},\mathit{L}2) \wedge \mathit{letter}(\mathit{S},\mathit{L}2) \ni \mathit{letter}(\mathit{S},\mathit{L})\\
+\mathit{succ}(\mathit{LETTER}_1,\mathit{LETTER}_2) \wedge \mathit{letter}(\mathit{SENSOR}_1,\mathit{LETTER}_2) \ni \mathit{letter}(\mathit{SENSOR}_1,\mathit{LETTER}_1)\\
 \end{array}\right\}\\
 C & = & \left\{ \begin{array}{l}
 \forall X : sensor, \; \exists ! Y : letter, \; letter(X, Y) \\

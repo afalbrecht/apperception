@@ -24,16 +24,16 @@ Our system produces the frame $\phi = (T, O, P, V)$, where:
 \phi = \left \{
 \begin{aligned}
 & T = \{ 
-block,cell,grid,player
+block,cell,player
 \}\\
 & O = \{
-\mathit{cell}_1_1: cell,\mathit{cell}_2_1: cell,\mathit{cell}_3_1: cell,\mathit{cell}_4_1: cell,\mathit{cell}_5_1: cell,\mathit{cell}_6_1: cell,\mathit{cell}_7_1: cell,\mathit{cell}_8_1: cell,\mathit{x}1: player,\mathit{x}2: block,\mathit{grid}: grid
+\mathit{cell}_1_1: cell,\mathit{cell}_2_1: cell,\mathit{cell}_3_1: cell,\mathit{cell}_4_1: cell,\mathit{cell}_5_1: cell,\mathit{cell}_6_1: cell,\mathit{cell}_7_1: cell,\mathit{cell}_8_1: cell,\mathit{x}1: player,\mathit{x}2: block
 \}\\
 & P = \{
-\mathit{east}(player),\mathit{in}_1(player, cell),\mathit{in}_2(block, cell),\mathit{noop}(player),\mathit{north}(player),\mathit{p}1(block),\mathit{p}2(block),\mathit{p}3(block),\mathit{p}4(block),\mathit{part}(cell, grid),\mathit{south}(player),\mathit{west}(player)
+\mathit{east}(player),\mathit{in}_1(player, cell),\mathit{in}_2(block, cell),\mathit{noop}(player),\mathit{north}(player),\mathit{p}1(block),\mathit{p}2(block),\mathit{p}3(block),\mathit{p}4(block),\mathit{south}(player),\mathit{west}(player)
 \}\\
 & V = \{
-PLAYER_1: player,CELL_1: cell,CELL_2: cell,BLOCK_1: block,GRID_1: grid
+PLAYER_1: player,CELL_1: cell,CELL_2: cell,BLOCK_1: block
 \}\\
 \end{aligned}\right\}
 \end{equation*}
@@ -60,7 +60,6 @@ R & = &  \left\{ \begin{array}{l}
 C & = & \left\{ \begin{array}{l}
 \forall X : player, \; \exists ! Y : cell, \; in_1(X, Y) \\
 \forall X : block, \; \exists ! Y : cell, \; in_2(X, Y) \\
-\forall X : cell, \; \exists ! Y : grid, \; part(X, Y) \\
 \end{array}\right\}\\
 \end{eqnarray*}
 

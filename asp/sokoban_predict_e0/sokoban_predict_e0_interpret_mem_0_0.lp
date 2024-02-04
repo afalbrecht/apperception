@@ -41,7 +41,6 @@ rule_body(r6,s(c_north,var_player_1)).
 rule_body(r6,s2(c_in_1,var_player_1,var_cell_2)).
 rule_head_causes(r6,s2(c_in_1,var_player_1,var_cell_1)).
 
-rule_body(r7,isa(p_is_not_wall,var_cell_1)).
 rule_body(r7,isa2(p_right,var_cell_2,var_cell_1)).
 rule_body(r7,s(c_east,var_player_1)).
 rule_body(r7,s2(c_in_1,var_player_1,var_cell_2)).

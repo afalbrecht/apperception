@@ -28,16 +28,16 @@ Our system produces the frame $\phi = (T, O, P, V)$, where:
 \phi = \left \{
 \begin{aligned}
 & T = \{ 
-object
+sensor_2
 \}\\
 & O = \{
-\mathit{sensor}_a: object
+\mathit{sensor}_a: sensor_2
 \}\\
 & P = \{
-\mathit{a}(object),\mathit{b}(object),\mathit{c}(object),\mathit{d}(object)
+\mathit{a}(sensor_2),\mathit{b}(sensor_2),\mathit{c}(sensor_2),\mathit{d}(sensor_2)
 \}\\
 & V = \{
-X: object
+SENSOR_2_1: sensor_2
 \}\\
 \end{aligned}\right\}
 \end{equation*}
@@ -47,13 +47,13 @@ I & = & \left\{ \begin{array}{l}
 \mathit{a}(\mathit{sensor}_a)\\
 \end{array}\right\}\\
 R & = &  \left\{ \begin{array}{l}
-\mathit{c}(\mathit{X}) \ni \mathit{d}(\mathit{X})\\
-\mathit{a}(\mathit{X}) \ni \mathit{b}(\mathit{X})\\
-\mathit{b}(\mathit{X}) \ni \mathit{c}(\mathit{X})\\
-\mathit{d}(\mathit{X}) \ni \mathit{a}(\mathit{X})\\
+\mathit{a}(\mathit{SENSOR}_2_1) \ni \mathit{b}(\mathit{SENSOR}_2_1)\\
+\mathit{d}(\mathit{SENSOR}_2_1) \ni \mathit{a}(\mathit{SENSOR}_2_1)\\
+\mathit{b}(\mathit{SENSOR}_2_1) \ni \mathit{c}(\mathit{SENSOR}_2_1)\\
+\mathit{c}(\mathit{SENSOR}_2_1) \ni \mathit{d}(\mathit{SENSOR}_2_1)\\
 \end{array}\right\}\\
 C & = & \left\{ \begin{array}{l}
-\forall X : object,\;\mathit{a}(X) \oplus \mathit{b}(X) \oplus \mathit{c}(X) \oplus \mathit{d}(X)\\
+\forall X : sensor_2,\;\mathit{a}(X) \oplus \mathit{b}(X) \oplus \mathit{c}(X) \oplus \mathit{d}(X)\\
 \end{array}\right\}\\
 \end{eqnarray*}
 

@@ -4,19 +4,23 @@
     \begin{forest}
         for tree={draw}
         [Root ,align=center,tier=above
-            [t\_object \\\hline
+            [t\_sensor\_a \\\hline
                 \textit{Objects: obj\_sensor\_a}\\
-                \textit{Concepts: c\_a, c\_b, c\_c, c\_d}
+                \textit{Concepts: c\_on, c\_off}
+            ]
+            [t\_object \\\hline
+                \textit{Objects: }\\
+                \textit{Concepts: }
                 [t\_cell \\\hline
-                    \textit{Objects: obj\_cell\_1\_1, obj\_cell\_1\_2, obj\_cell\_1\_3, obj\_cell\_1\_4, obj\_cell\_2\_1, obj\_cell\_2\_2, obj\_cell\_2\_3, obj\_cell\_2\_4, obj\_cell\_3\_1, obj\_cell\_3\_2, obj\_cell\_3\_3, obj\_cell\_3\_4, obj\_cell\_4\_1, obj\_cell\_4\_2, obj\_cell\_4\_3, obj\_cell\_4\_4}\\
+                    \textit{Objects: obj\_cell\_1\_1, obj\_cell\_1\_2, obj\_cell\_1\_3, obj\_cell\_1\_4, obj\_cell\_2\_1, obj\_cell\_2\_2, obj\_cell\_2\_3, obj\_cell\_2\_4, obj\_cell\_3\_1, obj\_cell\_3\_2, obj\_cell\_3\_3, obj\_cell\_3\_4, obj\_cell\_4\_1, obj\_cell\_4\_2, obj\_cell\_4\_3, obj\_cell\_4\_4, obj\_cell\_5\_1, obj\_cell\_6\_1, obj\_cell\_7\_1, obj\_cell\_8\_1}\\
                     \textit{Concepts: c\_part, c\_in\_1, c\_in\_2, p\_right, p\_below, p\_is\_not\_wall, p\_is\_wall}
                     [t\_sensor\_1 \\\hline
                         \textit{Objects: obj\_sensor\_a}\\
                         \textit{Concepts: c\_on, c\_off}
                     ]
                     [t\_sensor\_2 \\\hline
-                        \textit{Objects: obj\_sensor\_b}\\
-                        \textit{Concepts: c\_a, c\_b, c\_c}
+                        \textit{Objects: obj\_sensor\_b, obj\_sensor\_a}\\
+                        \textit{Concepts: c\_a, c\_b, c\_c, c\_d}
                     ]
                 ]
                 [t\_grid \\\hline
@@ -25,16 +29,12 @@
                 ]
                 [t\_sensor \\\hline
                     \textit{Objects: obj\_sensor}\\
-                    \textit{Concepts: c\_letter, p\_part, c\_number}
+                    \textit{Concepts: c\_letter, p\_part}
                 ]
             ]
             [t\_letter \\\hline
                 \textit{Objects: obj\_letter\_a, obj\_letter\_b, obj\_letter\_c, obj\_letter\_d, obj\_letter\_e, obj\_letter\_f}\\
                 \textit{Concepts: c\_letter, p\_succ}
-            ]
-            [t\_number \\\hline
-                \textit{Objects: obj\_number\_0, obj\_number\_1, obj\_number\_2, obj\_number\_3, obj\_number\_4, obj\_number\_5, obj\_number\_6, obj\_number\_7, obj\_number\_8}\\
-                \textit{Concepts: c\_number, p\_succ}
             ]
             [t\_player \\\hline
                 \textit{Objects: obj\_x1}\\

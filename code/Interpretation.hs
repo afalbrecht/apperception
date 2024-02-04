@@ -43,43 +43,8 @@ flag_delete_temp :: Bool
 flag_delete_temp = False
 
 const_time_limit :: Int
-const_time_limit = 7200 --14400
+const_time_limit = 14400
 
--- frame_misc_1_1 :: Frame    
--- frame_misc_1_1 = Frame {
---     types = [T "object"],
---     type_hierarchy = [],
---     objects = [
---         (O "sensor_a", T "object")
---         ],
---     exogeneous_objects = [],
---     permanent_concepts = [],
---     fluid_concepts = [
---         (C "on", [T "object"]), 
---         (C "off", [T "object"])
---         ],
---     input_concepts = [C "on", C "off"],
---     static_concepts = [],
---     vars = [
---         (V "x", T "object")
---         ],
---     var_groups = [
---         [V "x"]
---         ],
---     aux_files = []
--- }
-
--- template_misc_1_1 :: Template
--- template_misc_1_1 = Template {
---     dir = "misc",
---     frame = frame_misc_1_1,
---     min_body_atoms = 1,
---     max_body_atoms = 1, 
---     num_arrow_rules = 0,
---     num_causes_rules = 2,
---     num_visual_predicates = Nothing,
---     use_noise = False
---     }    
 
 -------------------------------------- Types ----------------------------------
 
@@ -177,7 +142,7 @@ type TypeConceptMap = Map.Map Type [Concept]
 
 -------------------------------------------------------------------------------
 -- 
--- These functions save and read in templates from Memory
+-- ADDED FOR AAE: These functions save and read in templates from Memory
 -- 
 -------------------------------------------------------------------------------
 process_to_map :: String -> [(String, String)]
@@ -295,22 +260,19 @@ remove_square_br = filter (/='[') . filter (/=']')
 
 
 -------------------------------------------------------------------------------
--- Save template to file
+-- ADDED FOR AAE: Save template to file
 -------------------------------------------------------------------------------
 
 
 gen_template_file :: String -> Template -> IO ()
 gen_template_file name t = do
     let f = "memory/" ++ name ++ "/" ++ name ++ "_template_out.txt"
-    -- let t_string = template_lines t
     writeFile f ("% " ++ name ++ "\n\n")
     Monad.forM_ (template_lines t) (append_new_line f)
     putStrLn $ "Generated " ++ f
-    -- putStrLn t_string
 
 template_lines :: Template -> [String]
 template_lines t = ["% Template"] ++ d ++ minba ++ maxba ++ nar ++ ncr ++ nvp ++ un ++ [""] ++ frm where
-    -- delete "frame" . constrFields . toConstr $ t
     d = ["dir = " ++ (dir t)]
     minba = ["min_body_atoms = " ++ show (min_body_atoms t)]
     maxba = ["max_body_atoms = " ++ show (max_body_atoms t)]
@@ -985,7 +947,7 @@ process_answer_with_template _ (Optimization l) = "Optimization: " ++ l
 show_interpretation :: Template -> Interpretation -> [String]
 show_interpretation t i | flag_output_latex == True = readable_interpretation t i ++ latex_output t i
 show_interpretation t i | flag_output_latex == False = readable_interpretation t i
--- show_interpretation t i | flag_output_latex == False = [show i]
+
 
 readable_interpretation :: Template -> Interpretation -> [String]
 readable_interpretation t i = is ++ ps ++ rs ++ xs ++ fs ++ ss ++ cs ++ acs where
@@ -1006,6 +968,11 @@ readable_interpretation t i = is ++ ps ++ rs ++ xs ++ fs ++ ss ++ cs ++ acs wher
         _ -> []
     ss = readable_stats (statistics i)
 
+
+-------------------------------------------------------------------------------
+-- ADDED FOR AAE: Save resulting interpretation to file
+-------------------------------------------------------------------------------
+
 gen_inter_file :: String -> [ClingoOutput] -> IO ()
 gen_inter_file _ [] = do return ()
 gen_inter_file name [Answer l, Optimization o] = do
@@ -1013,12 +980,10 @@ gen_inter_file name [Answer l, Optimization o] = do
     let ws = words l
     let xs = List.sort ws ++ [""]
     let xs2 = filter (\x -> not ("wibble" `List.isInfixOf` x)) xs
-    -- let t_string = template_lines t
     writeFile f ("% " ++ name ++ "\n% Optimization:" ++ o ++ "\n")
     Monad.forM_ (inter_lines xs2) (append_new_line f)
     putStrLn $ "Generated " ++ f
-    -- putStrLn t_string
--- gen_inter_file _ ([Optimization o]) = do return ()
+
 
 inter_lines :: [String] -> [String]
 inter_lines xs = typ ++ con ++ per ++ gip ++ rul ++ exc ++ [""] where
@@ -1067,32 +1032,9 @@ extract_given_permanents_inter xs = ["\n% Given permanents"] ++ Maybe.mapMaybe f
         False -> Nothing
         True -> Just $ x ++ "."
 
--- Currently only works for binary exclusion constraints
--- Does not actually work yet...
+
 extract_exclusions_inter :: [String] -> [String]
 extract_exclusions_inter xs = [""]
-    -- Maybe.mapMaybe f xs where
-    -- p = "exclusion_output(\""
-    -- f x = case List.isPrefixOf p x of
-    --     False -> Nothing
-    --     True -> Just $ c 
-    --         where [e1, e2] = Split.splitOn "+" . init . init $ List.drop (length p) x
-    --               c =   "\n% Input exclusions \n\
-    --                     \% Every object is either "++e1++" or "++e2++"\n\n\
-    --                     \% At most one \n\
-    --                     \:-\n\
-    --                     \    holds(s("++e1++", X), T),\n\
-    --                     \    holds(s("++e2++", X), T).\n\n\
-    --                     \% At least one\n\
-    --                     \:-\n\
-    --                     \    permanent(isa(t_object, X)),\n\
-    --                     \    is_time(T),\n\
-    --                     \    not holds(s("++e1++", X), T),\n\
-    --                     \    not holds(s("++e2++", X), T).\n\n\
-    --                     \% Incompossibility\n\
-    --                     \incompossible(s("++e1++", X), s("++e2++", X)) :-\n\
-    --                     \    permanent(isa(t_object, X)).\n\n\
-    --                     \exclusion_output(\""++e1++"+"++e2++"\")."
 
 
 extract_rules_inter :: [String] -> [String]
@@ -1115,15 +1057,6 @@ extract_causes_inter :: [String] -> [String]
 extract_causes_inter xs = concat $ map f (extract_cause_heads_inter xs) where
     f (r, c) = (extract_body_inter xs r) ++ [c] -- c is een string maar haskell verwacht een [String] volgens mij
 -- Use a concatenate operation somewhere to flatten it into a [String]
-    
-
--- extract_xor_heads_inter :: [String] -> [(RuleID, String)]
--- extract_xor_heads_inter xs = collect_pairs_inter ps where
---     ps = Maybe.mapMaybe f xs
---     p = "rule_head_xor("
---     f x = case List.isPrefixOf p x of
---         False -> Nothing
---         True -> Just $ (extract_rule_id (drop_last (List.drop (length p) x)), x ++ ".")
 
 extract_xor_heads_inter :: [String] -> [(RuleID, String)]
 extract_xor_heads_inter xs = Maybe.mapMaybe f xs where
@@ -1145,14 +1078,6 @@ extract_arrow_heads_inter xs = Maybe.mapMaybe f xs where
         False -> Nothing
         True -> Just $ (extract_rule_id (drop_last (List.drop (length p) x)), x ++ ".\n")
 
--- bimble_split :: String -> Char -> [String]
--- bimble_split s c = bimble_split2 s c ""
-
--- bimble_split2 :: String -> Char -> String -> [String]
--- bimble_split2 "" _  acc = [acc]
--- bimble_split2 (x:xs) c acc | x == c = acc : bimble_split2 xs c ""
--- bimble_split2 (x:xs) c acc | otherwise = bimble_split2 xs c (acc ++ [x])
-
 extract_rule_id :: String -> RuleID
 extract_rule_id x = r where
     r:_ = bimble_split x ','
@@ -1171,47 +1096,10 @@ extract_body_inter xs r = Maybe.mapMaybe f xs where
         True -> Just $ x ++ "."
     p = "rule_body(" ++ r ++ ","
 
--- extract_causes :: [String] -> [Rule]
--- extract_causes xs = map f (extract_cause_heads xs) where
---     f (r, c) = Causes r (extract_body xs r) c
 
--- extract_cause_heads :: [String] -> [(RuleID, Atom)]
--- extract_cause_heads xs = Maybe.mapMaybe f xs where
---     p = "rule_head_causes("
---     f x = case List.isPrefixOf p x of
---         False -> Nothing
---         True -> Just $ 
---             extract_cause_pair (drop_last (List.drop (length p) x))
-
--- extract_body :: [String] -> RuleID -> [Atom]
--- extract_body xs r = Maybe.mapMaybe f xs where
---     f x = case List.isPrefixOf p x of
---         False -> Nothing
---         True -> Just $ drop_last (List.drop (length p) x)
---     p = "rule_body(" ++ r ++ ","
-
--- extract_cause_pair :: String -> (RuleID, Atom)
--- extract_cause_pair x = (r, xs2) where
---     r:xs = bimble_split x ','
---     xs2 = concat (List.intersperse ", " xs)
-
--- extract_cause_pair_inter :: String -> (RuleID, Atom)
--- extract_cause_pair_inter x = (r, xs2) where
---     r:xs = bimble_split x ','
---     xs2 = concat (List.intersperse ", " xs)
-
-
-
-
-
--- gen_template_file :: String -> Template -> IO ()
--- gen_template_file name t = do
---     let f = "memory/" ++ name ++ "_template.txt"
---     -- let t_string = template_lines t
---     writeFile f (name ++ "\n\n")
---     Monad.forM_ (template_lines t) (append_new_line f)
---     putStrLn $ "Generated " ++ f
---     -- putStrLn t_string
+-------------------------------------------------------------------------------
+-- Extract interpretation for results
+-------------------------------------------------------------------------------
 
 extract_interpretation :: [String] -> Interpretation
 extract_interpretation xs = I { 

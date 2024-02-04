@@ -10,14 +10,14 @@ num_visual_predicates = Nothing
 use_noise = False
 
 % Frame
-types = [t_object]
+types = [t_sensor_2]
 type_hierarchy = []
-objects = [(obj_sensor_a,t_object)]
+objects = [(obj_sensor_a,t_sensor_2)]
 exogeneous_objects = []
 permanent_concepts = []
-fluid_concepts = [(c_a,[t_object]),(c_b,[t_object]),(c_c,[t_object]),(c_d,[t_object])]
+fluid_concepts = [(c_a,[t_sensor_2]),(c_b,[t_sensor_2]),(c_c,[t_sensor_2]),(c_d,[t_sensor_2])]
 input_concepts = [c_a,c_b,c_c,c_d]
 static_concepts = []
-vars = [(var_x,t_object)]
-var_groups = [[var_x]]
-aux_files = []
+vars = [(var_sensor_2_1,t_sensor_2)]
+var_groups = [[var_sensor_2_1]]
+aux_files = ["misc_predict_3/misc_predict_3_interpret_mem_0_0.lp"]

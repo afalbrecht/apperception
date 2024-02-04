@@ -1,0 +1,23 @@
+% misc_predict_3
+
+% Template
+dir = misc
+min_body_atoms = 1
+max_body_atoms = 1
+num_arrow_rules = 0
+num_causes_rules = 4
+num_visual_predicates = Nothing
+use_noise = False
+
+% Frame
+types = [t_sensor_2,t_cell,t_object]
+type_hierarchy = [(t_cell,[t_sensor_2]),(t_object,[t_cell])]
+objects = [(obj_sensor_a,t_sensor_2)]
+exogeneous_objects = []
+permanent_concepts = [(p_right,Given,[t_cell,t_cell]),(p_below,Given,[t_cell,t_cell]),(p_is_not_wall,Given,[t_cell]),(p_is_wall,Given,[t_cell])]
+fluid_concepts = [(c_a,[t_sensor_2]),(c_b,[t_sensor_2]),(c_c,[t_sensor_2]),(c_d,[t_sensor_2])]
+input_concepts = [c_a,c_b,c_c,c_d]
+static_concepts = []
+vars = [(var_sensor_2_1,t_sensor_2),(var_cell_1,t_cell),(var_cell_2,t_cell)]
+var_groups = [[var_sensor_2_1],[var_cell_1],[var_cell_2],[var_sensor_2_1,var_cell_1],[var_sensor_2_1,var_cell_2],[var_cell_1,var_cell_2],[var_sensor_2_1,var_cell_1,var_cell_2]]
+aux_files = ["misc_predict_3/misc_predict_3_interpret_mem_2_0.lp"]

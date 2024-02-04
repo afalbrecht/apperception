@@ -651,7 +651,6 @@ def update_permanent_concepts(tree, template):
 # Functions for updating the memory tree with the interpret_mem file
 #---------------------------------------------------------------------
 
-# TODO: Add way to add rules to the mem_tree, in concert with variables of course
 def convert_interpret_mem(inter):
     """Parses the interpret_mem file to convert the relevant lines,
     fact statements for permanent assignments for a p_ function into a neat list,
@@ -754,7 +753,7 @@ def replace_vars(line, temp_dict, seen_vars, seen_types):
 # Functions for retrieving a template from a memory tree
 #---------------------------------------------------------------------
 
-def build_template(tree, input, senses):
+def build_template(tree, input, senses, optimize=False):
     """Constructor function for building a template and interpretion dict
     to be converted into a template_in file and an interpret_mem file"""
 
@@ -765,37 +764,28 @@ def build_template(tree, input, senses):
     temp_list = [temp_dict]
     temp_list = iterative_senses(senses, temp_list, tree)
     output = []
-    # for t in temp_list:
-    #     t_list = add_speculative_concepts(tree, senses, t)        
-    #     for t0 in t_list:
-    #         t0_list = add_hierarchy_types(tree, senses, t0)
-    #         for t1 in t0_list:
-    #             output = output + add_apriori_objects(tree, senses, t1)
-    # for t in temp_list:
-    #     t_list = add_speculative_concepts(tree, senses, t)#[1:]        
-    #     for t0 in t_list:
-    #         t0_list = add_hierarchy_types(tree, senses, t0)[1:]
-    #         for t1 in t0_list:
-    #             output = output + add_apriori_objects(tree, senses, t1)[:-1]
     for t in temp_list:
-        t_list = add_speculative_concepts(tree, senses, t)[1:]        
+        t_list = add_speculative_concepts(tree, senses, t)[0:]        
         for t0 in t_list:
             t0_list = add_hierarchy_types(tree, senses, t0)[0:]
             for t1 in t0_list:
                 output = output + add_apriori_objects(tree, senses, t1)[0:]
-    # for i, o in enumerate(output):
 
-    # output = output + [add_apriori_objects(tree, senses, o) for o in output]
-    # print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-    # for o in output:
-    #     print([t.get_name() for t in o["objects"]])
+    # ---------------------------------------------------------------------------
+    # Uncomment these lines below to use a single template optimized for sokoban:
+
+    if optimize:
+        output = []
+        for t in temp_list:
+            t_list = add_speculative_concepts(tree, senses, t)[1:]        
+            for t0 in t_list:
+                t0_list = add_hierarchy_types(tree, senses, t0)[:-1]
+                for t1 in t0_list:
+                    output = output + add_apriori_objects(tree, senses, t1)[:-1]
+
+    # ---------------------------------------------------------------------------
     
     output = [construct_hierarchy(tree, o) for o in output]
-    # output = [add_apriori_objects(tree, senses, o) for o in output]
-
-    # print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-    # for o in output:
-    #     print([t.get_name() for t in o["objects"]])
 
     return output
 
@@ -806,15 +796,12 @@ def add_hierarchy_types(root, senses, temp_dict):
 
     minimal = copy.deepcopy(temp_dict)
     apriori = copy.deepcopy(temp_dict)
-    # extended = copy.deepcopy(temp_dict)
     for type in apriori["types"]:
         if root.get_node_by_name(type) != None:
             for t in root.get_path_to_node(type):
                 if t not in apriori["types"]:
                     apriori["types"] = apriori["types"] + [t]
-                    # extended["types"] = extended["types"] + [t]
                     apriori = fill_type(root, root.get_node_by_name(t), apriori)
-                    # extended = fill_type(root, root.get_node_by_name(t), extended, extend=True)
 
     return [minimal, apriori]
 
@@ -842,7 +829,6 @@ def add_apriori_objects(root, senses, temp_dict):
 
     return [output, temp_dict]
 
-# TODO: fix hoe het gedaan wordt met reflexieve concepten 
 def fill_type(root, node, output, extend=False, apriori_forms=False):
     """Adds concepts from the type selected in the tree to the template file
     if not already present in the output, which also prompts it to add 
@@ -853,7 +839,7 @@ def fill_type(root, node, output, extend=False, apriori_forms=False):
             if set(concept.get_types()).issubset(output['types']) and\
                 (concept.is_permanent() or extend):
                 output['concepts'] = output['concepts'] + [concept]
-            elif apriori_forms: # Ik denk stiekem dat deze else een tab naar links moet
+            elif apriori_forms:
                 output = add_extra_types(root, concept, output)
 
     return output
@@ -886,9 +872,6 @@ def recursive_senses(node, senses, output, root, count=0):
     for child in node.get_extension():
         output = check_senses(child, senses, output, root)
         output = fill_type(root, child, output)
-        # count = count + add
-        # if count == len(senses):
-        #     return output, count
         if child.get_extension() != []:
             output = recursive_senses(child, senses, output, root, count)
     return output
@@ -898,72 +881,49 @@ def iterative_senses(senses, output, root, index=0, concept_dict={}):
     if index == len(senses):
         return output
     fact = senses[index]
-    # print(fact)
     node_pairs = root.get_node_pairs_by_concept(fact[0])
-    # node_pairs = strip_pairs(node_pairs, fact, root)
-    all_nodes = root.get_nodes_by_concept(fact[0])
-    nodes = select_lowest_nodes(root, all_nodes)
+    # all_nodes = root.get_nodes_by_concept(fact[0])
+    # nodes = select_lowest_nodes(root, all_nodes, output)
+    print(node_pairs)
+    # print(all_nodes)
 
     # If the concept is not yet known the system attempts to add a new concept 
     # and potentially new types and objects to the template
     if node_pairs == []:
-        if 'obj_x4' in fact:
-            print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-            print(node_pairs)
         output = add_new_concept_type(fact, output, root)
         output = iterative_senses(senses, output, root, index + 1)
 
     # If the amount of possible types found corresponds to the amount of types in the 
     # fact, then there is only one possible concept to be used.
-    elif len(node_pairs) == 1: #len(node) == len(fact) - 1:
-        if 'obj_x4' in fact:
-            print("Only possible type(s) for the concept:")
-            print(nodes)
+    elif len(node_pairs) == 1: 
         for pair in node_pairs:
             for n in pair:
                 node = root.get_node_by_name(n)
                 concept = node.get_concept_by_name(fact[0])
                 output = [iter_add_type_concept(concept, fact, output[0], root)]
-                # print([c.get_name() for c in output[0]['concepts']])
                 output = [iter_fill_type(root, node, output[0])]
-                # print([c.get_name() for c in output[0]['concepts']])
         output = iterative_senses(senses, output, root, index + 1, concept_dict)
-        # print([c.get_name() for c in output[0]['concepts']])
     
     # If the concept in the fact has been seen at an earlier stage and the objects
     # in the fact can be subsumed under the types in the concept then we continue
     # with building the specific template
     elif len(fact_check(root, fact, output[0])) > 0:
-        if 'obj_x4' in fact:
-            print("BBBBBBBBBBBBBBBBBBBBBBBB")
-            print(nodes)
         print("Concept or both objects have been seen earlier:")
-        # print(nodes)
         for type in fact_check(root, fact, output[0]):
             print(fact[0])
-            # print(type)
             node = root.get_node_by_name(type)
             concept = node.get_concept_by_name(fact[0])
             output = [iter_add_type_concept(concept, fact, output[0], root)]
             output = [iter_fill_type(root, node, output[0])]
         output = iterative_senses(senses, output, root, index + 1, concept_dict)
 
-    # TODO: Fix this for binary concepts where there can thus be 4 types for a concept 
-    # FIXED (i think)
     else:
         recur = []
-        if 'obj_x4' in fact:
-            print("CCCCCCCCCCCCCCCCCCCCCCCCCC")
-            print(nodes)
 
         print("Going to iterate over the following nodepairs:")
         print(node_pairs)
-        # for n in nodes:
         for pair in node_pairs:     
             for n in pair:       
-                # print("----Iter step----")
-                # print(index)
-                # print(n)
                 node = root.get_node_by_name(n)
                 poss_output = copy.deepcopy(output)
                 concept = node.get_concept_by_name(fact[0])
@@ -982,9 +942,12 @@ def add_new_concept_type(fact, output, root):
     """Adds a concept and potentially new types and objects if the concept is not yet known"""
 
     if len(fact) == 2:
-            poss_nodes = root.get_nodes_by_object(fact[1])
+            poss_nodes = [o.get_type() for o in output[0]["objects"]\
+                 if fact[1] == o.get_name() and root.get_node_by_name(o.get_type()) != None]
+            if poss_nodes == []: 
+                poss_nodes = root.get_nodes_by_object(fact[1])
             if poss_nodes != []:
-                node_name = select_lowest_nodes(root, poss_nodes)[0]
+                node_name = select_lowest_nodes(root, poss_nodes, output)[0]
                 concept = Concept(name=fact[0], types=[node_name], sort='fluid')
                 output = [iter_add_type_concept(concept, fact, output[0], root)]
             else:
@@ -998,16 +961,22 @@ def add_new_concept_type(fact, output, root):
                 output = [iter_add_new_concept(new_type, fact, output[0], root)]
 
     if len(fact) == 3:
-        poss_nodes1 = root.get_nodes_by_object(fact[1])
-        poss_nodes2 = root.get_nodes_by_object(fact[2])
+        poss_nodes1 = [o.get_type() for o in output[0]["objects"]\
+                 if fact[1] == o.get_name() and root.get_node_by_name(o.get_type()) != None]
+        if poss_nodes1 == []: 
+            poss_nodes1 = root.get_nodes_by_object(fact[1])
+        poss_nodes2 = [o.get_type() for o in output[0]["objects"]\
+                 if fact[2] == o.get_name() and root.get_node_by_name(o.get_type()) != None]
+        if poss_nodes2 == []: 
+            poss_nodes2 = root.get_nodes_by_object(fact[2])
         if poss_nodes1 != [] and poss_nodes2 != []:
-            node1 = select_lowest_nodes(root, poss_nodes1)[0]
-            node2 = select_lowest_nodes(root, poss_nodes2)[0]
+            node1 = select_lowest_nodes(root, poss_nodes1, output)[0]
+            node2 = select_lowest_nodes(root, poss_nodes2, output)[0]
             concept = Concept(name=fact[0], types=[node1, node2], sort='fluid')
             output = [iter_add_type_concept(concept, fact, output[0], root)]
 
         elif poss_nodes1 == [] and poss_nodes2 != []:
-            node2 = select_lowest_nodes(root, poss_nodes2)[0]
+            node2 = select_lowest_nodes(root, poss_nodes2, output)[0]
             new_type = "t_" + fact[1].replace('obj_', "")
             if root.get_node_by_name(new_type) != None:
                 for i in range(10):
@@ -1020,7 +989,7 @@ def add_new_concept_type(fact, output, root):
             output = [iter_add_new_concept2(new_type, old_node, concept, fact, output[0], root)]
 
         elif poss_nodes1 != [] and poss_nodes2 == []:
-            node1 = select_lowest_nodes(root, poss_nodes1)[0]
+            node1 = select_lowest_nodes(root, poss_nodes1, output)[0]
             new_type = "t_" + fact[2].replace('obj_', "")
             if root.get_node_by_name(new_type) != None:
                 for i in range(10):
@@ -1140,21 +1109,22 @@ def strip_pairs(pairs, fact, root):
     return output
 
 
-def select_lowest_nodes(root, nodes):
+def select_lowest_nodes(root, nodes, output):
     """ Checks if any of the nodes in the list lies in the extension of 
     any of the other nodes, and from these two nodes selects the lowest nodes
     on the basis of the 'specificity assumption' """
 
-    output = copy.deepcopy(nodes)
+    out = copy.deepcopy(nodes)
     
     for node in nodes:
+        if node in output[0]["types"]:
+            return [node]
         path = root.get_path_to_node(node)
         for n in path[1:]:
             if n in nodes:
-                output.remove(n)
+                out.remove(n)
     
-    output = nodes
-    return output
+    return out
                 
 
 def fact_check(root, fact, temp_dict):
@@ -1190,19 +1160,14 @@ def fact_check(root, fact, temp_dict):
             print(obj)
             output = output + [o.get_type() for o in temp_dict["objects"] if o.get_name() == obj]
 
-    # print("These objects have been seen earlier:")
-    # print(output)
     return output
 
 
-# TODO: Moet dit een stuk beter fixen voor reflexive concepts en gewoon concepts waar de 
-# types omgewisseld zijn voor onbeduidende redenen. Sowieso moet ik wat doen aan concepts
-# met arbitrair omgewisselde types die niet reflexief zijn etc etc
 def iter_add_type_concept(concept, fact, output, root):
     """Adds concepts, objects and types to template file, if it can find the the objects
     it encounters in the senses facts in the memory tree"""
     t = concept.get_types()
-    # print("TEEEEEEEEEEESTTT")
+
     # If the senses fact holds a singleton concept
     if len(fact) == 2:
         node = root.get_node_by_name(t[0])
@@ -1224,10 +1189,7 @@ def iter_add_type_concept(concept, fact, output, root):
                 output['concepts'] = output['concepts'] + [concept]
         
         # Add object that is not present in tree to temp_dict 
-        # TODO: Slightly incomplete now, as it only adds the object if the type has already been seen,
-        # but the type could of course be seen only later
         else:
-            print("[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]")
             if fact[1] not in [o.get_name() for o in output['objects']]:
                 obj = Object(fact[1], type=node.get_name())
                 print("The following object not present in the tree has been added to the dict:")
@@ -1235,6 +1197,8 @@ def iter_add_type_concept(concept, fact, output, root):
                 output['objects'] = output['objects'] + [obj]
             if not is_concept_in_list(concept, output["concepts"]):
                 output['concepts'] = output['concepts'] + [concept]
+            if node.get_name() not in output['types']:
+                output['types'] = output['types'] + [node.get_name()]
 
     # If the senses fact holds a binary concept            
     if len(fact) == 3:
@@ -1262,7 +1226,6 @@ def iter_add_type_concept(concept, fact, output, root):
 
         # Add object that is not present in tree to temp_dict (speculative)
         else:
-            # if node.get_name() in output['types']:
             if fact[1] not in [o.get_name() for o in output['objects']]:
                 obj = Object(fact[1], type=n0.get_name())
                 output['objects'] = output['objects'] + [obj]
@@ -1270,6 +1233,9 @@ def iter_add_type_concept(concept, fact, output, root):
                     output['types'] = output['types'] + [n0.get_name()]
                 print("The following object not present in the tree has been added to the dict:")
                 print(obj.get_name())
+                if n0.get_name() not in output['types']:
+                    output['types'] = output['types'] + [n0.get_name()]
+
             if fact[2] not in [o.get_name() for o in output['objects']]:
                 obj = Object(fact[2], type=n1.get_name())
                 output['objects'] = output['objects'] + [obj]
@@ -1277,13 +1243,16 @@ def iter_add_type_concept(concept, fact, output, root):
                     output['types'] = output['types'] + [n1.get_name()]
                 print("The following object not present in the tree has been added to the dict:")
                 print(obj.get_name())  
+                if n1.get_name() not in output['types']:
+                    output['types'] = output['types'] + [n1.get_name()]
+
             if not is_concept_in_list(concept, output["concepts"]):
                 output['concepts'] = output['concepts'] + [concept]
+            
 
     return output 
 
 
-# TODO: fix hoe het gedaan wordt met reflexieve concepten 
 def iter_fill_type(root, node, output):
     """Adds concepts from the type selected in the tree to the template file
     if not already present in the output, which also prompts it to add 
@@ -1294,11 +1263,6 @@ def iter_fill_type(root, node, output):
             if set(concept.get_types()).issubset(output['types']) and\
                 concept.is_permanent():
                 output['concepts'] = output['concepts'] + [concept]
-            # else:
-            #     output = iter_add_extra_types(root, concept, output)
-    #         # TODO: Add a way to add concepts here whose types are not yet present in the 
-    #         # input, but can still be added by virtue of them being possible solutions
-    #         # or just a priori anschauungsformen like space and time etc
 
     return output
 
@@ -1322,8 +1286,6 @@ def iter_add_extra_types(root, concept, output):
 
 
 
-
-
 def is_concept_in_list(concept, conc_list):
     """Checker for fill_type to see if concept is in list"""
     con_dict = concept.to_dict()
@@ -1338,24 +1300,15 @@ def is_concept_in_list(concept, conc_list):
 def check_senses(node, senses, output, root):
     """Adds node with essential marks to output if a concept contained under the 
     node is present in the senses facts glossed from the input"""
-    # add = 0
-    # filled = []
     for concept in node.get_concepts():
         for fact in senses:
             if concept.get_name() == fact[0]:
-                # poss_nodes = get_nodes_by_concept(fact[0])
-                # for poss_node in poss_nodes:
-                #     poss_conc = poss_node.get_concept_by_name[fact[0]]
-                #     # new_dict = 
                 output = add_type_concept(concept, fact, output, root)
-                # filled = filled + [fact]
-                # add = add + 1
+
     return output
 
 
-# TODO: Moet dit een stuk beter fixen voor reflexive concepts en gewoon concepts waar de 
-# types omgewisseld zijn voor onbeduidende redenen. Sowieso moet ik wat doen aan concepts
-# met arbitrair omgewisselde types die niet reflexief zijn etc etc
+
 def add_type_concept(concept, fact, output, root):
     """Adds concepts, objects and types to template file, if it can find the the objects
     it encounters in the senses facts in the memory tree"""
@@ -1552,6 +1505,10 @@ def construct_vars_and_groups(concepts):
 
     return output, powerset_groups(groups)
 
+# TODO: In future work it would be preferable to not hard code this, which could be done
+# by first checking which stats are minimally needed for the template and rules added by 
+# the AAE and then iterating starting from those. This was not done now because it had 
+# no conceptual priority for the structure of the tree.
 def gen_temp_stats(temp_dict, dir, name):
     """Generate template part of template_in file"""
     if "sok-pixels" in dir:
@@ -1567,7 +1524,7 @@ def gen_temp_stats(temp_dict, dir, name):
     elif "2" in name:
         miba, maba, nar, ncr, nvp, noise = 1, 1, 0, 2, "Nothing", "False"
     elif "3" in name:
-        miba, maba, nar, ncr, nvp, noise = 1, 1, 0, 4, "Nothing", "False" #2, 4, 4, 8,
+        miba, maba, nar, ncr, nvp, noise = 1, 1, 0, 4, "Nothing", "False"
     elif "4" in name:
         miba, maba, nar, ncr, nvp, noise = 2, 2, 0, 1, "Nothing", "False"
     output = f"""% Template
@@ -1579,24 +1536,6 @@ num_causes_rules = {ncr}
 num_visual_predicates = {nvp}
 use_noise = {noise}"""
     return output
-
-
-# def process_dict(temp_dict):
-#     temp_dict['types'] = catch_empty(temp_dict['types'].strip('[]').split(','))
-#     temp_dict['type_hierarchy'] = process_hierarchy(temp_dict['type_hierarchy'])
-#     temp_dict['objects'] = process_objects(temp_dict['objects'])
-#     temp_dict['exogeneous_objects'] = catch_empty(temp_dict['exogeneous_objects'].strip('[]').split(','))
-#     temp_dict['permanent_concepts'] = process_perms(temp_dict['permanent_concepts'])
-#     temp_dict['fluid_concepts'] = process_hierarchy(temp_dict['fluid_concepts'])
-#     temp_dict['input_concepts'] = catch_empty(temp_dict['input_concepts'].strip('[]').split(','))
-#     temp_dict['static_concepts'] = catch_empty(temp_dict['static_concepts'].strip('[]').split(','))
-#     temp_dict['vars'] = process_objects(temp_dict['vars'])
-#     temp_dict['var_groups'] = catch_empty([x.split(',') for x in temp_dict['var_groups'].strip('[]').split('],[')])
-#     return temp_dict
-
-
-
-
 
 
 
@@ -1613,7 +1552,6 @@ def build_interpretation(tree, temp_dict, senses, dir, name):
     permanents = gen_permanents(temp_dict)
     rules = gen_rules(temp_dict)
     output = [start + permanents + rules]
-    # output = output + [start + permanents]  
     return output
 
 def gen_permanents(temp_dict):
@@ -1657,22 +1595,6 @@ def gen_rules(temp_dict):
                     index = index + 1
                     seen = seen + [head_body]
 
-
-    # for concept in temp_dict["concepts"]:
-    #     for rule in concept.get_rules():
-    #         if not rule.get_head().startswith("rule_arrow"):
-    #             cont = True
-    #             for line in rule.get_body():
-    #                 if "p_is_not_wall" in line:
-    #                     cont = False
-    #             if cont:
-    #                 head_body = "".join([rule.get_head()] + rule.get_body())
-    #                 if concept_check(rule.get_concepts(), present_concepts) \
-    #                     and head_body not in seen:
-    #                     output = output + rule_to_string(rule, index)
-    #                     index = index + 1
-    #                     seen = seen + [head_body]
-                    
     for concept in temp_dict["concepts"]:
         for rule in concept.get_rules():
             if not rule.get_head().startswith("rule_arrow"):
@@ -1748,89 +1670,3 @@ def process_node(node, indent):
         latex_code += ' ' * indent
         latex_code += "]"
     return latex_code
-
-# # TODO: Fix exogeneous objects and static_concepts + vars when working on interpretation
-# def gen_frame(temp_dict, dir, name):
-#     """Uses the template dict to generate the frame part of the template_in file"""
-#     perm_concepts, fluid_concepts, input_concepts = stringify_concepts(temp_dict["concepts"])
-#     # vars, var_groups = gen_vars_and_groups(temp_dict["concepts"])
-#     output = f"""\n\n% Frame
-# types = {to_string(temp_dict["types"])}
-# type_hierarchy = {to_string(temp_dict["type_hierarchy"])}
-# objects = {to_string(temp_dict["objects"])}
-# exogeneous_objects = []
-# permanent_concepts = {to_string(perm_concepts)}
-# fluid_concepts = {to_string(fluid_concepts)}
-# input_concepts = {to_string(input_concepts)}
-# static_concepts = []
-# vars = [(var_l,t_letter),(var_l2,t_letter),(var_s,t_sensor)]
-# var_groups = [[var_l,var_l2,var_s]]
-# aux_files = ["{dir}_{name}_interpret_mem.lp"]"""
-#     return output
-
-# # TODO: improve the input_concepts part by adding a concept attribute to the Concept class
-# def stringify_concepts(concepts):
-#     perm_concepts = []
-#     fluid_concepts = []
-#     input_concepts = []
-#     for c in concepts:
-#         if c.get_construct() == None:
-#             c_string = f"({c.get_name()},{to_string(c.get_types())})"
-#             fluid_concepts = fluid_concepts + [c_string]
-#             input_concepts = input_concepts + [c.get_name()]
-#         else:
-#             c_string = f"({c.get_name()},{c.get_construct()},{to_string(c.get_types())})"
-#             perm_concepts = perm_concepts + [c_string]
-#     return perm_concepts, fluid_concepts, input_concepts
-
-
-
-#---------------------------------------------------------------------
-# Functions for updating and maintaining the memory tree
-#---------------------------------------------------------------------
-
-
-
-# def recursive_update_objects(node, root):
-#     """Recursively walks through the tree and changes every occurence of 
-#     the objects into new Objects"""
-#     for child in node.get_extension():
-        
-
-#         if child.get_extension() != []:
-#             output = recursive_update_all(child, old, new, root)
-#     return output
-
-
-# # Add types to the tree, according to the hierarchy given in the template
-# def update_type_hierarchy(tree, template):
-#     for t in template['type_hierarchy']:
-#         present_types = tree.get_full_extension_names()
-#         if t not in present_types:
-#             node = tree.add_node(TreeNode(t))
-#         for e in template['type_hierarchy'][t]:
-#             if e not in present_types:
-#                 tree.get_node_by_name(t).add_node(TreeNode(e))
-#     return tree
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

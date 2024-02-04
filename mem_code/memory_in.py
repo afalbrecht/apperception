@@ -11,11 +11,13 @@ dir = sys.argv[1]
 input_name = sys.argv[2]
 flag = sys.argv[3]
 if "4" in flag:
-    # if sys.argv[4] == "sok":
     aux_files = '\"bnn.lp\",\"visual_sokoban.lp\",'
-    # aux_files = sys.argv[4]
 else:
     aux_files = ""
+if "5" in flag:
+    optimize = True
+else:
+    optimize = False
 filename = dir + '_' + input_name
 
 
@@ -33,7 +35,6 @@ stats = f"% {filename}\ncount = 1"
 # Delete template_in files
 if "3" in flag:
     print("Deleting template_in files")
-    # os.remove(f'memory/{filename}_template_in.txt')
     shutil.rmtree(f"memory/{filename}")
     os.mkdir(f"memory/{filename}")
 
@@ -61,42 +62,30 @@ if "0" in flag and "3" not in flag:
 
     # Parse input to isolate "senses" facts
     senses_list = parse_input(input)
-    print(senses_list)
+
     # Retrieve essential marks from tree depending on input
-    temp_dict = build_template(tree, input, senses_list)
-    # for t in temp_dict:
-    #     template = mem_to_template(t, dir, input_name)
-    #     print(template)
-    # print('----------------------------------------')
-    # print(temp_dict)
-    # print('----------------------------------------')     
+    temp_dict = build_template(tree, input, senses_list, optimize)
+  
     go = True
-    # temp_dict = temp_dict[0]
+
     
 
-    if temp_dict != []: #[0]["types"]
+    if temp_dict != []: 
         count = 0
         stats = f"% {filename}\n"
         for i, t in enumerate(temp_dict):
             print("Using memory tree")
             template = mem_to_template(t, dir, input_name)
             filedata = template.splitlines(True)
-            # print(template)
             interpretations = build_interpretation(tree, t, senses_list, dir, input_name)
             for j, interpretation in enumerate(interpretations):
                 count = count + 1
-                # stats = stats + f"{i},{j}\n"
 
                 # Replace the target string
                 for k, line in enumerate(filedata):
                     if 'aux' in line:
                         line = "aux_files = []"
-                        print("inter")
-                        print(i,j-1)
-                        # filedata[k] = line.replace(f'"{filename}/{filename}_interpret_mem_{i}_{j-1}.lp"', f'"{filename}/{filename}_interpret_mem_{i}_{j}.lp"')
                         filedata[k] = line.replace('[]', f'[{aux_files}"{filename}/{filename}_interpret_mem_{i}_{j}.lp"]')
-                        # if 'interpret' in filedata[k]:
-                        #     filedata[k] = line.replace(']', f',"{filename}/{filename}_interpret_mem_{i}_{j}.lp"]')
                 
                 # Write the file out again
                 with open(f'memory/{filename}/{filename}_template_in_{i}_{j}.txt', 'w') as file:
@@ -107,14 +96,9 @@ if "0" in flag and "3" not in flag:
                     print("Using empty interpretation file")
                     interpretation = ""
                 
-                print("ekster")
-                print(i,j)
                 with open(f'asp/{filename}/{filename}_interpret_mem_{i}_{j}.lp', 'w') as file:
                     file.write(interpretation)
         
-        # stats = stats + f"count = {count}"
-        # with open(f'memory/{filename}/{filename}_stats.txt', 'w') as file:
-        #                 file.write(stats)
         go = False
 
 
@@ -150,14 +134,6 @@ if "0" in flag and "3" not in flag:
         with open(f'asp/{filename}/{filename}_interpret_mem_0_0.lp', 'w') as file:
                 file.write(interpretation)
         
-        # with open(f'memory/{filename}/{filename}_stats.txt', 'w') as file:
-        #     file.write(stats)
-        
-
-
-
-
-
 
 
 if os.path.isfile(f'memory/{filename}_template_out.txt') and "2" in flag and "3" not in flag:
@@ -177,9 +153,6 @@ if os.path.isfile(f'memory/{filename}_template_out.txt') and "2" in flag and "3"
     with open(f'memory/{filename}/{filename}_template_in_0_0.txt', 'w') as file:
         file.writelines(filedata)
 
-    # with open(f'memory/{filename}/{filename}_stats.txt', 'w') as file:
-    #         file.write(stats)
-
     if "1" in flag:
         print("Using empty interpretation file")
         interpretation = ""
@@ -190,7 +163,4 @@ if os.path.isfile(f'memory/{filename}_template_out.txt') and "2" in flag and "3"
     with open(f'asp/{filename}/{filename}_interpret_mem_0_0.lp', 'w') as file:
             file.write(interpretation)
 
-    # shutil.copyfile(f'memory/{filename}_interpret_mem.lp', f'asp/{filename}_interpret_mem.lp')
 
-# if "3" not in flag:
-#     os.remove(f'memory/{filename}/{filename}_stats.txt')
