@@ -16,7 +16,7 @@
          ],
          "concepts": [
             {
-               "name": "c_on",
+               "name": "c_a",
                "concept": null,
                "types": [
                   "t_object"
@@ -26,17 +26,17 @@
                "exo_flag": false,
                "rules": [
                   {
-                     "head": "rule_head_causes(ruleindex,s(c_off,var_object_1)).",
+                     "head": "rule_head_causes(ruleindex,s(c_b,var_object_1)).",
                      "body": [
-                        "rule_body(ruleindex,s(c_on,var_object_1))."
+                        "rule_body(ruleindex,s(c_a,var_object_1))."
                      ],
                      "concepts": [
                         [
-                           "c_on",
+                           "c_a",
                            "t_object"
                         ],
                         [
-                           "c_off",
+                           "c_b",
                            "t_object"
                         ]
                      ],
@@ -45,17 +45,17 @@
                      ]
                   },
                   {
-                     "head": "rule_head_causes(ruleindex,s(c_on,var_object_1)).",
+                     "head": "rule_head_causes(ruleindex,s(c_a,var_object_1)).",
                      "body": [
-                        "rule_body(ruleindex,s(c_off,var_object_1))."
+                        "rule_body(ruleindex,s(c_d,var_object_1))."
                      ],
                      "concepts": [
                         [
-                           "c_off",
+                           "c_d",
                            "t_object"
                         ],
                         [
-                           "c_on",
+                           "c_a",
                            "t_object"
                         ]
                      ],
@@ -66,7 +66,7 @@
                ]
             },
             {
-               "name": "c_off",
+               "name": "c_b",
                "concept": null,
                "types": [
                   "t_object"
@@ -76,17 +76,17 @@
                "exo_flag": false,
                "rules": [
                   {
-                     "head": "rule_head_causes(ruleindex,s(c_off,var_object_1)).",
+                     "head": "rule_head_causes(ruleindex,s(c_b,var_object_1)).",
                      "body": [
-                        "rule_body(ruleindex,s(c_on,var_object_1))."
+                        "rule_body(ruleindex,s(c_a,var_object_1))."
                      ],
                      "concepts": [
                         [
-                           "c_on",
+                           "c_a",
                            "t_object"
                         ],
                         [
-                           "c_off",
+                           "c_b",
                            "t_object"
                         ]
                      ],
@@ -95,17 +95,117 @@
                      ]
                   },
                   {
-                     "head": "rule_head_causes(ruleindex,s(c_on,var_object_1)).",
+                     "head": "rule_head_causes(ruleindex,s(c_c,var_object_1)).",
                      "body": [
-                        "rule_body(ruleindex,s(c_off,var_object_1))."
+                        "rule_body(ruleindex,s(c_b,var_object_1))."
                      ],
                      "concepts": [
                         [
-                           "c_off",
+                           "c_b",
                            "t_object"
                         ],
                         [
-                           "c_on",
+                           "c_c",
+                           "t_object"
+                        ]
+                     ],
+                     "types": [
+                        "t_object"
+                     ]
+                  }
+               ]
+            },
+            {
+               "name": "c_c",
+               "concept": null,
+               "types": [
+                  "t_object"
+               ],
+               "sort": "fluid",
+               "construct": null,
+               "exo_flag": false,
+               "rules": [
+                  {
+                     "head": "rule_head_causes(ruleindex,s(c_d,var_object_1)).",
+                     "body": [
+                        "rule_body(ruleindex,s(c_c,var_object_1))."
+                     ],
+                     "concepts": [
+                        [
+                           "c_c",
+                           "t_object"
+                        ],
+                        [
+                           "c_d",
+                           "t_object"
+                        ]
+                     ],
+                     "types": [
+                        "t_object"
+                     ]
+                  },
+                  {
+                     "head": "rule_head_causes(ruleindex,s(c_c,var_object_1)).",
+                     "body": [
+                        "rule_body(ruleindex,s(c_b,var_object_1))."
+                     ],
+                     "concepts": [
+                        [
+                           "c_b",
+                           "t_object"
+                        ],
+                        [
+                           "c_c",
+                           "t_object"
+                        ]
+                     ],
+                     "types": [
+                        "t_object"
+                     ]
+                  }
+               ]
+            },
+            {
+               "name": "c_d",
+               "concept": null,
+               "types": [
+                  "t_object"
+               ],
+               "sort": "fluid",
+               "construct": null,
+               "exo_flag": false,
+               "rules": [
+                  {
+                     "head": "rule_head_causes(ruleindex,s(c_d,var_object_1)).",
+                     "body": [
+                        "rule_body(ruleindex,s(c_c,var_object_1))."
+                     ],
+                     "concepts": [
+                        [
+                           "c_c",
+                           "t_object"
+                        ],
+                        [
+                           "c_d",
+                           "t_object"
+                        ]
+                     ],
+                     "types": [
+                        "t_object"
+                     ]
+                  },
+                  {
+                     "head": "rule_head_causes(ruleindex,s(c_a,var_object_1)).",
+                     "body": [
+                        "rule_body(ruleindex,s(c_d,var_object_1))."
+                     ],
+                     "concepts": [
+                        [
+                           "c_d",
+                           "t_object"
+                        ],
+                        [
+                           "c_a",
                            "t_object"
                         ]
                      ],
@@ -116,979 +216,1657 @@
                ]
             }
          ],
-         "extension": []
+         "extension": [
+            {
+               "name": "t_cell",
+               "objects": [
+                  {
+                     "name": "obj_cell_1_1",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_1_1"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_1_1",
+                           "obj_cell_1_2"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_1_1",
+                           "obj_cell_2_1"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_1_2",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_1_2"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_1_1",
+                           "obj_cell_1_2"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_1_2",
+                           "obj_cell_1_3"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_1_2",
+                           "obj_cell_2_2"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_1_3",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_1_3"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_1_2",
+                           "obj_cell_1_3"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_1_3",
+                           "obj_cell_1_4"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_1_3",
+                           "obj_cell_2_3"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_1_4",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_1_4"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_1_3",
+                           "obj_cell_1_4"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_1_4",
+                           "obj_cell_2_4"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_2_1",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_2_1"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_2_1",
+                           "obj_cell_2_2"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_1_1",
+                           "obj_cell_2_1"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_2_1",
+                           "obj_cell_3_1"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_2_2",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_2_2"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_2_1",
+                           "obj_cell_2_2"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_2_2",
+                           "obj_cell_2_3"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_1_2",
+                           "obj_cell_2_2"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_2_2",
+                           "obj_cell_3_2"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_2_3",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_2_3"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_2_2",
+                           "obj_cell_2_3"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_2_3",
+                           "obj_cell_2_4"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_1_3",
+                           "obj_cell_2_3"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_2_3",
+                           "obj_cell_3_3"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_2_4",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_2_4"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_2_3",
+                           "obj_cell_2_4"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_1_4",
+                           "obj_cell_2_4"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_2_4",
+                           "obj_cell_3_4"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_3_1",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_3_1"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_3_1",
+                           "obj_cell_3_2"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_2_1",
+                           "obj_cell_3_1"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_3_1",
+                           "obj_cell_4_1"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_3_2",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_3_2"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_3_1",
+                           "obj_cell_3_2"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_3_2",
+                           "obj_cell_3_3"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_2_2",
+                           "obj_cell_3_2"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_3_2",
+                           "obj_cell_4_2"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_3_3",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_3_3"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_3_2",
+                           "obj_cell_3_3"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_3_3",
+                           "obj_cell_3_4"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_2_3",
+                           "obj_cell_3_3"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_3_3",
+                           "obj_cell_4_3"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_3_4",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_3_4"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_3_3",
+                           "obj_cell_3_4"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_2_4",
+                           "obj_cell_3_4"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_3_4",
+                           "obj_cell_4_4"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_4_1",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_4_1"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_4_1",
+                           "obj_cell_4_2"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_3_1",
+                           "obj_cell_4_1"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_4_2",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_4_2"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_4_1",
+                           "obj_cell_4_2"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_4_2",
+                           "obj_cell_4_3"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_3_2",
+                           "obj_cell_4_2"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_4_3",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_4_3"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_4_2",
+                           "obj_cell_4_3"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_4_3",
+                           "obj_cell_4_4"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_3_3",
+                           "obj_cell_4_3"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  },
+                  {
+                     "name": "obj_cell_4_4",
+                     "type": "t_cell",
+                     "permanents": [
+                        [
+                           "p_is_not_wall",
+                           "obj_cell_4_4"
+                        ],
+                        [
+                           "p_below",
+                           "obj_cell_4_3",
+                           "obj_cell_4_4"
+                        ],
+                        [
+                           "p_right",
+                           "obj_cell_3_4",
+                           "obj_cell_4_4"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  }
+               ],
+               "concepts": [
+                  {
+                     "name": "c_part",
+                     "concept": null,
+                     "types": [
+                        "t_cell",
+                        "t_grid"
+                     ],
+                     "sort": "fluid",
+                     "construct": null,
+                     "exo_flag": false,
+                     "rules": []
+                  },
+                  {
+                     "name": "c_in_1",
+                     "concept": null,
+                     "types": [
+                        "t_player",
+                        "t_cell"
+                     ],
+                     "sort": "fluid",
+                     "construct": null,
+                     "exo_flag": false,
+                     "rules": [
+                        {
+                           "head": "rule_arrow_head(ruleindex,s(c_p1,var_block_1)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                              "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_2)).",
+                              "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_below",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_in_1",
+                                 "t_player",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_in_2",
+                                 "t_block",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_p1",
+                                 "t_block"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_player",
+                              "t_block"
+                           ]
+                        },
+                        {
+                           "head": "rule_arrow_head(ruleindex,s(c_p1,var_block_1)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                              "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                              "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_below",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_in_1",
+                                 "t_player",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_in_2",
+                                 "t_block",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_p1",
+                                 "t_block"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_player",
+                              "t_block"
+                           ]
+                        },
+                        {
+                           "head": "rule_arrow_head(ruleindex,s(c_p4,var_block_1)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
+                              "rule_body(ruleindex,s(c_east,var_player_1)).",
+                              "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                              "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_right",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_east",
+                                 "t_player"
+                              ],
+                              [
+                                 "c_in_1",
+                                 "t_player",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_in_2",
+                                 "t_block",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_p4",
+                                 "t_block"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_player",
+                              "t_block"
+                           ]
+                        },
+                        {
+                           "head": "rule_arrow_head(ruleindex,s(c_p4,var_block_1)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_right,var_cell_2,var_cell_1)).",
+                              "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                              "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_right",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_in_1",
+                                 "t_player",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_in_2",
+                                 "t_block",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_p4",
+                                 "t_block"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_player",
+                              "t_block"
+                           ]
+                        },
+                        {
+                           "head": "rule_head_causes(ruleindex,s2(c_in_1,var_player_1,var_cell_2)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                              "rule_body(ruleindex,s(c_south,var_player_1)).",
+                              "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_below",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_south",
+                                 "t_player"
+                              ],
+                              [
+                                 "c_in_1",
+                                 "t_player",
+                                 "t_cell"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_player"
+                           ]
+                        },
+                        {
+                           "head": "rule_head_causes(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                              "rule_body(ruleindex,s(c_north,var_player_1)).",
+                              "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_2))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_below",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_north",
+                                 "t_player"
+                              ],
+                              [
+                                 "c_in_1",
+                                 "t_player",
+                                 "t_cell"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_player"
+                           ]
+                        },
+                        {
+                           "head": "rule_head_causes(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                           "body": [
+                              "rule_body(ruleindex,isa(p_is_not_wall,var_cell_1)).",
+                              "rule_body(ruleindex,isa2(p_right,var_cell_2,var_cell_1)).",
+                              "rule_body(ruleindex,s(c_east,var_player_1)).",
+                              "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_2))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_is_not_wall",
+                                 "t_cell"
+                              ],
+                              [
+                                 "p_right",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_east",
+                                 "t_player"
+                              ],
+                              [
+                                 "c_in_1",
+                                 "t_player",
+                                 "t_cell"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_player"
+                           ]
+                        },
+                        {
+                           "head": "rule_head_causes(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
+                              "rule_body(ruleindex,s(c_west,var_player_1)).",
+                              "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_2))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_right",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_west",
+                                 "t_player"
+                              ],
+                              [
+                                 "c_in_1",
+                                 "t_player",
+                                 "t_cell"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_player"
+                           ]
+                        }
+                     ]
+                  },
+                  {
+                     "name": "c_in_2",
+                     "concept": null,
+                     "types": [
+                        "t_block",
+                        "t_cell"
+                     ],
+                     "sort": "fluid",
+                     "construct": null,
+                     "exo_flag": false,
+                     "rules": [
+                        {
+                           "head": "rule_arrow_head(ruleindex,s(c_p1,var_block_1)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                              "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_2)).",
+                              "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_below",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_in_1",
+                                 "t_player",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_in_2",
+                                 "t_block",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_p1",
+                                 "t_block"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_player",
+                              "t_block"
+                           ]
+                        },
+                        {
+                           "head": "rule_arrow_head(ruleindex,s(c_p1,var_block_1)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                              "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                              "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_below",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_in_1",
+                                 "t_player",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_in_2",
+                                 "t_block",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_p1",
+                                 "t_block"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_player",
+                              "t_block"
+                           ]
+                        },
+                        {
+                           "head": "rule_arrow_head(ruleindex,s(c_p4,var_block_1)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
+                              "rule_body(ruleindex,s(c_east,var_player_1)).",
+                              "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                              "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_right",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_east",
+                                 "t_player"
+                              ],
+                              [
+                                 "c_in_1",
+                                 "t_player",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_in_2",
+                                 "t_block",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_p4",
+                                 "t_block"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_player",
+                              "t_block"
+                           ]
+                        },
+                        {
+                           "head": "rule_arrow_head(ruleindex,s(c_p4,var_block_1)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_right,var_cell_2,var_cell_1)).",
+                              "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                              "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_right",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_in_1",
+                                 "t_player",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_in_2",
+                                 "t_block",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_p4",
+                                 "t_block"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_player",
+                              "t_block"
+                           ]
+                        },
+                        {
+                           "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_2)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                              "rule_body(ruleindex,s(c_p1,var_block_1)).",
+                              "rule_body(ruleindex,s(c_south,var_player_1)).",
+                              "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_below",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_p1",
+                                 "t_block"
+                              ],
+                              [
+                                 "c_south",
+                                 "t_player"
+                              ],
+                              [
+                                 "c_in_2",
+                                 "t_block",
+                                 "t_cell"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_block",
+                              "t_player"
+                           ]
+                        },
+                        {
+                           "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_2)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
+                              "rule_body(ruleindex,s(c_east,var_player_1)).",
+                              "rule_body(ruleindex,s(c_p4,var_block_1)).",
+                              "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_right",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_east",
+                                 "t_player"
+                              ],
+                              [
+                                 "c_p4",
+                                 "t_block"
+                              ],
+                              [
+                                 "c_in_2",
+                                 "t_block",
+                                 "t_cell"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_player",
+                              "t_block"
+                           ]
+                        },
+                        {
+                           "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_2)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_right,var_cell_2,var_cell_1)).",
+                              "rule_body(ruleindex,s(c_p4,var_block_1)).",
+                              "rule_body(ruleindex,s(c_west,var_player_1)).",
+                              "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_right",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_p4",
+                                 "t_block"
+                              ],
+                              [
+                                 "c_west",
+                                 "t_player"
+                              ],
+                              [
+                                 "c_in_2",
+                                 "t_block",
+                                 "t_cell"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_block",
+                              "t_player"
+                           ]
+                        },
+                        {
+                           "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_1)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                              "rule_body(ruleindex,s(c_north,var_player_1)).",
+                              "rule_body(ruleindex,s(c_p1,var_block_1)).",
+                              "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_below",
+                                 "t_cell",
+                                 "t_cell"
+                              ],
+                              [
+                                 "c_north",
+                                 "t_player"
+                              ],
+                              [
+                                 "c_p1",
+                                 "t_block"
+                              ],
+                              [
+                                 "c_in_2",
+                                 "t_block",
+                                 "t_cell"
+                              ]
+                           ],
+                           "types": [
+                              "t_cell",
+                              "t_player",
+                              "t_block"
+                           ]
+                        }
+                     ]
+                  },
+                  {
+                     "name": "p_right",
+                     "concept": null,
+                     "types": [
+                        "t_cell",
+                        "t_cell"
+                     ],
+                     "sort": null,
+                     "construct": "Given",
+                     "exo_flag": false,
+                     "rules": []
+                  },
+                  {
+                     "name": "p_below",
+                     "concept": null,
+                     "types": [
+                        "t_cell",
+                        "t_cell"
+                     ],
+                     "sort": null,
+                     "construct": "Given",
+                     "exo_flag": false,
+                     "rules": []
+                  },
+                  {
+                     "name": "p_is_not_wall",
+                     "concept": null,
+                     "types": [
+                        "t_cell"
+                     ],
+                     "sort": null,
+                     "construct": "Given",
+                     "exo_flag": false,
+                     "rules": []
+                  },
+                  {
+                     "name": "p_is_wall",
+                     "concept": null,
+                     "types": [
+                        "t_cell"
+                     ],
+                     "sort": null,
+                     "construct": "Given",
+                     "exo_flag": false,
+                     "rules": []
+                  }
+               ],
+               "extension": [
+                  {
+                     "name": "t_sensor_1",
+                     "objects": [
+                        {
+                           "name": "obj_sensor_a",
+                           "type": "t_sensor_1",
+                           "permanents": [],
+                           "form_of_intuition": null,
+                           "exo_flag": false
+                        }
+                     ],
+                     "concepts": [
+                        {
+                           "name": "c_on",
+                           "concept": null,
+                           "types": [
+                              "t_sensor_1"
+                           ],
+                           "sort": "fluid",
+                           "construct": null,
+                           "exo_flag": false,
+                           "rules": [
+                              {
+                                 "head": "rule_head_causes(ruleindex,s(c_off,var_sensor_1_1)).",
+                                 "body": [
+                                    "rule_body(ruleindex,s(c_on,var_sensor_1_1))."
+                                 ],
+                                 "concepts": [
+                                    [
+                                       "c_on",
+                                       "t_sensor_1"
+                                    ],
+                                    [
+                                       "c_off",
+                                       "t_sensor_1"
+                                    ]
+                                 ],
+                                 "types": [
+                                    "t_sensor_1"
+                                 ]
+                              },
+                              {
+                                 "head": "rule_head_causes(ruleindex,s(c_on,var_sensor_1_1)).",
+                                 "body": [
+                                    "rule_body(ruleindex,s(c_off,var_sensor_1_1))."
+                                 ],
+                                 "concepts": [
+                                    [
+                                       "c_off",
+                                       "t_sensor_1"
+                                    ],
+                                    [
+                                       "c_on",
+                                       "t_sensor_1"
+                                    ]
+                                 ],
+                                 "types": [
+                                    "t_sensor_1"
+                                 ]
+                              }
+                           ]
+                        },
+                        {
+                           "name": "c_off",
+                           "concept": null,
+                           "types": [
+                              "t_sensor_1"
+                           ],
+                           "sort": "fluid",
+                           "construct": null,
+                           "exo_flag": false,
+                           "rules": [
+                              {
+                                 "head": "rule_head_causes(ruleindex,s(c_off,var_sensor_1_1)).",
+                                 "body": [
+                                    "rule_body(ruleindex,s(c_on,var_sensor_1_1))."
+                                 ],
+                                 "concepts": [
+                                    [
+                                       "c_on",
+                                       "t_sensor_1"
+                                    ],
+                                    [
+                                       "c_off",
+                                       "t_sensor_1"
+                                    ]
+                                 ],
+                                 "types": [
+                                    "t_sensor_1"
+                                 ]
+                              },
+                              {
+                                 "head": "rule_head_causes(ruleindex,s(c_on,var_sensor_1_1)).",
+                                 "body": [
+                                    "rule_body(ruleindex,s(c_off,var_sensor_1_1))."
+                                 ],
+                                 "concepts": [
+                                    [
+                                       "c_off",
+                                       "t_sensor_1"
+                                    ],
+                                    [
+                                       "c_on",
+                                       "t_sensor_1"
+                                    ]
+                                 ],
+                                 "types": [
+                                    "t_sensor_1"
+                                 ]
+                              }
+                           ]
+                        }
+                     ],
+                     "extension": []
+                  },
+                  {
+                     "name": "t_sensor_2",
+                     "objects": [
+                        {
+                           "name": "obj_sensor_b",
+                           "type": "t_sensor_2",
+                           "permanents": [],
+                           "form_of_intuition": null,
+                           "exo_flag": false
+                        }
+                     ],
+                     "concepts": [
+                        {
+                           "name": "c_a",
+                           "concept": null,
+                           "types": [
+                              "t_sensor_2"
+                           ],
+                           "sort": "fluid",
+                           "construct": null,
+                           "exo_flag": false,
+                           "rules": [
+                              {
+                                 "head": "rule_head_causes(ruleindex,s(c_b,var_object_1)).",
+                                 "body": [
+                                    "rule_body(ruleindex,s(c_a,var_object_1))."
+                                 ],
+                                 "concepts": [
+                                    [
+                                       "c_a",
+                                       "t_object"
+                                    ],
+                                    [
+                                       "c_b",
+                                       "t_object"
+                                    ]
+                                 ],
+                                 "types": [
+                                    "t_object"
+                                 ]
+                              },
+                              {
+                                 "head": "rule_head_causes(ruleindex,s(c_a,var_object_1)).",
+                                 "body": [
+                                    "rule_body(ruleindex,s(c_d,var_object_1))."
+                                 ],
+                                 "concepts": [
+                                    [
+                                       "c_d",
+                                       "t_object"
+                                    ],
+                                    [
+                                       "c_a",
+                                       "t_object"
+                                    ]
+                                 ],
+                                 "types": [
+                                    "t_object"
+                                 ]
+                              }
+                           ]
+                        },
+                        {
+                           "name": "c_b",
+                           "concept": null,
+                           "types": [
+                              "t_sensor_2"
+                           ],
+                           "sort": "fluid",
+                           "construct": null,
+                           "exo_flag": false,
+                           "rules": [
+                              {
+                                 "head": "rule_head_causes(ruleindex,s(c_b,var_object_1)).",
+                                 "body": [
+                                    "rule_body(ruleindex,s(c_a,var_object_1))."
+                                 ],
+                                 "concepts": [
+                                    [
+                                       "c_a",
+                                       "t_object"
+                                    ],
+                                    [
+                                       "c_b",
+                                       "t_object"
+                                    ]
+                                 ],
+                                 "types": [
+                                    "t_object"
+                                 ]
+                              },
+                              {
+                                 "head": "rule_head_causes(ruleindex,s(c_c,var_object_1)).",
+                                 "body": [
+                                    "rule_body(ruleindex,s(c_b,var_object_1))."
+                                 ],
+                                 "concepts": [
+                                    [
+                                       "c_b",
+                                       "t_object"
+                                    ],
+                                    [
+                                       "c_c",
+                                       "t_object"
+                                    ]
+                                 ],
+                                 "types": [
+                                    "t_object"
+                                 ]
+                              }
+                           ]
+                        },
+                        {
+                           "name": "c_c",
+                           "concept": null,
+                           "types": [
+                              "t_sensor_2"
+                           ],
+                           "sort": "fluid",
+                           "construct": null,
+                           "exo_flag": false,
+                           "rules": [
+                              {
+                                 "head": "rule_head_causes(ruleindex,s(c_d,var_object_1)).",
+                                 "body": [
+                                    "rule_body(ruleindex,s(c_c,var_object_1))."
+                                 ],
+                                 "concepts": [
+                                    [
+                                       "c_c",
+                                       "t_object"
+                                    ],
+                                    [
+                                       "c_d",
+                                       "t_object"
+                                    ]
+                                 ],
+                                 "types": [
+                                    "t_object"
+                                 ]
+                              },
+                              {
+                                 "head": "rule_head_causes(ruleindex,s(c_c,var_object_1)).",
+                                 "body": [
+                                    "rule_body(ruleindex,s(c_b,var_object_1))."
+                                 ],
+                                 "concepts": [
+                                    [
+                                       "c_b",
+                                       "t_object"
+                                    ],
+                                    [
+                                       "c_c",
+                                       "t_object"
+                                    ]
+                                 ],
+                                 "types": [
+                                    "t_object"
+                                 ]
+                              }
+                           ]
+                        }
+                     ],
+                     "extension": []
+                  }
+               ]
+            },
+            {
+               "name": "t_grid",
+               "objects": [
+                  {
+                     "name": "obj_grid",
+                     "type": "t_grid",
+                     "permanents": [
+                        [
+                           "p_part",
+                           "obj_sensor",
+                           "obj_grid"
+                        ]
+                     ],
+                     "form_of_intuition": true,
+                     "exo_flag": false
+                  }
+               ],
+               "concepts": [
+                  {
+                     "name": "c_part",
+                     "concept": null,
+                     "types": [
+                        "t_cell",
+                        "t_grid"
+                     ],
+                     "sort": "fluid",
+                     "construct": null,
+                     "exo_flag": false,
+                     "rules": []
+                  },
+                  {
+                     "name": "p_part",
+                     "concept": null,
+                     "types": [
+                        "t_sensor",
+                        "t_grid"
+                     ],
+                     "sort": null,
+                     "construct": "Constructed",
+                     "exo_flag": false,
+                     "rules": []
+                  }
+               ],
+               "extension": []
+            },
+            {
+               "name": "t_sensor",
+               "objects": [
+                  {
+                     "name": "obj_sensor",
+                     "type": "t_sensor",
+                     "permanents": [
+                        [
+                           "p_part",
+                           "obj_sensor",
+                           "obj_grid"
+                        ]
+                     ],
+                     "form_of_intuition": null,
+                     "exo_flag": false
+                  }
+               ],
+               "concepts": [
+                  {
+                     "name": "c_letter",
+                     "concept": null,
+                     "types": [
+                        "t_sensor",
+                        "t_letter"
+                     ],
+                     "sort": "fluid",
+                     "construct": null,
+                     "exo_flag": false,
+                     "rules": [
+                        {
+                           "head": "rule_head_causes(ruleindex,s2(c_letter,var_sensor_1,var_letter_1)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_succ,var_letter_1,var_letter_2)).",
+                              "rule_body(ruleindex,s2(c_letter,var_sensor_1,var_letter_2))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_succ",
+                                 "t_letter",
+                                 "t_letter"
+                              ],
+                              [
+                                 "c_letter",
+                                 "t_sensor",
+                                 "t_letter"
+                              ]
+                           ],
+                           "types": [
+                              "t_letter",
+                              "t_sensor"
+                           ]
+                        }
+                     ]
+                  },
+                  {
+                     "name": "p_part",
+                     "concept": null,
+                     "types": [
+                        "t_sensor",
+                        "t_grid"
+                     ],
+                     "sort": null,
+                     "construct": "Constructed",
+                     "exo_flag": false,
+                     "rules": []
+                  },
+                  {
+                     "name": "c_number",
+                     "concept": null,
+                     "types": [
+                        "t_sensor",
+                        "t_number"
+                     ],
+                     "sort": "fluid",
+                     "construct": null,
+                     "exo_flag": false,
+                     "rules": [
+                        {
+                           "head": "rule_head_causes(ruleindex,s2(c_number,var_sensor_1,var_number_1)).",
+                           "body": [
+                              "rule_body(ruleindex,isa2(p_succ,var_number_1,var_number_2)).",
+                              "rule_body(ruleindex,s2(c_number,var_sensor_1,var_number_2))."
+                           ],
+                           "concepts": [
+                              [
+                                 "p_succ",
+                                 "t_number",
+                                 "t_number"
+                              ],
+                              [
+                                 "c_number",
+                                 "t_sensor",
+                                 "t_number"
+                              ]
+                           ],
+                           "types": [
+                              "t_number",
+                              "t_sensor"
+                           ]
+                        }
+                     ]
+                  }
+               ],
+               "extension": []
+            }
+         ]
       },
       {
-         "name": "t_cell",
+         "name": "t_letter",
          "objects": [
             {
-               "name": "obj_cell_1_1",
-               "type": "t_cell",
+               "name": "obj_letter_a",
+               "type": "t_letter",
                "permanents": [
                   [
-                     "p_is_not_wall",
-                     "obj_cell_1_1"
+                     "p_succ",
+                     "obj_letter_a",
+                     "obj_letter_f"
                   ],
                   [
-                     "p_below",
-                     "obj_cell_1_1",
-                     "obj_cell_1_2"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_1_1",
-                     "obj_cell_2_1"
+                     "p_succ",
+                     "obj_letter_b",
+                     "obj_letter_a"
                   ]
                ],
-               "form_of_intuition": true,
+               "form_of_intuition": null,
                "exo_flag": false
             },
             {
-               "name": "obj_cell_1_2",
-               "type": "t_cell",
+               "name": "obj_letter_b",
+               "type": "t_letter",
                "permanents": [
                   [
-                     "p_is_not_wall",
-                     "obj_cell_1_2"
+                     "p_succ",
+                     "obj_letter_b",
+                     "obj_letter_a"
                   ],
                   [
-                     "p_below",
-                     "obj_cell_1_1",
-                     "obj_cell_1_2"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_1_2",
-                     "obj_cell_1_3"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_1_2",
-                     "obj_cell_2_2"
+                     "p_succ",
+                     "obj_letter_c",
+                     "obj_letter_b"
                   ]
                ],
-               "form_of_intuition": true,
+               "form_of_intuition": null,
                "exo_flag": false
             },
             {
-               "name": "obj_cell_1_3",
-               "type": "t_cell",
+               "name": "obj_letter_c",
+               "type": "t_letter",
                "permanents": [
                   [
-                     "p_is_not_wall",
-                     "obj_cell_1_3"
+                     "p_succ",
+                     "obj_letter_c",
+                     "obj_letter_b"
                   ],
                   [
-                     "p_below",
-                     "obj_cell_1_2",
-                     "obj_cell_1_3"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_1_3",
-                     "obj_cell_1_4"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_1_3",
-                     "obj_cell_2_3"
+                     "p_succ",
+                     "obj_letter_d",
+                     "obj_letter_c"
                   ]
                ],
-               "form_of_intuition": true,
+               "form_of_intuition": null,
                "exo_flag": false
             },
             {
-               "name": "obj_cell_1_4",
-               "type": "t_cell",
+               "name": "obj_letter_d",
+               "type": "t_letter",
                "permanents": [
                   [
-                     "p_is_not_wall",
-                     "obj_cell_1_4"
+                     "p_succ",
+                     "obj_letter_d",
+                     "obj_letter_c"
                   ],
                   [
-                     "p_below",
-                     "obj_cell_1_3",
-                     "obj_cell_1_4"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_1_4",
-                     "obj_cell_2_4"
+                     "p_succ",
+                     "obj_letter_e",
+                     "obj_letter_d"
                   ]
                ],
-               "form_of_intuition": true,
+               "form_of_intuition": null,
                "exo_flag": false
             },
             {
-               "name": "obj_cell_2_1",
-               "type": "t_cell",
+               "name": "obj_letter_e",
+               "type": "t_letter",
                "permanents": [
                   [
-                     "p_is_not_wall",
-                     "obj_cell_2_1"
+                     "p_succ",
+                     "obj_letter_e",
+                     "obj_letter_d"
                   ],
                   [
-                     "p_below",
-                     "obj_cell_2_1",
-                     "obj_cell_2_2"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_1_1",
-                     "obj_cell_2_1"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_2_1",
-                     "obj_cell_3_1"
+                     "p_succ",
+                     "obj_letter_f",
+                     "obj_letter_e"
                   ]
                ],
-               "form_of_intuition": true,
+               "form_of_intuition": null,
                "exo_flag": false
             },
             {
-               "name": "obj_cell_2_2",
-               "type": "t_cell",
+               "name": "obj_letter_f",
+               "type": "t_letter",
                "permanents": [
                   [
-                     "p_is_not_wall",
-                     "obj_cell_2_2"
+                     "p_succ",
+                     "obj_letter_a",
+                     "obj_letter_f"
                   ],
                   [
-                     "p_below",
-                     "obj_cell_2_1",
-                     "obj_cell_2_2"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_2_2",
-                     "obj_cell_2_3"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_1_2",
-                     "obj_cell_2_2"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_2_2",
-                     "obj_cell_3_2"
+                     "p_succ",
+                     "obj_letter_f",
+                     "obj_letter_e"
                   ]
                ],
-               "form_of_intuition": true,
-               "exo_flag": false
-            },
-            {
-               "name": "obj_cell_2_3",
-               "type": "t_cell",
-               "permanents": [
-                  [
-                     "p_is_not_wall",
-                     "obj_cell_2_3"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_2_2",
-                     "obj_cell_2_3"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_2_3",
-                     "obj_cell_2_4"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_1_3",
-                     "obj_cell_2_3"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_2_3",
-                     "obj_cell_3_3"
-                  ]
-               ],
-               "form_of_intuition": true,
-               "exo_flag": false
-            },
-            {
-               "name": "obj_cell_2_4",
-               "type": "t_cell",
-               "permanents": [
-                  [
-                     "p_is_not_wall",
-                     "obj_cell_2_4"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_2_3",
-                     "obj_cell_2_4"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_1_4",
-                     "obj_cell_2_4"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_2_4",
-                     "obj_cell_3_4"
-                  ]
-               ],
-               "form_of_intuition": true,
-               "exo_flag": false
-            },
-            {
-               "name": "obj_cell_3_1",
-               "type": "t_cell",
-               "permanents": [
-                  [
-                     "p_is_not_wall",
-                     "obj_cell_3_1"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_3_1",
-                     "obj_cell_3_2"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_2_1",
-                     "obj_cell_3_1"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_3_1",
-                     "obj_cell_4_1"
-                  ]
-               ],
-               "form_of_intuition": true,
-               "exo_flag": false
-            },
-            {
-               "name": "obj_cell_3_2",
-               "type": "t_cell",
-               "permanents": [
-                  [
-                     "p_is_not_wall",
-                     "obj_cell_3_2"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_3_1",
-                     "obj_cell_3_2"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_3_2",
-                     "obj_cell_3_3"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_2_2",
-                     "obj_cell_3_2"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_3_2",
-                     "obj_cell_4_2"
-                  ]
-               ],
-               "form_of_intuition": true,
-               "exo_flag": false
-            },
-            {
-               "name": "obj_cell_3_3",
-               "type": "t_cell",
-               "permanents": [
-                  [
-                     "p_is_not_wall",
-                     "obj_cell_3_3"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_3_2",
-                     "obj_cell_3_3"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_3_3",
-                     "obj_cell_3_4"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_2_3",
-                     "obj_cell_3_3"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_3_3",
-                     "obj_cell_4_3"
-                  ]
-               ],
-               "form_of_intuition": true,
-               "exo_flag": false
-            },
-            {
-               "name": "obj_cell_3_4",
-               "type": "t_cell",
-               "permanents": [
-                  [
-                     "p_is_not_wall",
-                     "obj_cell_3_4"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_3_3",
-                     "obj_cell_3_4"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_2_4",
-                     "obj_cell_3_4"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_3_4",
-                     "obj_cell_4_4"
-                  ]
-               ],
-               "form_of_intuition": true,
-               "exo_flag": false
-            },
-            {
-               "name": "obj_cell_4_1",
-               "type": "t_cell",
-               "permanents": [
-                  [
-                     "p_is_not_wall",
-                     "obj_cell_4_1"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_4_1",
-                     "obj_cell_4_2"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_3_1",
-                     "obj_cell_4_1"
-                  ]
-               ],
-               "form_of_intuition": true,
-               "exo_flag": false
-            },
-            {
-               "name": "obj_cell_4_2",
-               "type": "t_cell",
-               "permanents": [
-                  [
-                     "p_is_not_wall",
-                     "obj_cell_4_2"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_4_1",
-                     "obj_cell_4_2"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_4_2",
-                     "obj_cell_4_3"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_3_2",
-                     "obj_cell_4_2"
-                  ]
-               ],
-               "form_of_intuition": true,
-               "exo_flag": false
-            },
-            {
-               "name": "obj_cell_4_3",
-               "type": "t_cell",
-               "permanents": [
-                  [
-                     "p_is_not_wall",
-                     "obj_cell_4_3"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_4_2",
-                     "obj_cell_4_3"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_4_3",
-                     "obj_cell_4_4"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_3_3",
-                     "obj_cell_4_3"
-                  ]
-               ],
-               "form_of_intuition": true,
-               "exo_flag": false
-            },
-            {
-               "name": "obj_cell_4_4",
-               "type": "t_cell",
-               "permanents": [
-                  [
-                     "p_is_not_wall",
-                     "obj_cell_4_4"
-                  ],
-                  [
-                     "p_below",
-                     "obj_cell_4_3",
-                     "obj_cell_4_4"
-                  ],
-                  [
-                     "p_right",
-                     "obj_cell_3_4",
-                     "obj_cell_4_4"
-                  ]
-               ],
-               "form_of_intuition": true,
+               "form_of_intuition": null,
                "exo_flag": false
             }
          ],
          "concepts": [
             {
-               "name": "c_in_1",
+               "name": "c_letter",
                "concept": null,
                "types": [
-                  "t_1",
-                  "t_cell"
+                  "t_sensor",
+                  "t_letter"
                ],
                "sort": "fluid",
                "construct": null,
                "exo_flag": false,
                "rules": [
                   {
-                     "head": "rule_arrow_head(ruleindex,s(c_p1,var_2_1)).",
+                     "head": "rule_head_causes(ruleindex,s2(c_letter,var_sensor_1,var_letter_1)).",
                      "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
+                        "rule_body(ruleindex,isa2(p_succ,var_letter_1,var_letter_2)).",
+                        "rule_body(ruleindex,s2(c_letter,var_sensor_1,var_letter_2))."
                      ],
                      "concepts": [
                         [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
+                           "p_succ",
+                           "t_letter",
+                           "t_letter"
                         ],
                         [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p1",
-                           "t_2"
+                           "c_letter",
+                           "t_sensor",
+                           "t_letter"
                         ]
                      ],
                      "types": [
-                        "t_cell",
-                        "t_1",
-                        "t_2"
-                     ]
-                  },
-                  {
-                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_2_1)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_west,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_right",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_west",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p4",
-                           "t_2"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1",
-                        "t_2"
-                     ]
-                  },
-                  {
-                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_2_1)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_2,var_cell_1)).",
-                        "rule_body(ruleindex,s(c_south,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_south",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p4",
-                           "t_2"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1",
-                        "t_2"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_1_1,var_cell_1)).",
-                     "body": [
-                        "rule_body(ruleindex,isa(p_is_not_wall,var_cell_1)).",
-                        "rule_body(ruleindex,isa2(p_right,var_cell_2,var_cell_1)).",
-                        "rule_body(ruleindex,s(c_east,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_is_not_wall",
-                           "t_cell"
-                        ],
-                        [
-                           "p_right",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_east",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_1_1,var_cell_1)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_west,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_right",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_west",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_1_1,var_cell_1)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_north,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_north",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_south,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_south",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1"
+                        "t_letter",
+                        "t_sensor"
                      ]
                   }
                ]
             },
             {
-               "name": "c_in_2",
+               "name": "p_succ",
                "concept": null,
                "types": [
-                  "t_2",
-                  "t_cell"
-               ],
-               "sort": "fluid",
-               "construct": null,
-               "exo_flag": false,
-               "rules": [
-                  {
-                     "head": "rule_arrow_head(ruleindex,s(c_p1,var_2_1)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p1",
-                           "t_2"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1",
-                        "t_2"
-                     ]
-                  },
-                  {
-                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_2_1)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_west,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_right",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_west",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p4",
-                           "t_2"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1",
-                        "t_2"
-                     ]
-                  },
-                  {
-                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_2_1)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_2,var_cell_1)).",
-                        "rule_body(ruleindex,s(c_south,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_south",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p4",
-                           "t_2"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1",
-                        "t_2"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_2_1,var_cell_1)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_p4,var_2_1)).",
-                        "rule_body(ruleindex,s(c_west,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_2))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_right",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p4",
-                           "t_2"
-                        ],
-                        [
-                           "c_west",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_2",
-                        "t_1"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_2_1,var_cell_2)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_p4,var_2_1)).",
-                        "rule_body(ruleindex,s(c_south,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p4",
-                           "t_2"
-                        ],
-                        [
-                           "c_south",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_2",
-                        "t_1"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_2_1,var_cell_2)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_2,var_cell_1)).",
-                        "rule_body(ruleindex,s(c_p2,var_2_1)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p2",
-                           "t_2"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_2"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_2_1,var_cell_1)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_p1,var_2_1)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_2))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p1",
-                           "t_2"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_2"
-                     ]
-                  }
-               ]
-            },
-            {
-               "name": "p_right",
-               "concept": null,
-               "types": [
-                  "t_cell",
-                  "t_cell"
+                  "t_letter",
+                  "t_letter"
                ],
                "sort": null,
-               "construct": "Given",
-               "exo_flag": false,
-               "rules": []
-            },
-            {
-               "name": "p_below",
-               "concept": null,
-               "types": [
-                  "t_cell",
-                  "t_cell"
-               ],
-               "sort": null,
-               "construct": "Given",
-               "exo_flag": false,
-               "rules": []
-            },
-            {
-               "name": "p_is_not_wall",
-               "concept": null,
-               "types": [
-                  "t_cell"
-               ],
-               "sort": null,
-               "construct": "Given",
-               "exo_flag": false,
-               "rules": []
-            },
-            {
-               "name": "p_is_wall",
-               "concept": null,
-               "types": [
-                  "t_cell"
-               ],
-               "sort": null,
-               "construct": "Given",
+               "construct": "Constructed",
                "exo_flag": false,
                "rules": []
             }
@@ -1096,11 +1874,229 @@
          "extension": []
       },
       {
-         "name": "t_1",
+         "name": "t_number",
+         "objects": [
+            {
+               "name": "obj_number_0",
+               "type": "t_number",
+               "permanents": [
+                  [
+                     "p_succ",
+                     "obj_number_0",
+                     "obj_number_8"
+                  ],
+                  [
+                     "p_succ",
+                     "obj_number_1",
+                     "obj_number_0"
+                  ]
+               ],
+               "form_of_intuition": null,
+               "exo_flag": false
+            },
+            {
+               "name": "obj_number_1",
+               "type": "t_number",
+               "permanents": [
+                  [
+                     "p_succ",
+                     "obj_number_1",
+                     "obj_number_0"
+                  ],
+                  [
+                     "p_succ",
+                     "obj_number_2",
+                     "obj_number_1"
+                  ]
+               ],
+               "form_of_intuition": null,
+               "exo_flag": false
+            },
+            {
+               "name": "obj_number_2",
+               "type": "t_number",
+               "permanents": [
+                  [
+                     "p_succ",
+                     "obj_number_2",
+                     "obj_number_1"
+                  ],
+                  [
+                     "p_succ",
+                     "obj_number_3",
+                     "obj_number_2"
+                  ]
+               ],
+               "form_of_intuition": null,
+               "exo_flag": false
+            },
+            {
+               "name": "obj_number_3",
+               "type": "t_number",
+               "permanents": [
+                  [
+                     "p_succ",
+                     "obj_number_3",
+                     "obj_number_2"
+                  ],
+                  [
+                     "p_succ",
+                     "obj_number_4",
+                     "obj_number_3"
+                  ]
+               ],
+               "form_of_intuition": null,
+               "exo_flag": false
+            },
+            {
+               "name": "obj_number_4",
+               "type": "t_number",
+               "permanents": [
+                  [
+                     "p_succ",
+                     "obj_number_4",
+                     "obj_number_3"
+                  ],
+                  [
+                     "p_succ",
+                     "obj_number_5",
+                     "obj_number_4"
+                  ]
+               ],
+               "form_of_intuition": null,
+               "exo_flag": false
+            },
+            {
+               "name": "obj_number_5",
+               "type": "t_number",
+               "permanents": [
+                  [
+                     "p_succ",
+                     "obj_number_5",
+                     "obj_number_4"
+                  ],
+                  [
+                     "p_succ",
+                     "obj_number_6",
+                     "obj_number_5"
+                  ]
+               ],
+               "form_of_intuition": null,
+               "exo_flag": false
+            },
+            {
+               "name": "obj_number_6",
+               "type": "t_number",
+               "permanents": [
+                  [
+                     "p_succ",
+                     "obj_number_6",
+                     "obj_number_5"
+                  ],
+                  [
+                     "p_succ",
+                     "obj_number_7",
+                     "obj_number_6"
+                  ]
+               ],
+               "form_of_intuition": null,
+               "exo_flag": false
+            },
+            {
+               "name": "obj_number_7",
+               "type": "t_number",
+               "permanents": [
+                  [
+                     "p_succ",
+                     "obj_number_7",
+                     "obj_number_6"
+                  ],
+                  [
+                     "p_succ",
+                     "obj_number_8",
+                     "obj_number_7"
+                  ]
+               ],
+               "form_of_intuition": null,
+               "exo_flag": false
+            },
+            {
+               "name": "obj_number_8",
+               "type": "t_number",
+               "permanents": [
+                  [
+                     "p_succ",
+                     "obj_number_0",
+                     "obj_number_8"
+                  ],
+                  [
+                     "p_succ",
+                     "obj_number_8",
+                     "obj_number_7"
+                  ]
+               ],
+               "form_of_intuition": null,
+               "exo_flag": false
+            }
+         ],
+         "concepts": [
+            {
+               "name": "c_number",
+               "concept": null,
+               "types": [
+                  "t_sensor",
+                  "t_number"
+               ],
+               "sort": "fluid",
+               "construct": null,
+               "exo_flag": false,
+               "rules": [
+                  {
+                     "head": "rule_head_causes(ruleindex,s2(c_number,var_sensor_1,var_number_1)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_succ,var_number_1,var_number_2)).",
+                        "rule_body(ruleindex,s2(c_number,var_sensor_1,var_number_2))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_succ",
+                           "t_number",
+                           "t_number"
+                        ],
+                        [
+                           "c_number",
+                           "t_sensor",
+                           "t_number"
+                        ]
+                     ],
+                     "types": [
+                        "t_number",
+                        "t_sensor"
+                     ]
+                  }
+               ]
+            },
+            {
+               "name": "p_succ",
+               "concept": null,
+               "types": [
+                  "t_number",
+                  "t_number"
+               ],
+               "sort": null,
+               "construct": "Constructed",
+               "exo_flag": false,
+               "rules": []
+            }
+         ],
+         "extension": []
+      },
+      {
+         "name": "t_player",
          "objects": [
             {
                "name": "obj_x1",
-               "type": "t_1",
+               "type": "t_player",
                "permanents": [],
                "form_of_intuition": null,
                "exo_flag": false
@@ -1111,7 +2107,7 @@
                "name": "c_in_1",
                "concept": null,
                "types": [
-                  "t_1",
+                  "t_player",
                   "t_cell"
                ],
                "sort": "fluid",
@@ -1119,11 +2115,11 @@
                "exo_flag": false,
                "rules": [
                   {
-                     "head": "rule_arrow_head(ruleindex,s(c_p1,var_2_1)).",
+                     "head": "rule_arrow_head(ruleindex,s(c_p1,var_block_1)).",
                      "body": [
                         "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_2)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
                      ],
                      "concepts": [
                         [
@@ -1133,32 +2129,66 @@
                         ],
                         [
                            "c_in_1",
-                           "t_1",
+                           "t_player",
                            "t_cell"
                         ],
                         [
                            "c_in_2",
-                           "t_2",
+                           "t_block",
                            "t_cell"
                         ],
                         [
                            "c_p1",
-                           "t_2"
+                           "t_block"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_1",
-                        "t_2"
+                        "t_player",
+                        "t_block"
                      ]
                   },
                   {
-                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_2_1)).",
+                     "head": "rule_arrow_head(ruleindex,s(c_p1,var_block_1)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_below",
+                           "t_cell",
+                           "t_cell"
+                        ],
+                        [
+                           "c_in_1",
+                           "t_player",
+                           "t_cell"
+                        ],
+                        [
+                           "c_in_2",
+                           "t_block",
+                           "t_cell"
+                        ],
+                        [
+                           "c_p1",
+                           "t_block"
+                        ]
+                     ],
+                     "types": [
+                        "t_cell",
+                        "t_player",
+                        "t_block"
+                     ]
+                  },
+                  {
+                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_block_1)).",
                      "body": [
                         "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_west,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
+                        "rule_body(ruleindex,s(c_east,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
                      ],
                      "concepts": [
                         [
@@ -1167,37 +2197,70 @@
                            "t_cell"
                         ],
                         [
-                           "c_west",
-                           "t_1"
+                           "c_east",
+                           "t_player"
                         ],
                         [
                            "c_in_1",
-                           "t_1",
+                           "t_player",
                            "t_cell"
                         ],
                         [
                            "c_in_2",
-                           "t_2",
+                           "t_block",
                            "t_cell"
                         ],
                         [
                            "c_p4",
-                           "t_2"
+                           "t_block"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_1",
-                        "t_2"
+                        "t_player",
+                        "t_block"
                      ]
                   },
                   {
-                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_2_1)).",
+                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_block_1)).",
                      "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_2,var_cell_1)).",
-                        "rule_body(ruleindex,s(c_south,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
+                        "rule_body(ruleindex,isa2(p_right,var_cell_2,var_cell_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_right",
+                           "t_cell",
+                           "t_cell"
+                        ],
+                        [
+                           "c_in_1",
+                           "t_player",
+                           "t_cell"
+                        ],
+                        [
+                           "c_in_2",
+                           "t_block",
+                           "t_cell"
+                        ],
+                        [
+                           "c_p4",
+                           "t_block"
+                        ]
+                     ],
+                     "types": [
+                        "t_cell",
+                        "t_player",
+                        "t_block"
+                     ]
+                  },
+                  {
+                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_player_1,var_cell_2)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                        "rule_body(ruleindex,s(c_south,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1))."
                      ],
                      "concepts": [
                         [
@@ -1207,36 +2270,54 @@
                         ],
                         [
                            "c_south",
-                           "t_1"
+                           "t_player"
                         ],
                         [
                            "c_in_1",
-                           "t_1",
+                           "t_player",
                            "t_cell"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p4",
-                           "t_2"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_1",
-                        "t_2"
+                        "t_player"
                      ]
                   },
                   {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_1_1,var_cell_1)).",
+                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                        "rule_body(ruleindex,s(c_north,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_2))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_below",
+                           "t_cell",
+                           "t_cell"
+                        ],
+                        [
+                           "c_north",
+                           "t_player"
+                        ],
+                        [
+                           "c_in_1",
+                           "t_player",
+                           "t_cell"
+                        ]
+                     ],
+                     "types": [
+                        "t_cell",
+                        "t_player"
+                     ]
+                  },
+                  {
+                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
                      "body": [
                         "rule_body(ruleindex,isa(p_is_not_wall,var_cell_1)).",
                         "rule_body(ruleindex,isa2(p_right,var_cell_2,var_cell_1)).",
-                        "rule_body(ruleindex,s(c_east,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2))."
+                        "rule_body(ruleindex,s(c_east,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_2))."
                      ],
                      "concepts": [
                         [
@@ -1250,25 +2331,25 @@
                         ],
                         [
                            "c_east",
-                           "t_1"
+                           "t_player"
                         ],
                         [
                            "c_in_1",
-                           "t_1",
+                           "t_player",
                            "t_cell"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_1"
+                        "t_player"
                      ]
                   },
                   {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_1_1,var_cell_1)).",
+                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
                      "body": [
                         "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_west,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2))."
+                        "rule_body(ruleindex,s(c_west,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_2))."
                      ],
                      "concepts": [
                         [
@@ -1278,73 +2359,17 @@
                         ],
                         [
                            "c_west",
-                           "t_1"
+                           "t_player"
                         ],
                         [
                            "c_in_1",
-                           "t_1",
+                           "t_player",
                            "t_cell"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_1"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_1_1,var_cell_1)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_north,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_north",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_south,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_south",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1"
+                        "t_player"
                      ]
                   }
                ]
@@ -1353,7 +2378,7 @@
                "name": "c_noop",
                "concept": null,
                "types": [
-                  "t_1"
+                  "t_player"
                ],
                "sort": "fluid",
                "construct": null,
@@ -1364,18 +2389,18 @@
                "name": "c_north",
                "concept": null,
                "types": [
-                  "t_1"
+                  "t_player"
                ],
                "sort": "fluid",
                "construct": null,
                "exo_flag": false,
                "rules": [
                   {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_1_1,var_cell_1)).",
+                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
                      "body": [
                         "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_north,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2))."
+                        "rule_body(ruleindex,s(c_north,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_2))."
                      ],
                      "concepts": [
                         [
@@ -1385,17 +2410,51 @@
                         ],
                         [
                            "c_north",
-                           "t_1"
+                           "t_player"
                         ],
                         [
                            "c_in_1",
-                           "t_1",
+                           "t_player",
                            "t_cell"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_1"
+                        "t_player"
+                     ]
+                  },
+                  {
+                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_1)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                        "rule_body(ruleindex,s(c_north,var_player_1)).",
+                        "rule_body(ruleindex,s(c_p1,var_block_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_below",
+                           "t_cell",
+                           "t_cell"
+                        ],
+                        [
+                           "c_north",
+                           "t_player"
+                        ],
+                        [
+                           "c_p1",
+                           "t_block"
+                        ],
+                        [
+                           "c_in_2",
+                           "t_block",
+                           "t_cell"
+                        ]
+                     ],
+                     "types": [
+                        "t_cell",
+                        "t_player",
+                        "t_block"
                      ]
                   }
                ]
@@ -1404,19 +2463,19 @@
                "name": "c_south",
                "concept": null,
                "types": [
-                  "t_1"
+                  "t_player"
                ],
                "sort": "fluid",
                "construct": null,
                "exo_flag": false,
                "rules": [
                   {
-                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_2_1)).",
+                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_2)).",
                      "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_2,var_cell_1)).",
-                        "rule_body(ruleindex,s(c_south,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
+                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                        "rule_body(ruleindex,s(c_p1,var_block_1)).",
+                        "rule_body(ruleindex,s(c_south,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
                      ],
                      "concepts": [
                         [
@@ -1425,70 +2484,31 @@
                            "t_cell"
                         ],
                         [
-                           "c_south",
-                           "t_1"
+                           "c_p1",
+                           "t_block"
                         ],
                         [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
+                           "c_south",
+                           "t_player"
                         ],
                         [
                            "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p4",
-                           "t_2"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1",
-                        "t_2"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_2_1,var_cell_2)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_p4,var_2_1)).",
-                        "rule_body(ruleindex,s(c_south,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p4",
-                           "t_2"
-                        ],
-                        [
-                           "c_south",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
+                           "t_block",
                            "t_cell"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_2",
-                        "t_1"
+                        "t_block",
+                        "t_player"
                      ]
                   },
                   {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
+                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_player_1,var_cell_2)).",
                      "body": [
                         "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_south,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_1))."
+                        "rule_body(ruleindex,s(c_south,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1))."
                      ],
                      "concepts": [
                         [
@@ -1498,17 +2518,17 @@
                         ],
                         [
                            "c_south",
-                           "t_1"
+                           "t_player"
                         ],
                         [
                            "c_in_1",
-                           "t_1",
+                           "t_player",
                            "t_cell"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_1"
+                        "t_player"
                      ]
                   }
                ]
@@ -1517,19 +2537,92 @@
                "name": "c_east",
                "concept": null,
                "types": [
-                  "t_1"
+                  "t_player"
                ],
                "sort": "fluid",
                "construct": null,
                "exo_flag": false,
                "rules": [
                   {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_1_1,var_cell_1)).",
+                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_block_1)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
+                        "rule_body(ruleindex,s(c_east,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_right",
+                           "t_cell",
+                           "t_cell"
+                        ],
+                        [
+                           "c_east",
+                           "t_player"
+                        ],
+                        [
+                           "c_in_1",
+                           "t_player",
+                           "t_cell"
+                        ],
+                        [
+                           "c_in_2",
+                           "t_block",
+                           "t_cell"
+                        ],
+                        [
+                           "c_p4",
+                           "t_block"
+                        ]
+                     ],
+                     "types": [
+                        "t_cell",
+                        "t_player",
+                        "t_block"
+                     ]
+                  },
+                  {
+                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_2)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
+                        "rule_body(ruleindex,s(c_east,var_player_1)).",
+                        "rule_body(ruleindex,s(c_p4,var_block_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_right",
+                           "t_cell",
+                           "t_cell"
+                        ],
+                        [
+                           "c_east",
+                           "t_player"
+                        ],
+                        [
+                           "c_p4",
+                           "t_block"
+                        ],
+                        [
+                           "c_in_2",
+                           "t_block",
+                           "t_cell"
+                        ]
+                     ],
+                     "types": [
+                        "t_cell",
+                        "t_player",
+                        "t_block"
+                     ]
+                  },
+                  {
+                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
                      "body": [
                         "rule_body(ruleindex,isa(p_is_not_wall,var_cell_1)).",
                         "rule_body(ruleindex,isa2(p_right,var_cell_2,var_cell_1)).",
-                        "rule_body(ruleindex,s(c_east,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2))."
+                        "rule_body(ruleindex,s(c_east,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_2))."
                      ],
                      "concepts": [
                         [
@@ -1543,17 +2636,17 @@
                         ],
                         [
                            "c_east",
-                           "t_1"
+                           "t_player"
                         ],
                         [
                            "c_in_1",
-                           "t_1",
+                           "t_player",
                            "t_cell"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_1"
+                        "t_player"
                      ]
                   }
                ]
@@ -1562,86 +2655,19 @@
                "name": "c_west",
                "concept": null,
                "types": [
-                  "t_1"
+                  "t_player"
                ],
                "sort": "fluid",
                "construct": null,
                "exo_flag": false,
                "rules": [
                   {
-                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_2_1)).",
+                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_2)).",
                      "body": [
-                        "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_west,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_right",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_west",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p4",
-                           "t_2"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1",
-                        "t_2"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_1_1,var_cell_1)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_west,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_right",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_west",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_2_1,var_cell_1)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_p4,var_2_1)).",
-                        "rule_body(ruleindex,s(c_west,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_2))."
+                        "rule_body(ruleindex,isa2(p_right,var_cell_2,var_cell_1)).",
+                        "rule_body(ruleindex,s(c_p4,var_block_1)).",
+                        "rule_body(ruleindex,s(c_west,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
                      ],
                      "concepts": [
                         [
@@ -1651,22 +2677,50 @@
                         ],
                         [
                            "c_p4",
-                           "t_2"
+                           "t_block"
                         ],
                         [
                            "c_west",
-                           "t_1"
+                           "t_player"
                         ],
                         [
                            "c_in_2",
-                           "t_2",
+                           "t_block",
                            "t_cell"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_2",
-                        "t_1"
+                        "t_block",
+                        "t_player"
+                     ]
+                  },
+                  {
+                     "head": "rule_head_causes(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
+                        "rule_body(ruleindex,s(c_west,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_2))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_right",
+                           "t_cell",
+                           "t_cell"
+                        ],
+                        [
+                           "c_west",
+                           "t_player"
+                        ],
+                        [
+                           "c_in_1",
+                           "t_player",
+                           "t_cell"
+                        ]
+                     ],
+                     "types": [
+                        "t_cell",
+                        "t_player"
                      ]
                   }
                ]
@@ -1675,18 +2729,18 @@
          "extension": []
       },
       {
-         "name": "t_2",
+         "name": "t_block",
          "objects": [
             {
                "name": "obj_x2",
-               "type": "t_2",
+               "type": "t_block",
                "permanents": [],
                "form_of_intuition": null,
                "exo_flag": false
             },
             {
                "name": "obj_x3",
-               "type": "t_2",
+               "type": "t_block",
                "permanents": [],
                "form_of_intuition": null,
                "exo_flag": false
@@ -1697,7 +2751,7 @@
                "name": "c_in_2",
                "concept": null,
                "types": [
-                  "t_2",
+                  "t_block",
                   "t_cell"
                ],
                "sort": "fluid",
@@ -1705,11 +2759,11 @@
                "exo_flag": false,
                "rules": [
                   {
-                     "head": "rule_arrow_head(ruleindex,s(c_p1,var_2_1)).",
+                     "head": "rule_arrow_head(ruleindex,s(c_p1,var_block_1)).",
                      "body": [
                         "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_2)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
                      ],
                      "concepts": [
                         [
@@ -1719,32 +2773,66 @@
                         ],
                         [
                            "c_in_1",
-                           "t_1",
+                           "t_player",
                            "t_cell"
                         ],
                         [
                            "c_in_2",
-                           "t_2",
+                           "t_block",
                            "t_cell"
                         ],
                         [
                            "c_p1",
-                           "t_2"
+                           "t_block"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_1",
-                        "t_2"
+                        "t_player",
+                        "t_block"
                      ]
                   },
                   {
-                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_2_1)).",
+                     "head": "rule_arrow_head(ruleindex,s(c_p1,var_block_1)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_below",
+                           "t_cell",
+                           "t_cell"
+                        ],
+                        [
+                           "c_in_1",
+                           "t_player",
+                           "t_cell"
+                        ],
+                        [
+                           "c_in_2",
+                           "t_block",
+                           "t_cell"
+                        ],
+                        [
+                           "c_p1",
+                           "t_block"
+                        ]
+                     ],
+                     "types": [
+                        "t_cell",
+                        "t_player",
+                        "t_block"
+                     ]
+                  },
+                  {
+                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_block_1)).",
                      "body": [
                         "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_west,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
+                        "rule_body(ruleindex,s(c_east,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
                      ],
                      "concepts": [
                         [
@@ -1753,76 +2841,36 @@
                            "t_cell"
                         ],
                         [
-                           "c_west",
-                           "t_1"
+                           "c_east",
+                           "t_player"
                         ],
                         [
                            "c_in_1",
-                           "t_1",
+                           "t_player",
                            "t_cell"
                         ],
                         [
                            "c_in_2",
-                           "t_2",
+                           "t_block",
                            "t_cell"
                         ],
                         [
                            "c_p4",
-                           "t_2"
+                           "t_block"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_1",
-                        "t_2"
+                        "t_player",
+                        "t_block"
                      ]
                   },
                   {
-                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_2_1)).",
+                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_block_1)).",
                      "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_2,var_cell_1)).",
-                        "rule_body(ruleindex,s(c_south,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_south",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_1",
-                           "t_1",
-                           "t_cell"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p4",
-                           "t_2"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_1",
-                        "t_2"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_2_1,var_cell_1)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_p4,var_2_1)).",
-                        "rule_body(ruleindex,s(c_west,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_2))."
+                        "rule_body(ruleindex,isa2(p_right,var_cell_2,var_cell_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
                      ],
                      "concepts": [
                         [
@@ -1831,93 +2879,33 @@
                            "t_cell"
                         ],
                         [
-                           "c_p4",
-                           "t_2"
-                        ],
-                        [
-                           "c_west",
-                           "t_1"
+                           "c_in_1",
+                           "t_player",
+                           "t_cell"
                         ],
                         [
                            "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_2",
-                        "t_1"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_2_1,var_cell_2)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_p4,var_2_1)).",
-                        "rule_body(ruleindex,s(c_south,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
+                           "t_block",
                            "t_cell"
                         ],
                         [
                            "c_p4",
-                           "t_2"
-                        ],
-                        [
-                           "c_south",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
+                           "t_block"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_2",
-                        "t_1"
+                        "t_player",
+                        "t_block"
                      ]
                   },
                   {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_2_1,var_cell_2)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_2,var_cell_1)).",
-                        "rule_body(ruleindex,s(c_p2,var_2_1)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p2",
-                           "t_2"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_2"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_2_1,var_cell_1)).",
+                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_2)).",
                      "body": [
                         "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_p1,var_2_1)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_2))."
+                        "rule_body(ruleindex,s(c_p1,var_block_1)).",
+                        "rule_body(ruleindex,s(c_south,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
                      ],
                      "concepts": [
                         [
@@ -1927,17 +2915,124 @@
                         ],
                         [
                            "c_p1",
-                           "t_2"
+                           "t_block"
+                        ],
+                        [
+                           "c_south",
+                           "t_player"
                         ],
                         [
                            "c_in_2",
-                           "t_2",
+                           "t_block",
                            "t_cell"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_2"
+                        "t_block",
+                        "t_player"
+                     ]
+                  },
+                  {
+                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_2)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
+                        "rule_body(ruleindex,s(c_east,var_player_1)).",
+                        "rule_body(ruleindex,s(c_p4,var_block_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_right",
+                           "t_cell",
+                           "t_cell"
+                        ],
+                        [
+                           "c_east",
+                           "t_player"
+                        ],
+                        [
+                           "c_p4",
+                           "t_block"
+                        ],
+                        [
+                           "c_in_2",
+                           "t_block",
+                           "t_cell"
+                        ]
+                     ],
+                     "types": [
+                        "t_cell",
+                        "t_player",
+                        "t_block"
+                     ]
+                  },
+                  {
+                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_2)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_right,var_cell_2,var_cell_1)).",
+                        "rule_body(ruleindex,s(c_p4,var_block_1)).",
+                        "rule_body(ruleindex,s(c_west,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_right",
+                           "t_cell",
+                           "t_cell"
+                        ],
+                        [
+                           "c_p4",
+                           "t_block"
+                        ],
+                        [
+                           "c_west",
+                           "t_player"
+                        ],
+                        [
+                           "c_in_2",
+                           "t_block",
+                           "t_cell"
+                        ]
+                     ],
+                     "types": [
+                        "t_cell",
+                        "t_block",
+                        "t_player"
+                     ]
+                  },
+                  {
+                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_1)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                        "rule_body(ruleindex,s(c_north,var_player_1)).",
+                        "rule_body(ruleindex,s(c_p1,var_block_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_below",
+                           "t_cell",
+                           "t_cell"
+                        ],
+                        [
+                           "c_north",
+                           "t_player"
+                        ],
+                        [
+                           "c_p1",
+                           "t_block"
+                        ],
+                        [
+                           "c_in_2",
+                           "t_block",
+                           "t_cell"
+                        ]
+                     ],
+                     "types": [
+                        "t_cell",
+                        "t_player",
+                        "t_block"
                      ]
                   }
                ]
@@ -1946,37 +3041,18 @@
                "name": "c_p1",
                "concept": null,
                "types": [
-                  "t_2"
+                  "t_block"
                ],
                "sort": "fluid",
                "construct": null,
                "exo_flag": false,
                "rules": [
                   {
-                     "head": "rule_arrow_head(ruleindex,s(c_p1,var_2_1)).",
-                     "body": [
-                        "rule_body(ruleindex,s(c_p3,var_2_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "c_p3",
-                           "t_2"
-                        ],
-                        [
-                           "c_p1",
-                           "t_2"
-                        ]
-                     ],
-                     "types": [
-                        "t_2"
-                     ]
-                  },
-                  {
-                     "head": "rule_arrow_head(ruleindex,s(c_p1,var_2_1)).",
+                     "head": "rule_arrow_head(ruleindex,s(c_p1,var_block_1)).",
                      "body": [
                         "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_2)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
                      ],
                      "concepts": [
                         [
@@ -1986,31 +3062,66 @@
                         ],
                         [
                            "c_in_1",
-                           "t_1",
+                           "t_player",
                            "t_cell"
                         ],
                         [
                            "c_in_2",
-                           "t_2",
+                           "t_block",
                            "t_cell"
                         ],
                         [
                            "c_p1",
-                           "t_2"
+                           "t_block"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_1",
-                        "t_2"
+                        "t_player",
+                        "t_block"
                      ]
                   },
                   {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_2_1,var_cell_1)).",
+                     "head": "rule_arrow_head(ruleindex,s(c_p1,var_block_1)).",
                      "body": [
                         "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_p1,var_2_1)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_2))."
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_below",
+                           "t_cell",
+                           "t_cell"
+                        ],
+                        [
+                           "c_in_1",
+                           "t_player",
+                           "t_cell"
+                        ],
+                        [
+                           "c_in_2",
+                           "t_block",
+                           "t_cell"
+                        ],
+                        [
+                           "c_p1",
+                           "t_block"
+                        ]
+                     ],
+                     "types": [
+                        "t_cell",
+                        "t_player",
+                        "t_block"
+                     ]
+                  },
+                  {
+                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_2)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                        "rule_body(ruleindex,s(c_p1,var_block_1)).",
+                        "rule_body(ruleindex,s(c_south,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
                      ],
                      "concepts": [
                         [
@@ -2020,17 +3131,56 @@
                         ],
                         [
                            "c_p1",
-                           "t_2"
+                           "t_block"
+                        ],
+                        [
+                           "c_south",
+                           "t_player"
                         ],
                         [
                            "c_in_2",
-                           "t_2",
+                           "t_block",
                            "t_cell"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_2"
+                        "t_block",
+                        "t_player"
+                     ]
+                  },
+                  {
+                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_1)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
+                        "rule_body(ruleindex,s(c_north,var_player_1)).",
+                        "rule_body(ruleindex,s(c_p1,var_block_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_below",
+                           "t_cell",
+                           "t_cell"
+                        ],
+                        [
+                           "c_north",
+                           "t_player"
+                        ],
+                        [
+                           "c_p1",
+                           "t_block"
+                        ],
+                        [
+                           "c_in_2",
+                           "t_block",
+                           "t_cell"
+                        ]
+                     ],
+                     "types": [
+                        "t_cell",
+                        "t_player",
+                        "t_block"
                      ]
                   }
                ]
@@ -2039,90 +3189,41 @@
                "name": "c_p2",
                "concept": null,
                "types": [
-                  "t_2"
+                  "t_block"
                ],
                "sort": "fluid",
                "construct": null,
                "exo_flag": false,
-               "rules": [
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_2_1,var_cell_2)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_2,var_cell_1)).",
-                        "rule_body(ruleindex,s(c_p2,var_2_1)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p2",
-                           "t_2"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_2"
-                     ]
-                  }
-               ]
+               "rules": []
             },
             {
                "name": "c_p3",
                "concept": null,
                "types": [
-                  "t_2"
+                  "t_block"
                ],
                "sort": "fluid",
                "construct": null,
                "exo_flag": false,
-               "rules": [
-                  {
-                     "head": "rule_arrow_head(ruleindex,s(c_p1,var_2_1)).",
-                     "body": [
-                        "rule_body(ruleindex,s(c_p3,var_2_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "c_p3",
-                           "t_2"
-                        ],
-                        [
-                           "c_p1",
-                           "t_2"
-                        ]
-                     ],
-                     "types": [
-                        "t_2"
-                     ]
-                  }
-               ]
+               "rules": []
             },
             {
                "name": "c_p4",
                "concept": null,
                "types": [
-                  "t_2"
+                  "t_block"
                ],
                "sort": "fluid",
                "construct": null,
                "exo_flag": false,
                "rules": [
                   {
-                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_2_1)).",
+                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_block_1)).",
                      "body": [
                         "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_west,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
+                        "rule_body(ruleindex,s(c_east,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
                      ],
                      "concepts": [
                         [
@@ -2131,76 +3232,105 @@
                            "t_cell"
                         ],
                         [
-                           "c_west",
-                           "t_1"
+                           "c_east",
+                           "t_player"
                         ],
                         [
                            "c_in_1",
-                           "t_1",
+                           "t_player",
                            "t_cell"
                         ],
                         [
                            "c_in_2",
-                           "t_2",
+                           "t_block",
                            "t_cell"
                         ],
                         [
                            "c_p4",
-                           "t_2"
+                           "t_block"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_1",
-                        "t_2"
+                        "t_player",
+                        "t_block"
                      ]
                   },
                   {
-                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_2_1)).",
+                     "head": "rule_arrow_head(ruleindex,s(c_p4,var_block_1)).",
                      "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_2,var_cell_1)).",
-                        "rule_body(ruleindex,s(c_south,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_1,var_1_1,var_cell_2)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
+                        "rule_body(ruleindex,isa2(p_right,var_cell_2,var_cell_1)).",
+                        "rule_body(ruleindex,s2(c_in_1,var_player_1,var_cell_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_2))."
                      ],
                      "concepts": [
                         [
-                           "p_below",
+                           "p_right",
                            "t_cell",
                            "t_cell"
                         ],
                         [
-                           "c_south",
-                           "t_1"
-                        ],
-                        [
                            "c_in_1",
-                           "t_1",
+                           "t_player",
                            "t_cell"
                         ],
                         [
                            "c_in_2",
-                           "t_2",
+                           "t_block",
                            "t_cell"
                         ],
                         [
                            "c_p4",
-                           "t_2"
+                           "t_block"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_1",
-                        "t_2"
+                        "t_player",
+                        "t_block"
                      ]
                   },
                   {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_2_1,var_cell_1)).",
+                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_2)).",
                      "body": [
                         "rule_body(ruleindex,isa2(p_right,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_p4,var_2_1)).",
-                        "rule_body(ruleindex,s(c_west,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_2))."
+                        "rule_body(ruleindex,s(c_east,var_player_1)).",
+                        "rule_body(ruleindex,s(c_p4,var_block_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
+                     ],
+                     "concepts": [
+                        [
+                           "p_right",
+                           "t_cell",
+                           "t_cell"
+                        ],
+                        [
+                           "c_east",
+                           "t_player"
+                        ],
+                        [
+                           "c_p4",
+                           "t_block"
+                        ],
+                        [
+                           "c_in_2",
+                           "t_block",
+                           "t_cell"
+                        ]
+                     ],
+                     "types": [
+                        "t_cell",
+                        "t_player",
+                        "t_block"
+                     ]
+                  },
+                  {
+                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_block_1,var_cell_2)).",
+                     "body": [
+                        "rule_body(ruleindex,isa2(p_right,var_cell_2,var_cell_1)).",
+                        "rule_body(ruleindex,s(c_p4,var_block_1)).",
+                        "rule_body(ruleindex,s(c_west,var_player_1)).",
+                        "rule_body(ruleindex,s2(c_in_2,var_block_1,var_cell_1))."
                      ],
                      "concepts": [
                         [
@@ -2210,56 +3340,22 @@
                         ],
                         [
                            "c_p4",
-                           "t_2"
+                           "t_block"
                         ],
                         [
                            "c_west",
-                           "t_1"
+                           "t_player"
                         ],
                         [
                            "c_in_2",
-                           "t_2",
+                           "t_block",
                            "t_cell"
                         ]
                      ],
                      "types": [
                         "t_cell",
-                        "t_2",
-                        "t_1"
-                     ]
-                  },
-                  {
-                     "head": "rule_head_causes(ruleindex,s2(c_in_2,var_2_1,var_cell_2)).",
-                     "body": [
-                        "rule_body(ruleindex,isa2(p_below,var_cell_1,var_cell_2)).",
-                        "rule_body(ruleindex,s(c_p4,var_2_1)).",
-                        "rule_body(ruleindex,s(c_south,var_1_1)).",
-                        "rule_body(ruleindex,s2(c_in_2,var_2_1,var_cell_1))."
-                     ],
-                     "concepts": [
-                        [
-                           "p_below",
-                           "t_cell",
-                           "t_cell"
-                        ],
-                        [
-                           "c_p4",
-                           "t_2"
-                        ],
-                        [
-                           "c_south",
-                           "t_1"
-                        ],
-                        [
-                           "c_in_2",
-                           "t_2",
-                           "t_cell"
-                        ]
-                     ],
-                     "types": [
-                        "t_cell",
-                        "t_2",
-                        "t_1"
+                        "t_block",
+                        "t_player"
                      ]
                   }
                ]

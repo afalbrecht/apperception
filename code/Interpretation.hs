@@ -43,7 +43,7 @@ flag_delete_temp :: Bool
 flag_delete_temp = False
 
 const_time_limit :: Int
-const_time_limit = 36000 --14400
+const_time_limit = 7200 --14400
 
 -- frame_misc_1_1 :: Frame    
 -- frame_misc_1_1 = Frame {

@@ -2,10 +2,10 @@
 % Optimization:17
 
 % Typing
-is_type(t_1).
+is_type(t_player).
 is_type(t_cell).
 is_type(t_object).
-permanent(isa(t_1,obj_x1)).
+permanent(isa(t_player,obj_x1)).
 permanent(isa(t_cell,obj_cell_1_1)).
 permanent(isa(t_cell,obj_cell_1_2)).
 permanent(isa(t_cell,obj_cell_1_3)).
@@ -55,7 +55,7 @@ is_concept(p_is_not_wall).
 is_concept(p_is_wall).
 is_concept(p_right).
 is_concept(south).
-is_concept(t_1).
+is_concept(t_player).
 is_concept(t_cell).
 is_concept(t_object).
 is_concept(west).
@@ -102,22 +102,23 @@ permanent(isa2(p_right,obj_cell_4_2,obj_cell_5_2)).
 permanent(isa2(p_right,obj_cell_4_3,obj_cell_5_3)).
 
 % Rules
-rule_body(r10,isa2(p_right,var_cell_1,var_cell_2)).
-rule_body(r10,s(c_east,var_1_1)).
-rule_body(r10,s2(c_in_1,var_1_1,var_cell_1)).
-rule_head_causes(r10,s2(c_in_1,var_1_1,var_cell_2)).
+rule_body(r1,isa2(p_below,var_cell_1,var_cell_2)).
+rule_body(r1,s(c_south,var_player_1)).
+rule_body(r1,s2(c_in_1,var_player_1,var_cell_1)).
+rule_head_causes(r1,s2(c_in_1,var_player_1,var_cell_2)).
 
-rule_body(r11,isa2(p_below,var_cell_1,var_cell_2)).
-rule_body(r11,s(c_south,var_1_1)).
-rule_body(r11,s2(c_in_1,var_1_1,var_cell_1)).
-rule_head_causes(r11,s2(c_in_1,var_1_1,var_cell_2)).
+rule_body(r2,isa2(p_below,var_cell_1,var_cell_2)).
+rule_body(r2,s(c_north,var_player_1)).
+rule_body(r2,s2(c_in_1,var_player_1,var_cell_2)).
+rule_head_causes(r2,s2(c_in_1,var_player_1,var_cell_1)).
 
-rule_body(r12,isa2(p_below,var_cell_1,var_cell_2)).
-rule_body(r12,s(c_north,var_1_1)).
-rule_body(r12,s2(c_in_1,var_1_1,var_cell_2)).
-rule_head_causes(r12,s2(c_in_1,var_1_1,var_cell_1)).
+rule_body(r3,isa2(p_right,var_cell_1,var_cell_2)).
+rule_body(r3,s(c_west,var_player_1)).
+rule_body(r3,s2(c_in_1,var_player_1,var_cell_2)).
+rule_head_causes(r3,s2(c_in_1,var_player_1,var_cell_1)).
 
-rule_body(r5,isa2(p_right,var_cell_1,var_cell_2)).
-rule_body(r5,s(c_west,var_1_1)).
-rule_body(r5,s2(c_in_1,var_1_1,var_cell_2)).
-rule_head_causes(r5,s2(c_in_1,var_1_1,var_cell_1)).
+rule_body(r5,isa(p_is_not_wall,var_cell_1)).
+rule_body(r5,isa2(p_right,var_cell_2,var_cell_1)).
+rule_body(r5,s(c_east,var_player_1)).
+rule_body(r5,s2(c_in_1,var_player_1,var_cell_2)).
+rule_head_causes(r5,s2(c_in_1,var_player_1,var_cell_1)).

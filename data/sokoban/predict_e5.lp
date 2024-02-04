@@ -148,7 +148,7 @@ is_time(1..7).
 
 % ∃! clause for c_in_1 : at least one
 :-
-	permanent(isa(t_1, X)),
+	permanent(isa(t_player, X)),
 	is_time(T),
 	not aux_c_in_1(X, T).
 
@@ -157,7 +157,7 @@ aux_c_in_1(X, T) :-
 
 % Incompossibility for c_in_1
 incompossible(s2(c_in_1, X, Y), s2(c_in_1, X, Y2)) :-
-	permanent(isa(t_1, X)),
+	permanent(isa(t_player, X)),
 	permanent(isa(t_cell, Y)),
 	permanent(isa(t_cell, Y2)),
 	Y != Y2.
@@ -170,7 +170,7 @@ incompossible(s2(c_in_1, X, Y), s2(c_in_1, X, Y2)) :-
 
 % ∃! clause for c_in_2 : at least one
 :-
-	permanent(isa(t_2, X)),
+	permanent(isa(t_block, X)),
 	is_time(T),
 	not aux_c_in_2(X, T).
 
@@ -179,7 +179,7 @@ aux_c_in_2(X, T) :-
 
 % Incompossibility for c_in_2
 incompossible(s2(c_in_2, X, Y), s2(c_in_2, X, Y2)) :-
-	permanent(isa(t_2, X)),
+	permanent(isa(t_block, X)),
 	permanent(isa(t_cell, Y)),
 	permanent(isa(t_cell, Y2)),
 	Y != Y2.
@@ -222,7 +222,7 @@ incompossible(s2(c_in_2, X, Y), s2(c_in_2, X, Y2)) :-
 
 % At least one
 :-
-	permanent(isa(t_1, X)),
+	permanent(isa(t_player, X)),
 	is_time(T),
 	not holds(s(c_noop, X), T),
 	not holds(s(c_north, X), T),
@@ -232,34 +232,34 @@ incompossible(s2(c_in_2, X, Y), s2(c_in_2, X, Y2)) :-
 
 % Incompossibility
 incompossible(s(c_noop, X), s(c_north, X)) :-
-	permanent(isa(t_1, X)).
+	permanent(isa(t_player, X)).
 
 incompossible(s(c_noop, X), s(c_south, X)) :-
-	permanent(isa(t_1, X)).
+	permanent(isa(t_player, X)).
 
 incompossible(s(c_noop, X), s(c_west, X)) :-
-	permanent(isa(t_1, X)).
+	permanent(isa(t_player, X)).
 
 incompossible(s(c_north, X), s(c_south, X)) :-
-	permanent(isa(t_1, X)).
+	permanent(isa(t_player, X)).
 
 incompossible(s(c_north, X), s(c_west, X)) :-
-	permanent(isa(t_1, X)).
+	permanent(isa(t_player, X)).
 
 incompossible(s(c_south, X), s(c_west, X)) :-
-	permanent(isa(t_1, X)).
+	permanent(isa(t_player, X)).
 
 incompossible(s(c_east, X), s(c_noop, X)) :-
-	permanent(isa(t_1, X)).
+	permanent(isa(t_player, X)).
 
 incompossible(s(c_east, X), s(c_north, X)) :-
-	permanent(isa(t_1, X)).
+	permanent(isa(t_player, X)).
 
 incompossible(s(c_east, X), s(c_south, X)) :-
-	permanent(isa(t_1, X)).
+	permanent(isa(t_player, X)).
 
 incompossible(s(c_east, X), s(c_west, X)) :-
-	permanent(isa(t_1, X)).
+	permanent(isa(t_player, X)).
 
 
 % Cell adjacency

@@ -1,0 +1,23 @@
+% sok-pixels_predict_e_1_3
+
+% Template
+dir = sok-pixels
+min_body_atoms = 1
+max_body_atoms = 4
+num_arrow_rules = 4
+num_causes_rules = 8
+num_visual_predicates = Nothing
+use_noise = False
+
+% Frame
+types = [t_cell,t_1]
+type_hierarchy = []
+objects = [(obj_cell_1_1,t_cell),(obj_cell_1_2,t_cell),(obj_cell_1_3,t_cell),(obj_cell_1_4,t_cell),(obj_cell_2_1,t_cell),(obj_cell_2_2,t_cell),(obj_cell_2_3,t_cell),(obj_cell_2_4,t_cell),(obj_cell_3_1,t_cell),(obj_cell_3_2,t_cell),(obj_cell_3_3,t_cell),(obj_cell_3_4,t_cell),(obj_cell_4_1,t_cell),(obj_cell_4_2,t_cell),(obj_cell_4_3,t_cell),(obj_cell_4_4,t_cell),(obj_x1,t_1)]
+exogeneous_objects = []
+permanent_concepts = [(p_right,Given,[t_cell,t_cell]),(p_below,Given,[t_cell,t_cell]),(p_is_not_wall,Given,[t_cell]),(p_is_wall,Given,[t_cell])]
+fluid_concepts = [(c_east,[t_1]),(c_south,[t_1]),(c_north,[t_1]),(c_west,[t_1]),(c_noop,[t_1]),(c_in_1,[t_1,t_cell])]
+input_concepts = [c_east,c_south,c_north,c_west,c_noop,c_in_1]
+static_concepts = []
+vars = [(var_1_1,t_1),(var_cell_1,t_cell),(var_cell_2,t_cell)]
+var_groups = [[var_1_1],[var_cell_1],[var_cell_2],[var_1_1,var_cell_1],[var_1_1,var_cell_2],[var_cell_1,var_cell_2],[var_1_1,var_cell_1,var_cell_2]]
+aux_files = ["bnn.lp","visual_sokoban.lp","sok-pixels_predict_e_1_3/sok-pixels_predict_e_1_3_interpret_mem_4_0.lp"]

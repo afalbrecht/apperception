@@ -19,9 +19,9 @@
 
 :~ gen_permanent(A). [1 @ 1, A]
 
-% :~ is_type(A). [1 @ 1, A]
+:~ is_type(A). [1 @ 1, A]
 
-% :~ is_concept(A). [1 @ 1, A]
+:~ is_concept(A). [1 @ 1, A]
 
 %------------------------------------------------------------------------------
 % Forcing atoms to be true is the same cost as initial atoms.

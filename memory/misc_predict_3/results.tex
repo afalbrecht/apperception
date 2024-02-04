@@ -34,10 +34,10 @@ object
 \mathit{sensor}_a: object
 \}\\
 & P = \{
-\mathit{a}(object),\mathit{b}(object),\mathit{c}(object),\mathit{d}(object),\mathit{off}(object),\mathit{on}(object)
+\mathit{a}(object),\mathit{b}(object),\mathit{c}(object),\mathit{d}(object)
 \}\\
 & V = \{
-OBJECT_1: object
+X: object
 \}\\
 \end{aligned}\right\}
 \end{equation*}
@@ -47,12 +47,10 @@ I & = & \left\{ \begin{array}{l}
 \mathit{a}(\mathit{sensor}_a)\\
 \end{array}\right\}\\
 R & = &  \left\{ \begin{array}{l}
-\mathit{a}(\mathit{OBJECT}_1) \ni \mathit{b}(\mathit{OBJECT}_1)\\
-\mathit{d}(\mathit{OBJECT}_1) \ni \mathit{a}(\mathit{OBJECT}_1)\\
-\mathit{b}(\mathit{OBJECT}_1) \ni \mathit{c}(\mathit{OBJECT}_1)\\
-\mathit{c}(\mathit{OBJECT}_1) \ni \mathit{d}(\mathit{OBJECT}_1)\\
-\mathit{on}(\mathit{OBJECT}_1) \ni \mathit{off}(\mathit{OBJECT}_1)\\
-\mathit{off}(\mathit{OBJECT}_1) \ni \mathit{on}(\mathit{OBJECT}_1)\\
+\mathit{c}(\mathit{X}) \ni \mathit{d}(\mathit{X})\\
+\mathit{a}(\mathit{X}) \ni \mathit{b}(\mathit{X})\\
+\mathit{b}(\mathit{X}) \ni \mathit{c}(\mathit{X})\\
+\mathit{d}(\mathit{X}) \ni \mathit{a}(\mathit{X})\\
 \end{array}\right\}\\
 C & = & \left\{ \begin{array}{l}
 \forall X : object,\;\mathit{a}(X) \oplus \mathit{b}(X) \oplus \mathit{c}(X) \oplus \mathit{d}(X)\\

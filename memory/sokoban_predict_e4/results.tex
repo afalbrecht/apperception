@@ -25,16 +25,16 @@ Our system produces the frame $\phi = (T, O, P, V)$, where:
 \phi = \left \{
 \begin{aligned}
 & T = \{ 
-1,cell
+cell,player
 \}\\
 & O = \{
-\mathit{cell}_1_1: cell,\mathit{cell}_1_2: cell,\mathit{cell}_1_3: cell,\mathit{cell}_2_1: cell,\mathit{cell}_2_2: cell,\mathit{cell}_2_3: cell,\mathit{cell}_3_1: cell,\mathit{cell}_3_2: cell,\mathit{cell}_3_3: cell,\mathit{cell}_4_1: cell,\mathit{cell}_4_2: cell,\mathit{cell}_4_3: cell,\mathit{cell}_5_1: cell,\mathit{cell}_5_2: cell,\mathit{cell}_5_3: cell,\mathit{x}1: 1
+\mathit{cell}_1_1: cell,\mathit{cell}_1_2: cell,\mathit{cell}_1_3: cell,\mathit{cell}_2_1: cell,\mathit{cell}_2_2: cell,\mathit{cell}_2_3: cell,\mathit{cell}_3_1: cell,\mathit{cell}_3_2: cell,\mathit{cell}_3_3: cell,\mathit{cell}_4_1: cell,\mathit{cell}_4_2: cell,\mathit{cell}_4_3: cell,\mathit{cell}_5_1: cell,\mathit{cell}_5_2: cell,\mathit{cell}_5_3: cell,\mathit{x}1: player
 \}\\
 & P = \{
-\mathit{east}(1),\mathit{in}_1(1, cell),\mathit{noop}(1),\mathit{north}(1),\mathit{south}(1),\mathit{west}(1)
+\mathit{east}(player),\mathit{in}_1(player, cell),\mathit{noop}(player),\mathit{north}(player),\mathit{south}(player),\mathit{west}(player)
 \}\\
 & V = \{
-1_1: 1,CELL_1: cell,CELL_2: cell
+PLAYER_1: player,CELL_1: cell,CELL_2: cell
 \}\\
 \end{aligned}\right\}
 \end{equation*}
@@ -44,14 +44,21 @@ I & = & \left\{ \begin{array}{l}
 \mathit{in}_1(\mathit{x}1,\mathit{cell}_3_2)\\
 \end{array}\right\}\\
 R & = &  \left\{ \begin{array}{l}
-\mathit{below}(\mathit{CELL}_1,\mathit{CELL}_2) \wedge \mathit{north}(\mathit{}1_1) \wedge \mathit{in}_1(\mathit{}1_1,\mathit{CELL}_2) \ni \mathit{in}_1(\mathit{}1_1,\mathit{CELL}_1)\\
-\mathit{right}(\mathit{CELL}_1,\mathit{CELL}_2) \wedge \mathit{east}(\mathit{}1_1) \wedge \mathit{in}_1(\mathit{}1_1,\mathit{CELL}_1) \ni \mathit{in}_1(\mathit{}1_1,\mathit{CELL}_2)\\
-\mathit{below}(\mathit{CELL}_1,\mathit{CELL}_2) \wedge \mathit{south}(\mathit{}1_1) \wedge \mathit{in}_1(\mathit{}1_1,\mathit{CELL}_1) \ni \mathit{in}_1(\mathit{}1_1,\mathit{CELL}_2)\\
-\mathit{noop}(\mathit{}1_1) \ni \mathit{west}(\mathit{}1_1)\\
-\mathit{right}(\mathit{CELL}_2,\mathit{CELL}_1) \wedge \mathit{west}(\mathit{}1_1) \wedge \mathit{in}_1(\mathit{}1_1,\mathit{CELL}_1) \ni \mathit{in}_1(\mathit{}1_1,\mathit{CELL}_2)\\
+\mathit{is}_wall(\mathit{CELL}_1) \wedge \mathit{below}(\mathit{CELL}_1,\mathit{CELL}_2) \wedge \mathit{south}(\mathit{PLAYER}_1) \wedge \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_1) \rightarrow \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_2)\\
+\mathit{below}(\mathit{CELL}_1,\mathit{CELL}_2) \wedge \mathit{right}(\mathit{CELL}_1,\mathit{CELL}_2) \wedge \mathit{north}(\mathit{PLAYER}_1) \wedge \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_2) \rightarrow \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_1)\\
+\mathit{right}(\mathit{CELL}_1,\mathit{CELL}_1) \wedge \mathit{right}(\mathit{CELL}_2,\mathit{CELL}_1) \wedge \mathit{east}(\mathit{PLAYER}_1) \wedge \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_2) \rightarrow \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_1)\\
+\mathit{below}(\mathit{CELL}_2,\mathit{CELL}_1) \wedge \mathit{right}(\mathit{CELL}_1,\mathit{CELL}_2) \wedge \mathit{west}(\mathit{PLAYER}_1) \wedge \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_2) \rightarrow \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_1)\\
+\mathit{is}_wall(\mathit{CELL}_1) \wedge \mathit{below}(\mathit{CELL}_1,\mathit{CELL}_2) \wedge \mathit{south}(\mathit{PLAYER}_1) \wedge \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_1) \ni \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_2)\\
+\mathit{right}(\mathit{CELL}_1,\mathit{CELL}_2) \wedge \mathit{east}(\mathit{PLAYER}_1) \wedge \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_1) \ni \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_2)\\
+\mathit{below}(\mathit{CELL}_1,\mathit{CELL}_2) \wedge \mathit{north}(\mathit{PLAYER}_1) \wedge \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_2) \ni \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_1)\\
+\mathit{below}(\mathit{CELL}_1,\mathit{CELL}_2) \wedge \mathit{south}(\mathit{PLAYER}_1) \wedge \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_1) \ni \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_2)\\
+\mathit{below}(\mathit{CELL}_1,\mathit{CELL}_2) \wedge \mathit{right}(\mathit{CELL}_1,\mathit{CELL}_2) \wedge \mathit{north}(\mathit{PLAYER}_1) \wedge \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_2) \ni \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_1)\\
+\mathit{right}(\mathit{CELL}_1,\mathit{CELL}_1) \wedge \mathit{right}(\mathit{CELL}_2,\mathit{CELL}_1) \wedge \mathit{east}(\mathit{PLAYER}_1) \wedge \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_2) \ni \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_1)\\
+\mathit{below}(\mathit{CELL}_2,\mathit{CELL}_1) \wedge \mathit{right}(\mathit{CELL}_1,\mathit{CELL}_2) \wedge \mathit{west}(\mathit{PLAYER}_1) \wedge \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_2) \ni \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_1)\\
+\mathit{right}(\mathit{CELL}_2,\mathit{CELL}_1) \wedge \mathit{west}(\mathit{PLAYER}_1) \wedge \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_1) \ni \mathit{in}_1(\mathit{PLAYER}_1,\mathit{CELL}_2)\\
 \end{array}\right\}\\
 C & = & \left\{ \begin{array}{l}
-\forall X : 1, \; \exists ! Y : cell, \; in_1(X, Y) \\
+\forall X : player, \; \exists ! Y : cell, \; in_1(X, Y) \\
 \end{array}\right\}\\
 \end{eqnarray*}
 

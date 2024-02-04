@@ -22,16 +22,16 @@ Our system produces the frame $\phi = (T, O, P, V)$, where:
 \phi = \left \{
 \begin{aligned}
 & T = \{ 
-object
+sensor_1
 \}\\
 & O = \{
-\mathit{sensor}_a: object
+\mathit{sensor}_a: sensor_1
 \}\\
 & P = \{
-\mathit{off}(object),\mathit{on}(object)
+\mathit{off}(sensor_1),\mathit{on}(sensor_1)
 \}\\
 & V = \{
-X: object
+SENSOR_1_1: sensor_1
 \}\\
 \end{aligned}\right\}
 \end{equation*}
@@ -41,11 +41,11 @@ I & = & \left\{ \begin{array}{l}
 \mathit{on}(\mathit{sensor}_a)\\
 \end{array}\right\}\\
 R & = &  \left\{ \begin{array}{l}
-\mathit{on}(\mathit{X}) \ni \mathit{off}(\mathit{X})\\
-\mathit{off}(\mathit{X}) \ni \mathit{on}(\mathit{X})\\
+\mathit{on}(\mathit{SENSOR}_1_1) \ni \mathit{off}(\mathit{SENSOR}_1_1)\\
+\mathit{off}(\mathit{SENSOR}_1_1) \ni \mathit{on}(\mathit{SENSOR}_1_1)\\
 \end{array}\right\}\\
 C & = & \left\{ \begin{array}{l}
-\forall X : object,\;\mathit{on}(X) \oplus \mathit{off}(X)\\
+\forall X : sensor_1,\;\mathit{on}(X) \oplus \mathit{off}(X)\\
 \end{array}\right\}\\
 \end{eqnarray*}
 

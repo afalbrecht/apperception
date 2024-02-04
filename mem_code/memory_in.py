@@ -11,7 +11,9 @@ dir = sys.argv[1]
 input_name = sys.argv[2]
 flag = sys.argv[3]
 if "4" in flag:
-    aux_files = sys.argv[4]
+    # if sys.argv[4] == "sok":
+    aux_files = '\"bnn.lp\",\"visual_sokoban.lp\",'
+    # aux_files = sys.argv[4]
 else:
     aux_files = ""
 filename = dir + '_' + input_name

@@ -58,6 +58,7 @@ main = do
         ["sok-iter", f] -> solve_sok_iterative f "0"
         ["sok-iter", f, i] -> solve_sok_iterative f i
         ["sok-pixels", f] -> solve_sok_pixels f
+        ["sok-pixels", f, i] -> solve_sok_pixels_iterative f i
         ["noisy", i, j, k] -> solve_noisy i j k -- expects three integers
         ["mislabel", f] -> solve_mislabel f
         ["var-length-noise", f] -> solve_var_length True f
@@ -456,6 +457,22 @@ solve_sok_iterative f i = do
     --             -- let template = template_from_file tfmap
     putStrLn $ "Reading templates from " ++ dir
     tree_solve_iteratively dir "data/sokoban" input_f True True
+
+
+solve_sok_pixels_iterative :: String -> String -> IO ()
+solve_sok_pixels_iterative f i = do
+    let n = head $ Split.splitOn "." f
+    let input_f = f
+    putStrLn "-----------------------"
+    putStrLn input_f
+    let c = "python mem_code/memory_in.py sok-pixels " ++ n ++ " " ++ i ++ " " ++ "sok"
+    Process.callCommand c
+    let filepath = "memory/sok-pixels_" ++ n ++ "_template_in_0_0.txt"
+    let dir = "memory/sok-pixels_" ++ n ++ "/"
+    putStrLn $ "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA "
+    file_exists <- doesFileExist filepath 
+    putStrLn $ "Reading templates from " ++ dir
+    tree_solve_iteratively dir "data/sok-pixels" input_f True True
 
 
 
