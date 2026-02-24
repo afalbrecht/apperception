@@ -1,6 +1,6 @@
 # *Architectonic Apperception Engine*
 
-This project presents the source code for *Architectonic Apperception Engine*, which extends the original *Apperception Engine* by Richard Evans with memory.
+This project presents the source code for *Architectonic Apperception Engine*, which extends the original *Apperception Engine* by Richard Evans (https://github.com/RichardEvans/apperception) with memory. The apperception engine is an AI built on principles taken from Kant's masterwork the Critique of Pure Reason, and the AAE seeks to extend this with further insights gained from the CPR.
 
 ## Installation instructions
 
