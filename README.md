@@ -1,4 +1,6 @@
-# The source code for the *Architectonic Apperception Engine*, which extends the original *Apperception Engine* by Richard Evans with memory.
+# *Architectonic Apperception Engine*
+
+This project presents the source code for *Architectonic Apperception Engine*, which extends the original *Apperception Engine* by Richard Evans with memory.
 
 ## Installation instructions
 
