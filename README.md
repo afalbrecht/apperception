@@ -1,4 +1,4 @@
-# The source code for *"Making sense of sensory input"* and *"Making sense of raw input"*
+# The source code for the *Architectonic Apperception Engine*, which extends the original *Apperception Engine* by Richard Evans with memory.
 
 ## Installation instructions
 
